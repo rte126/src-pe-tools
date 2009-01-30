@@ -1,0 +1,4 @@
+<!-- deploy as root application -->
+<jboss-web>
+    <context-root>/ssportal</context-root>
+</jboss-web>
