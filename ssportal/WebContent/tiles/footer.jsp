@@ -5,7 +5,7 @@
 --%>
     
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 <bean:define id="color" name="color" type="java.lang.String"/>
 
