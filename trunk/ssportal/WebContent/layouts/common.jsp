@@ -5,6 +5,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
+
 <tiles:useAttribute id="color" name="color" scope="request" />
 <tiles:useAttribute name="menuTag" scope="request" />
 <tiles:useAttribute name="pageId" scope="request" />
