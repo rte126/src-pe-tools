@@ -43,7 +43,7 @@ public interface SAEFeatureLocator {
      */
     public SAEFeature getSaeFeature(String ipAddress,
                                     String featureName,
-                                    List vrName);
+                                    List<String> vrName);
 
     /**
      * Configure the locator.<p>
