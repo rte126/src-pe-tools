@@ -38,7 +38,7 @@ public class LocalFeatureLocator implements SAEFeatureLocator {
 
     // cache features for the remote SAE
     // key: featureName, value: SAEFeature
-    private Map features;
+    private Map<String,SAEFeature> features;
 
     private String vrName;
     
@@ -48,10 +48,10 @@ public class LocalFeatureLocator implements SAEFeatureLocator {
     public void setProperties(Properties props) {
         this.props = props;
 
-        features = new HashMap();
+        features = new HashMap<String,SAEFeature>();
     }
     
-    public SAEFeature getSaeFeature(String ipAddress, String featureName, List vrNameList)
+    public SAEFeature getSaeFeature(String ipAddress, String featureName, List<String> vrNameList)
     {
         if (sae == null) {
             String ior = props.getProperty("LocalFeatureLocator.objectRef",
