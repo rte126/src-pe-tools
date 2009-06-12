@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition>
+<div align="center">
+<table border="1">
+  <tr bgcolor="black"><th>
+    <font color="white">Search Site</font>
+  </th></tr>
+  <tr><th>
+    <form action="siteSearch">
+      <input type="text" name="query"/><br/>
+      <input type="submit" value="Search"/>
+    </form>
+  </th></tr>
+</table>
+<p/>
+<table border="1">
+  <tr bgcolor="black">
+    <th><font color="white">Search Web</font></th>
+  </tr>
+  <tr><th>
+    <form action="http://google.com/search">
+      <input type="hidden" name="hl" value="en"/>
+      <input type="text" name="q"/><br/>
+      <input type="submit" value="Search"/>
+    </form>
+  </th></tr>
+</table>
+</div>
+</ui:composition>
+</body></html>
