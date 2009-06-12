@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/facelets/template.xhtml">
+
+<ui:define name="title">
+  Eboats Oil Tankers!
+</ui:define>
+
+<ui:define name="header">
+  <ui:include src="/WEB-INF/facelets/header.xhtml"/>
+</ui:define>
+
+<ui:define name="menu">
+  <ui:include src="/WEB-INF/facelets/menu.xhtml"/>
+</ui:define>
+
+<ui:define name="body">
+<img src="./images/tanker.jpg" alt="Oil Tanker" align="right"/>
+<p/>
+Stable and roomy models for the <s>uninformed</s> 
+innovative buyer.
+<h2>Available Models</h2>
+Choose a model to see a picture along with price and
+availability information.
+<form action="displayItem">
+  <input type="radio" name="itemNum" value="valdez"/>
+  Valdez -- Slightly damaged model available at discount<br/>
+  <input type="radio" name="itemNum" value="big-bertha"/>
+  Big Bertha -- Includes 10 million gallon swimming pool<br/>
+  <input type="radio" name="itemNum" value="eco-disaster1"/>
+  ED I -- For those who don't mind political incorrectness
+  <p/>
+  <div align="center">
+  <input type="submit" value="Get Details"/>
+  </div>
+</form>
+</ui:define>
+
+<ui:define name="footer">
+  <ui:include src="/WEB-INF/facelets/footer.xhtml"/>
+</ui:define>
+</ui:composition>
+</body></html>
