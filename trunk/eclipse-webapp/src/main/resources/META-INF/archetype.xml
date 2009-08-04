@@ -1,0 +1,18 @@
+<archetype>
+  <id>eclipse_webapp</id>
+  <sources>
+    <source>src/main/java/App.java</source>
+  </sources>
+  <resources>
+    <resource>src/main/resources/test.txt</resource>
+    <resource>src/main/webapp/index.jsp</resource>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+  </resources>
+  <testSources>
+    <source>src/test/java/AppTest.java</source>
+  </testSources>
+  <testResources>
+    <resource>src/test/resources/test.txt</resource>
+  </testResources>
+  
+</archetype>
