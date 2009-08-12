@@ -4,4 +4,21 @@
   <artifactId>sax001</artifactId>
   <name>SAX parser</name>
   <version>0.0.1-SNAPSHOT</version>
+  <build>
+  	<plugins>
+  		<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                  <archive>
+                        <manifest>
+                          <addClasspath>true</addClasspath>
+                          <mainClass>wftac.ckim.xml.sax001.SAXParserExample</mainClass>
+                        </manifest>
+                  </archive>
+                </configuration>
+                </plugin>
+
+  	</plugins>
+  </build>
 </project>
