@@ -1,0 +1,1480 @@
+SQL> alter user scott account unlock;
+
+User altered.
+
+SQL> connect scott/tiger
+ERROR:
+ORA-28001: the password has expired 
+
+
+Changing password for scott
+Password changed
+Connected.
+SQL> -- Display the data in the emp table
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7369 SMITH      CLERK           7902 17-DEC-80        800                 
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300      
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500      
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7566 JONES      MANAGER         7839 02-APR-81       2975                 
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400      
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                 
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                 
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                 
+        20                                                                      
+                                                                                
+      7839 KING       PRESIDENT            17-NOV-81       5000                 
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0      
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                 
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 03-DEC-81        950                 
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                 
+        20                                                                      
+                                                                                
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                 
+        10                                                                      
+                                                                                
+
+14 rows selected.
+
+SQL> 
+SQL> -- Tell SQL*Plus to do better formatting
+SQL> set linesize 125
+SQL> set pagesize 49999
+SQL> 
+SQL> -- Now display the data again
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                        
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                        
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                        
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                        
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                        
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                        
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                        
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                        
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                        
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                        
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                        
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                        
+
+14 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> @C:/dbclass/setup
+
+USRVAL                                                                                                                       
+------------------------------                                                                                               
+SCOTT                                                                                                                        
+
+Standard Setup Complete
+SCOTT> describe dept;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ DEPTNO                                                               NOT NULL NUMBER(2)
+ DNAME                                                                         VARCHAR2(14)
+ LOC                                                                           VARCHAR2(13)
+
+SCOTT> select * from dept;
+
+    DEPTNO DNAME          LOC                                                                                                
+---------- -------------- -------------                                                                                      
+        10 ACCOUNTING     NEW YORK                                                                                           
+        20 RESEARCH       DALLAS                                                                                             
+        30 SALES          CHICAGO                                                                                            
+        40 OPERATIONS     BOSTON                                                                                             
+
+SCOTT> select loc, deptno from dept;
+
+LOC               DEPTNO                                                                                                     
+------------- ----------                                                                                                     
+NEW YORK              10                                                                                                     
+DALLAS                20                                                                                                     
+CHICAGO               30                                                                                                     
+BOSTON                40                                                                                                     
+
+SCOTT> select loc as location, deptno as "Department Number" from dept;
+
+LOCATION      Department Number                                                                                              
+------------- -----------------                                                                                              
+NEW YORK                     10                                                                                              
+DALLAS                       20                                                                                              
+CHICAGO                      30                                                                                              
+BOSTON                       40                                                                                              
+
+SCOTT> select loc, loc from dept;
+
+LOC           LOC                                                                                                            
+------------- -------------                                                                                                  
+NEW YORK      NEW YORK                                                                                                       
+DALLAS        DALLAS                                                                                                         
+CHICAGO       CHICAGO                                                                                                        
+BOSTON        BOSTON                                                                                                         
+
+SCOTT> select loc, loc as location from dept;
+
+LOC           LOCATION                                                                                                       
+------------- -------------                                                                                                  
+NEW YORK      NEW YORK                                                                                                       
+DALLAS        DALLAS                                                                                                         
+CHICAGO       CHICAGO                                                                                                        
+BOSTON        BOSTON                                                                                                         
+
+SCOTT> select dept.loc from dept;
+
+LOC                                                                                                                          
+-------------                                                                                                                
+NEW YORK                                                                                                                     
+DALLAS                                                                                                                       
+CHICAGO                                                                                                                      
+BOSTON                                                                                                                       
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> describe emp;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ EMPNO                                                                NOT NULL NUMBER(4)
+ ENAME                                                                         VARCHAR2(10)
+ JOB                                                                           VARCHAR2(9)
+ MGR                                                                           NUMBER(4)
+ HIREDATE                                                                      DATE
+ SAL                                                                           NUMBER(7,2)
+ COMM                                                                          NUMBER(7,2)
+ DEPTNO                                                                        NUMBER(2)
+
+SCOTT> select ename, deptno, sal from emp;
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH              20        800                                                                                             
+ALLEN              30       1600                                                                                             
+WARD               30       1250                                                                                             
+JONES              20       2975                                                                                             
+MARTIN             30       1250                                                                                             
+BLAKE              30       2850                                                                                             
+CLARK              10       2450                                                                                             
+SCOTT              20       3000                                                                                             
+KING               10       5000                                                                                             
+TURNER             30       1500                                                                                             
+ADAMS              20       1100                                                                                             
+JAMES              30        950                                                                                             
+FORD               20       3000                                                                                             
+MILLER             10       1300                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, sal*2 from emp;
+
+ENAME             SAL      SAL*2                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800       1600                                                                                             
+ALLEN            1600       3200                                                                                             
+WARD             1250       2500                                                                                             
+JONES            2975       5950                                                                                             
+MARTIN           1250       2500                                                                                             
+BLAKE            2850       5700                                                                                             
+CLARK            2450       4900                                                                                             
+SCOTT            3000       6000                                                                                             
+KING             5000      10000                                                                                             
+TURNER           1500       3000                                                                                             
+ADAMS            1100       2200                                                                                             
+JAMES             950       1900                                                                                             
+FORD             3000       6000                                                                                             
+MILLER           1300       2600                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, sal*2 as bigsal from emp;
+
+ENAME             SAL     BIGSAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800       1600                                                                                             
+ALLEN            1600       3200                                                                                             
+WARD             1250       2500                                                                                             
+JONES            2975       5950                                                                                             
+MARTIN           1250       2500                                                                                             
+BLAKE            2850       5700                                                                                             
+CLARK            2450       4900                                                                                             
+SCOTT            3000       6000                                                                                             
+KING             5000      10000                                                                                             
+TURNER           1500       3000                                                                                             
+ADAMS            1100       2200                                                                                             
+JAMES             950       1900                                                                                             
+FORD             3000       6000                                                                                             
+MILLER           1300       2600                                                                                             
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> -- unfortunately, this doesn't work
+SCOTT> select sal, 2*sal as twosal, 2*twosal as foursal from emp;
+select sal, 2*sal as twosal, 2*twosal as foursal from emp
+                               *
+ERROR at line 1:
+ORA-00904: "TWOSAL": invalid identifier 
+
+
+SCOTT> 
+SCOTT> select ename, sal, sqrt(sal) from emp;
+
+ENAME             SAL  SQRT(SAL)                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800 28.2842712                                                                                             
+ALLEN            1600         40                                                                                             
+WARD             1250 35.3553391                                                                                             
+JONES            2975 54.5435606                                                                                             
+MARTIN           1250 35.3553391                                                                                             
+BLAKE            2850 53.3853913                                                                                             
+CLARK            2450 49.4974747                                                                                             
+SCOTT            3000 54.7722558                                                                                             
+KING             5000 70.7106781                                                                                             
+TURNER           1500 38.7298335                                                                                             
+ADAMS            1100 33.1662479                                                                                             
+JAMES             950   30.82207                                                                                             
+FORD             3000 54.7722558                                                                                             
+MILLER           1300 36.0555128                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, round(sqrt(sal)) as sqrtsal from emp;
+
+ENAME             SAL    SQRTSAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800         28                                                                                             
+ALLEN            1600         40                                                                                             
+WARD             1250         35                                                                                             
+JONES            2975         55                                                                                             
+MARTIN           1250         35                                                                                             
+BLAKE            2850         53                                                                                             
+CLARK            2450         49                                                                                             
+SCOTT            3000         55                                                                                             
+KING             5000         71                                                                                             
+TURNER           1500         39                                                                                             
+ADAMS            1100         33                                                                                             
+JAMES             950         31                                                                                             
+FORD             3000         55                                                                                             
+MILLER           1300         36                                                                                             
+
+14 rows selected.
+
+SCOTT> select 'JOHN ' || ename as name, job from emp;
+
+NAME            JOB                                                                                                          
+--------------- ---------                                                                                                    
+JOHN SMITH      CLERK                                                                                                        
+JOHN ALLEN      SALESMAN                                                                                                     
+JOHN WARD       SALESMAN                                                                                                     
+JOHN JONES      MANAGER                                                                                                      
+JOHN MARTIN     SALESMAN                                                                                                     
+JOHN BLAKE      MANAGER                                                                                                      
+JOHN CLARK      MANAGER                                                                                                      
+JOHN SCOTT      ANALYST                                                                                                      
+JOHN KING       PRESIDENT                                                                                                    
+JOHN TURNER     SALESMAN                                                                                                     
+JOHN ADAMS      CLERK                                                                                                        
+JOHN JAMES      CLERK                                                                                                        
+JOHN FORD       ANALYST                                                                                                      
+JOHN MILLER     CLERK                                                                                                        
+
+14 rows selected.
+
+SCOTT> select ename || ' IS A ' || job as name from emp;
+
+NAME                                                                                                                         
+-------------------------                                                                                                    
+SMITH IS A CLERK                                                                                                             
+ALLEN IS A SALESMAN                                                                                                          
+WARD IS A SALESMAN                                                                                                           
+JONES IS A MANAGER                                                                                                           
+MARTIN IS A SALESMAN                                                                                                         
+BLAKE IS A MANAGER                                                                                                           
+CLARK IS A MANAGER                                                                                                           
+SCOTT IS A ANALYST                                                                                                           
+KING IS A PRESIDENT                                                                                                          
+TURNER IS A SALESMAN                                                                                                         
+ADAMS IS A CLERK                                                                                                             
+JAMES IS A CLERK                                                                                                             
+FORD IS A ANALYST                                                                                                            
+MILLER IS A CLERK                                                                                                            
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> describe emp;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ EMPNO                                                                NOT NULL NUMBER(4)
+ ENAME                                                                         VARCHAR2(10)
+ JOB                                                                           VARCHAR2(9)
+ MGR                                                                           NUMBER(4)
+ HIREDATE                                                                      DATE
+ SAL                                                                           NUMBER(7,2)
+ COMM                                                                          NUMBER(7,2)
+ DEPTNO                                                                        NUMBER(2)
+
+SCOTT> select ename, deptno, sal from emp;
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH              20        800                                                                                             
+ALLEN              30       1600                                                                                             
+WARD               30       1250                                                                                             
+JONES              20       2975                                                                                             
+MARTIN             30       1250                                                                                             
+BLAKE              30       2850                                                                                             
+CLARK              10       2450                                                                                             
+SCOTT              20       3000                                                                                             
+KING               10       5000                                                                                             
+TURNER             30       1500                                                                                             
+ADAMS              20       1100                                                                                             
+JAMES              30        950                                                                                             
+FORD               20       3000                                                                                             
+MILLER             10       1300                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, sal*2 from emp;
+
+ENAME             SAL      SAL*2                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800       1600                                                                                             
+ALLEN            1600       3200                                                                                             
+WARD             1250       2500                                                                                             
+JONES            2975       5950                                                                                             
+MARTIN           1250       2500                                                                                             
+BLAKE            2850       5700                                                                                             
+CLARK            2450       4900                                                                                             
+SCOTT            3000       6000                                                                                             
+KING             5000      10000                                                                                             
+TURNER           1500       3000                                                                                             
+ADAMS            1100       2200                                                                                             
+JAMES             950       1900                                                                                             
+FORD             3000       6000                                                                                             
+MILLER           1300       2600                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, sal*2 as bigsal from emp;
+
+ENAME             SAL     BIGSAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800       1600                                                                                             
+ALLEN            1600       3200                                                                                             
+WARD             1250       2500                                                                                             
+JONES            2975       5950                                                                                             
+MARTIN           1250       2500                                                                                             
+BLAKE            2850       5700                                                                                             
+CLARK            2450       4900                                                                                             
+SCOTT            3000       6000                                                                                             
+KING             5000      10000                                                                                             
+TURNER           1500       3000                                                                                             
+ADAMS            1100       2200                                                                                             
+JAMES             950       1900                                                                                             
+FORD             3000       6000                                                                                             
+MILLER           1300       2600                                                                                             
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> -- unfortunately, this doesn't work
+SCOTT> select sal, 2*sal as twosal, 2*twosal as foursal from emp;
+select sal, 2*sal as twosal, 2*twosal as foursal from emp
+                               *
+ERROR at line 1:
+ORA-00904: "TWOSAL": invalid identifier 
+
+
+SCOTT> 
+SCOTT> select ename, sal, sqrt(sal) from emp;
+
+ENAME             SAL  SQRT(SAL)                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800 28.2842712                                                                                             
+ALLEN            1600         40                                                                                             
+WARD             1250 35.3553391                                                                                             
+JONES            2975 54.5435606                                                                                             
+MARTIN           1250 35.3553391                                                                                             
+BLAKE            2850 53.3853913                                                                                             
+CLARK            2450 49.4974747                                                                                             
+SCOTT            3000 54.7722558                                                                                             
+KING             5000 70.7106781                                                                                             
+TURNER           1500 38.7298335                                                                                             
+ADAMS            1100 33.1662479                                                                                             
+JAMES             950   30.82207                                                                                             
+FORD             3000 54.7722558                                                                                             
+MILLER           1300 36.0555128                                                                                             
+
+14 rows selected.
+
+SCOTT> select ename, sal, round(sqrt(sal)) as sqrtsal from emp;
+
+ENAME             SAL    SQRTSAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800         28                                                                                             
+ALLEN            1600         40                                                                                             
+WARD             1250         35                                                                                             
+JONES            2975         55                                                                                             
+MARTIN           1250         35                                                                                             
+BLAKE            2850         53                                                                                             
+CLARK            2450         49                                                                                             
+SCOTT            3000         55                                                                                             
+KING             5000         71                                                                                             
+TURNER           1500         39                                                                                             
+ADAMS            1100         33                                                                                             
+JAMES             950         31                                                                                             
+FORD             3000         55                                                                                             
+MILLER           1300         36                                                                                             
+
+14 rows selected.
+
+SCOTT> select 'JOHN ' || ename as name, job from emp;
+
+NAME            JOB                                                                                                          
+--------------- ---------                                                                                                    
+JOHN SMITH      CLERK                                                                                                        
+JOHN ALLEN      SALESMAN                                                                                                     
+JOHN WARD       SALESMAN                                                                                                     
+JOHN JONES      MANAGER                                                                                                      
+JOHN MARTIN     SALESMAN                                                                                                     
+JOHN BLAKE      MANAGER                                                                                                      
+JOHN CLARK      MANAGER                                                                                                      
+JOHN SCOTT      ANALYST                                                                                                      
+JOHN KING       PRESIDENT                                                                                                    
+JOHN TURNER     SALESMAN                                                                                                     
+JOHN ADAMS      CLERK                                                                                                        
+JOHN JAMES      CLERK                                                                                                        
+JOHN FORD       ANALYST                                                                                                      
+JOHN MILLER     CLERK                                                                                                        
+
+14 rows selected.
+
+SCOTT> select ename || ' IS A ' || job as name from emp;
+
+NAME                                                                                                                         
+-------------------------                                                                                                    
+SMITH IS A CLERK                                                                                                             
+ALLEN IS A SALESMAN                                                                                                          
+WARD IS A SALESMAN                                                                                                           
+JONES IS A MANAGER                                                                                                           
+MARTIN IS A SALESMAN                                                                                                         
+BLAKE IS A MANAGER                                                                                                           
+CLARK IS A MANAGER                                                                                                           
+SCOTT IS A ANALYST                                                                                                           
+KING IS A PRESIDENT                                                                                                          
+TURNER IS A SALESMAN                                                                                                         
+ADAMS IS A CLERK                                                                                                             
+JAMES IS A CLERK                                                                                                             
+FORD IS A ANALYST                                                                                                            
+MILLER IS A CLERK                                                                                                            
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select ename, sal, round(sqrt(sal)) as sqrtsal from emp;
+
+ENAME             SAL    SQRTSAL                                                                                             
+---------- ---------- ----------                                                                                             
+SMITH             800         28                                                                                             
+ALLEN            1600         40                                                                                             
+WARD             1250         35                                                                                             
+JONES            2975         55                                                                                             
+MARTIN           1250         35                                                                                             
+BLAKE            2850         53                                                                                             
+CLARK            2450         49                                                                                             
+SCOTT            3000         55                                                                                             
+KING             5000         71                                                                                             
+TURNER           1500         39                                                                                             
+ADAMS            1100         33                                                                                             
+JAMES             950         31                                                                                             
+FORD             3000         55                                                                                             
+MILLER           1300         36                                                                                             
+
+14 rows selected.
+
+SCOTT> select 'JOHN ' || ename as name, job from emp;
+
+NAME            JOB                                                                                                          
+--------------- ---------                                                                                                    
+JOHN SMITH      CLERK                                                                                                        
+JOHN ALLEN      SALESMAN                                                                                                     
+JOHN WARD       SALESMAN                                                                                                     
+JOHN JONES      MANAGER                                                                                                      
+JOHN MARTIN     SALESMAN                                                                                                     
+JOHN BLAKE      MANAGER                                                                                                      
+JOHN CLARK      MANAGER                                                                                                      
+JOHN SCOTT      ANALYST                                                                                                      
+JOHN KING       PRESIDENT                                                                                                    
+JOHN TURNER     SALESMAN                                                                                                     
+JOHN ADAMS      CLERK                                                                                                        
+JOHN JAMES      CLERK                                                                                                        
+JOHN FORD       ANALYST                                                                                                      
+JOHN MILLER     CLERK                                                                                                        
+
+14 rows selected.
+
+SCOTT> select ename || ' IS A ' || job as name from emp;
+
+NAME                                                                                                                         
+-------------------------                                                                                                    
+SMITH IS A CLERK                                                                                                             
+ALLEN IS A SALESMAN                                                                                                          
+WARD IS A SALESMAN                                                                                                           
+JONES IS A MANAGER                                                                                                           
+MARTIN IS A SALESMAN                                                                                                         
+BLAKE IS A MANAGER                                                                                                           
+CLARK IS A MANAGER                                                                                                           
+SCOTT IS A ANALYST                                                                                                           
+KING IS A PRESIDENT                                                                                                          
+TURNER IS A SALESMAN                                                                                                         
+ADAMS IS A CLERK                                                                                                             
+JAMES IS A CLERK                                                                                                             
+FORD IS A ANALYST                                                                                                            
+MILLER IS A CLERK                                                                                                            
+
+14 rows selected.
+
+SCOTT> select ename, job from emp
+  2  order by job desc, ename desc;
+
+ENAME      JOB                                                                                                               
+---------- ---------                                                                                                         
+WARD       SALESMAN                                                                                                          
+TURNER     SALESMAN                                                                                                          
+MARTIN     SALESMAN                                                                                                          
+ALLEN      SALESMAN                                                                                                          
+KING       PRESIDENT                                                                                                         
+JONES      MANAGER                                                                                                           
+CLARK      MANAGER                                                                                                           
+BLAKE      MANAGER                                                                                                           
+SMITH      CLERK                                                                                                             
+MILLER     CLERK                                                                                                             
+JAMES      CLERK                                                                                                             
+ADAMS      CLERK                                                                                                             
+SCOTT      ANALYST                                                                                                           
+FORD       ANALYST                                                                                                           
+
+14 rows selected.
+
+SCOTT> select ename from emp
+  2  order by length(ename);
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+FORD                                                                                                                         
+KING                                                                                                                         
+WARD                                                                                                                         
+BLAKE                                                                                                                        
+SCOTT                                                                                                                        
+JONES                                                                                                                        
+ALLEN                                                                                                                        
+SMITH                                                                                                                        
+CLARK                                                                                                                        
+JAMES                                                                                                                        
+ADAMS                                                                                                                        
+MARTIN                                                                                                                       
+TURNER                                                                                                                       
+MILLER                                                                                                                       
+
+14 rows selected.
+
+SCOTT> select ename, length(ename) as len from emp
+  2  order by len;
+
+ENAME             LEN                                                                                                        
+---------- ----------                                                                                                        
+FORD                4                                                                                                        
+KING                4                                                                                                        
+WARD                4                                                                                                        
+BLAKE               5                                                                                                        
+SCOTT               5                                                                                                        
+JONES               5                                                                                                        
+ALLEN               5                                                                                                        
+SMITH               5                                                                                                        
+CLARK               5                                                                                                        
+JAMES               5                                                                                                        
+ADAMS               5                                                                                                        
+MARTIN              6                                                                                                        
+TURNER              6                                                                                                        
+MILLER              6                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select * from emp where empno = 7788;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+
+SCOTT> select ename from emp where empno = 7788;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SCOTT                                                                                                                        
+
+SCOTT> select empno from emp where ename = 'SCOTT';
+
+     EMPNO                                                                                                                   
+----------                                                                                                                   
+      7788                                                                                                                   
+
+SCOTT> select empno from emp where ename = 'DUVALL';
+
+no rows selected
+
+SCOTT> 
+SCOTT> select job, sal from emp
+  2  where job = 'MANAGER';
+
+JOB              SAL                                                                                                         
+--------- ----------                                                                                                         
+MANAGER         2975                                                                                                         
+MANAGER         2850                                                                                                         
+MANAGER         2450                                                                                                         
+
+SCOTT> select job, sal from emp
+  2  where sal > 2500;
+
+JOB              SAL                                                                                                         
+--------- ----------                                                                                                         
+MANAGER         2975                                                                                                         
+MANAGER         2850                                                                                                         
+ANALYST         3000                                                                                                         
+PRESIDENT       5000                                                                                                         
+ANALYST         3000                                                                                                         
+
+SCOTT> select ename, sal, comm from emp
+  2  where job = 'SALESMAN';
+
+ENAME             SAL       COMM                                                                                             
+---------- ---------- ----------                                                                                             
+ALLEN            1600        300                                                                                             
+WARD             1250        500                                                                                             
+MARTIN           1250       1400                                                                                             
+TURNER           1500          0                                                                                             
+
+SCOTT> select ename, sal, comm from emp
+  2  where job = 'SALESMAN'
+  3  order by ename;
+
+ENAME             SAL       COMM                                                                                             
+---------- ---------- ----------                                                                                             
+ALLEN            1600        300                                                                                             
+MARTIN           1250       1400                                                                                             
+TURNER           1500          0                                                                                             
+WARD             1250        500                                                                                             
+
+SCOTT> 
+SCOTT> select ename, deptno, sal from emp
+  2  where (sal > 2500) or (job = 'MANAGER');
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+JONES              20       2975                                                                                             
+BLAKE              30       2850                                                                                             
+CLARK              10       2450                                                                                             
+SCOTT              20       3000                                                                                             
+KING               10       5000                                                                                             
+FORD               20       3000                                                                                             
+
+6 rows selected.
+
+SCOTT> select ename, deptno, sal from emp
+  2  where (sal > 2500) and (deptno != 10);
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+JONES              20       2975                                                                                             
+BLAKE              30       2850                                                                                             
+SCOTT              20       3000                                                                                             
+FORD               20       3000                                                                                             
+
+SCOTT> select ename, deptno, sal from emp
+  2  where (sal > 2500) and (deptno <> 10);
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+JONES              20       2975                                                                                             
+BLAKE              30       2850                                                                                             
+SCOTT              20       3000                                                                                             
+FORD               20       3000                                                                                             
+
+SCOTT> select ename, deptno, sal from emp
+  2  where not((sal <= 2500) or (deptno = 10));
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+JONES              20       2975                                                                                             
+BLAKE              30       2850                                                                                             
+SCOTT              20       3000                                                                                             
+FORD               20       3000                                                                                             
+
+SCOTT> select ename from emp
+  2  where length(ename) > 5;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+MARTIN                                                                                                                       
+TURNER                                                                                                                       
+MILLER                                                                                                                       
+
+SCOTT> 
+SCOTT> -- unfortunately, this doesn't work
+SCOTT> select ename, length(ename) as len from emp
+  2  where len > 5;
+where len > 5
+      *
+ERROR at line 2:
+ORA-00904: "LEN": invalid identifier 
+
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select * from emp where empno = 7788;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+
+SCOTT> 
+SCOTT> -- define a SQL*Plus Variables
+SCOTT> define thatEmp = 7788
+SCOTT> 
+SCOTT> -- use the SQL*Plus Variables
+SCOTT> select * from emp where empno = &thatEmp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- check what its value is
+SCOTT> define thatEmp
+DEFINE THATEMP         = "7788" (CHAR)
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select ename, hiredate from emp
+  2  where (hiredate >= '02-apr-81') and (hiredate <= '01-jan-86');
+
+ENAME      HIREDATE                                                                                                          
+---------- ---------                                                                                                         
+JONES      02-APR-81                                                                                                         
+MARTIN     28-SEP-81                                                                                                         
+BLAKE      01-MAY-81                                                                                                         
+CLARK      09-JUN-81                                                                                                         
+KING       17-NOV-81                                                                                                         
+TURNER     08-SEP-81                                                                                                         
+JAMES      03-DEC-81                                                                                                         
+FORD       03-DEC-81                                                                                                         
+MILLER     23-JAN-82                                                                                                         
+
+9 rows selected.
+
+SCOTT> select ename, hiredate from emp
+  2  where hiredate between  '02-apr-81' and '01-jan-86';
+
+ENAME      HIREDATE                                                                                                          
+---------- ---------                                                                                                         
+JONES      02-APR-81                                                                                                         
+MARTIN     28-SEP-81                                                                                                         
+BLAKE      01-MAY-81                                                                                                         
+CLARK      09-JUN-81                                                                                                         
+KING       17-NOV-81                                                                                                         
+TURNER     08-SEP-81                                                                                                         
+JAMES      03-DEC-81                                                                                                         
+FORD       03-DEC-81                                                                                                         
+MILLER     23-JAN-82                                                                                                         
+
+9 rows selected.
+
+SCOTT> select ename from emp
+  2  where ename like '%A%';
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+
+7 rows selected.
+
+SCOTT> select ename, deptno from emp
+  2  where deptno in (20, 30);
+
+ENAME          DEPTNO                                                                                                        
+---------- ----------                                                                                                        
+SMITH              20                                                                                                        
+ALLEN              30                                                                                                        
+WARD               30                                                                                                        
+JONES              20                                                                                                        
+MARTIN             30                                                                                                        
+BLAKE              30                                                                                                        
+SCOTT              20                                                                                                        
+TURNER             30                                                                                                        
+ADAMS              20                                                                                                        
+JAMES              30                                                                                                        
+FORD               20                                                                                                        
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select ename, comm from emp;
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+SMITH                                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+JONES                                                                                                                        
+MARTIN           1400                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER              0                                                                                                        
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+14 rows selected.
+
+SCOTT> select ename, comm from emp
+  2  where comm is not null;
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+MARTIN           1400                                                                                                        
+TURNER              0                                                                                                        
+
+SCOTT> select ename, comm from emp
+  2  where comm != 0;
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+MARTIN           1400                                                                                                        
+
+SCOTT> select ename, comm from emp
+  2  where not (comm = 0);
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+MARTIN           1400                                                                                                        
+
+SCOTT> select ename, comm from emp
+  2  where (comm != 0) or (comm is null);
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+SMITH                                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+JONES                                                                                                                        
+MARTIN           1400                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+SCOTT                                                                                                                        
+KING                                                                                                                         
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+13 rows selected.
+
+SCOTT> select ename, nvl( comm, 0 ) as comm from emp;
+
+ENAME            COMM                                                                                                        
+---------- ----------                                                                                                        
+SMITH               0                                                                                                        
+ALLEN             300                                                                                                        
+WARD              500                                                                                                        
+JONES               0                                                                                                        
+MARTIN           1400                                                                                                        
+BLAKE               0                                                                                                        
+CLARK               0                                                                                                        
+SCOTT               0                                                                                                        
+KING                0                                                                                                        
+TURNER              0                                                                                                        
+ADAMS               0                                                                                                        
+JAMES               0                                                                                                        
+FORD                0                                                                                                        
+MILLER              0                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> -- error
+SCOTT> select ename, nvl( comm, 'None' ) as comm from emp;
+select ename, nvl( comm, 'None' ) as comm from emp
+                         *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SCOTT> 
+SCOTT> select ename, nvl( to_char(comm), 'None' ) as comm from emp;
+
+ENAME      COMM                                                                                                              
+---------- ----------------------------------------                                                                          
+SMITH      None                                                                                                              
+ALLEN      300                                                                                                               
+WARD       500                                                                                                               
+JONES      None                                                                                                              
+MARTIN     1400                                                                                                              
+BLAKE      None                                                                                                              
+CLARK      None                                                                                                              
+SCOTT      None                                                                                                              
+KING       None                                                                                                              
+TURNER     0                                                                                                                 
+ADAMS      None                                                                                                              
+JAMES      None                                                                                                              
+FORD       None                                                                                                              
+MILLER     None                                                                                                              
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select ename, sal,
+  2      case when sal < 1500 then 'UNDERPAID'
+  3             when sal >= 3000 then 'OVERPAID'
+  4             else to_char(sal)
+  5      end as salary
+  6  from emp;
+
+ENAME             SAL SALARY                                                                                                 
+---------- ---------- ----------------------------------------                                                               
+SMITH             800 UNDERPAID                                                                                              
+ALLEN            1600 1600                                                                                                   
+WARD             1250 UNDERPAID                                                                                              
+JONES            2975 2975                                                                                                   
+MARTIN           1250 UNDERPAID                                                                                              
+BLAKE            2850 2850                                                                                                   
+CLARK            2450 2450                                                                                                   
+SCOTT            3000 OVERPAID                                                                                               
+KING             5000 OVERPAID                                                                                               
+TURNER           1500 1500                                                                                                   
+ADAMS            1100 UNDERPAID                                                                                              
+JAMES             950 UNDERPAID                                                                                              
+FORD             3000 OVERPAID                                                                                               
+MILLER           1300 UNDERPAID                                                                                              
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> -- but this doesn't work!
+SCOTT> select ename, sal,
+  2      case when sal < 1500 then 'UNDERPAID'
+  3             when sal >= 3000 then 'OVERPAID'
+  4             else sal
+  5           end as salary
+  6  from emp;
+           else sal
+                *
+ERROR at line 4:
+ORA-00932: inconsistent datatypes: expected CHAR got NUMBER 
+
+
+SCOTT> 
+SCOTT> select ename,
+  2      decode( deptno/10,
+  3                  1, 'ACCOUNTING',
+  4                  2, 'RESEARCH',
+  5                  3, 'SALES' ) as dept
+  6  from emp;
+
+ENAME      DEPT                                                                                                              
+---------- ----------                                                                                                        
+SMITH      RESEARCH                                                                                                          
+ALLEN      SALES                                                                                                             
+WARD       SALES                                                                                                             
+JONES      RESEARCH                                                                                                          
+MARTIN     SALES                                                                                                             
+BLAKE      SALES                                                                                                             
+CLARK      ACCOUNTING                                                                                                        
+SCOTT      RESEARCH                                                                                                          
+KING       ACCOUNTING                                                                                                        
+TURNER     SALES                                                                                                             
+ADAMS      RESEARCH                                                                                                          
+JAMES      SALES                                                                                                             
+FORD       RESEARCH                                                                                                          
+MILLER     ACCOUNTING                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select ename,
+  2      decode( deptno,
+  3                  10, 'ACCOUNTING',
+  4                  20, 'RESEARCH',
+  5                  30, 'SALES' ) as dept
+  6  from emp;
+
+ENAME      DEPT                                                                                                              
+---------- ----------                                                                                                        
+SMITH      RESEARCH                                                                                                          
+ALLEN      SALES                                                                                                             
+WARD       SALES                                                                                                             
+JONES      RESEARCH                                                                                                          
+MARTIN     SALES                                                                                                             
+BLAKE      SALES                                                                                                             
+CLARK      ACCOUNTING                                                                                                        
+SCOTT      RESEARCH                                                                                                          
+KING       ACCOUNTING                                                                                                        
+TURNER     SALES                                                                                                             
+ADAMS      RESEARCH                                                                                                          
+JAMES      SALES                                                                                                             
+FORD       RESEARCH                                                                                                          
+MILLER     ACCOUNTING                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- Create a table by copying part of another table
+SCOTT> create table somedept ( deptno, dname ) as
+  2  select deptno, dname from dept
+  3  where deptno != 10;
+
+Table created.
+
+SCOTT> describe somedept;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ DEPTNO                                                                        NUMBER(2)
+ DNAME                                                                         VARCHAR2(14)
+
+SCOTT> select * from somedept;
+
+    DEPTNO DNAME                                                                                                             
+---------- --------------                                                                                                    
+        20 RESEARCH                                                                                                          
+        30 SALES                                                                                                             
+        40 OPERATIONS                                                                                                        
+
+SCOTT> 
+SCOTT> -- Existing Tables & Dropping Tables
+SCOTT> 
+SCOTT> -- error
+SCOTT> create table somedept ( deptno, dname ) as
+  2  select deptno, dname from dept
+  3  where deptno != 10;
+create table somedept ( deptno, dname ) as
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SCOTT> 
+SCOTT> drop table somedept;
+
+Table dropped.
+
+SCOTT> describe somedept;
+ERROR:
+ORA-04043: object somedept does not exist 
+
+
+SCOTT> 
+SCOTT> create table somedept ( dno, dnam ) as
+  2  select deptno, dname from dept
+  3  where deptno != 10;
+
+Table created.
+
+SCOTT> describe somedept;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ DNO                                                                           NUMBER(2)
+ DNAM                                                                          VARCHAR2(14)
+
+SCOTT> select * from somedept;
+
+       DNO DNAM                                                                                                              
+---------- --------------                                                                                                    
+        20 RESEARCH                                                                                                          
+        30 SALES                                                                                                             
+        40 OPERATIONS                                                                                                        
+
+SCOTT> drop table somedept;
+
+Table dropped.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- Create an empty table from another table
+SCOTT> create table coolemps ( ename, deptno ) as
+  2  select ename, deptno from emp
+  3  where deptno = 0;
+
+Table created.
+
+SCOTT> 
+SCOTT> describe coolemps;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ ENAME                                                                         VARCHAR2(10)
+ DEPTNO                                                                        NUMBER(2)
+
+SCOTT> select * from coolemps;
+
+no rows selected
+
+SCOTT> drop table coolemps;
+
+Table dropped.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> create table Depts (
+  2  	deptno	number(3)  primary key,
+  3  	dname	varchar(14),
+  4  	loc	varchar(13) );
+
+Table created.
+
+SCOTT> describe Depts
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ DEPTNO                                                               NOT NULL NUMBER(3)
+ DNAME                                                                         VARCHAR2(14)
+ LOC                                                                           VARCHAR2(13)
+
+SCOTT> 
+SCOTT> insert into Depts select * from dept;
+
+4 rows created.
+
+Commit complete.
+SCOTT> select * from Depts;
+
+    DEPTNO DNAME          LOC                                                                                                
+---------- -------------- -------------                                                                                      
+        10 ACCOUNTING     NEW YORK                                                                                           
+        20 RESEARCH       DALLAS                                                                                             
+        30 SALES          CHICAGO                                                                                            
+        40 OPERATIONS     BOSTON                                                                                             
+
+SCOTT> 
+SCOTT> create table Emps (
+  2  	empno	number(4)  primary key,
+  3  	ename	varchar(10),
+  4  	job	varchar(9),
+  5  	mgr	number(4),
+  6  	hiredate	date,
+  7  	sal	number(7,2),
+  8  	comm	number(7,2),
+  9  	deptno	number(2) references Depts
+ 10  );
+
+Table created.
+
+SCOTT> describe Emps
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ EMPNO                                                                NOT NULL NUMBER(4)
+ ENAME                                                                         VARCHAR2(10)
+ JOB                                                                           VARCHAR2(9)
+ MGR                                                                           NUMBER(4)
+ HIREDATE                                                                      DATE
+ SAL                                                                           NUMBER(7,2)
+ COMM                                                                          NUMBER(7,2)
+ DEPTNO                                                                        NUMBER(2)
+
+SCOTT> 
+SCOTT> insert into Emps select * from emp;
+
+14 rows created.
+
+Commit complete.
+SCOTT> update Emps set job = 'DEPTMGR' where job = 'MANAGER';
+
+3 rows updated.
+
+Commit complete.
+SCOTT> select * from Emps;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                        
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                        
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                        
+      7566 JONES      DEPTMGR         7839 02-APR-81       2975                    20                                        
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                        
+      7698 BLAKE      DEPTMGR         7839 01-MAY-81       2850                    30                                        
+      7782 CLARK      DEPTMGR         7839 09-JUN-81       2450                    10                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                        
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                        
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                        
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                        
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                        
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                        
+
+14 rows selected.
+
+SCOTT> create table Projects (
+  2  pno		number(5)  primary key,
+  3  pname		varchar2(30)  unique not null,
+  4  pmgr		number(4)  not null,
+  5  persons		number(3)  default 1 not null,
+  6  budget		number(10,2),
+  7  pstart		date,
+  8  pend		date );
+
+Table created.
+
+SCOTT> describe Projects;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ PNO                                                                  NOT NULL NUMBER(5)
+ PNAME                                                                NOT NULL VARCHAR2(30)
+ PMGR                                                                 NOT NULL NUMBER(4)
+ PERSONS                                                              NOT NULL NUMBER(3)
+ BUDGET                                                                        NUMBER(10,2)
+ PSTART                                                                        DATE
+ PEND                                                                          DATE
+
+SCOTT> insert into Projects( pno, pname, pmgr )
+  2  values( 60492, 'Running Amuck', 7698 );
+
+1 row created.
+
+Commit complete.
+SCOTT> 
+SCOTT> -- error
+SCOTT> insert into Projects( pno ) values( 42 );
+insert into Projects( pno ) values( 42 )
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SCOTT"."PROJECTS"."PNAME") 
+
+
+SCOTT> 
+SCOTT> -- error
+SCOTT> insert into Projects( pno, pname, pmgr, persons, budget )
+  2  values( 60493, 'Cooling Off', 7698, null, null );
+values( 60493, 'Cooling Off', 7698, null, null )
+                                    *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SCOTT"."PROJECTS"."PERSONS") 
+
+
+SCOTT> insert into Projects( pno, pname, pmgr, pstart, pend )
+  2  values( 60493, 'Cooling Off', 7698, '1-jan-05', null );
+
+1 row created.
+
+Commit complete.
+SCOTT> 
+SCOTT> insert into Projects( pno, pname, pmgr, budget )
+  2  select 90000 + empno,
+  3             'Run Dept ' || deptno, empno, 100000
+  4  from Emps
+  5  where job = 'DEPTMGR';
+
+3 rows created.
+
+Commit complete.
+SCOTT> 
+SCOTT> insert into Projects
+  2  values(60498, 'Lifting Off', 7698, 2, 420000, '1-jan-05', null );
+
+1 row created.
+
+Commit complete.
+SCOTT> 
+SCOTT> select * from Projects;
+
+       PNO PNAME                                PMGR    PERSONS     BUDGET PSTART    PEND                                    
+---------- ------------------------------ ---------- ---------- ---------- --------- ---------                               
+     60492 Running Amuck                        7698          1                                                              
+     60493 Cooling Off                          7698          1            01-JAN-05                                         
+     97566 Run Dept 20                          7566          1     100000                                                   
+     97698 Run Dept 30                          7698          1     100000                                                   
+     97782 Run Dept 10                          7782          1     100000                                                   
+     60498 Lifting Off                          7698          2     420000 01-JAN-05                                         
+
+6 rows selected.
+
+SCOTT> update Projects set
+  2    budget = budget * 1.3,
+  3    pstart = '1-jan-02'
+  4  where pno > 90000;
+
+3 rows updated.
+
+Commit complete.
+SCOTT> 
+SCOTT> delete from Projects
+  2  where pname like 'Cooling%';
+
+1 row deleted.
+
+Commit complete.
+SCOTT> 
+SCOTT> select * from Projects;
+
+       PNO PNAME                                PMGR    PERSONS     BUDGET PSTART    PEND                                    
+---------- ------------------------------ ---------- ---------- ---------- --------- ---------                               
+     60492 Running Amuck                        7698          1                                                              
+     97566 Run Dept 20                          7566          1     130000 01-JAN-02                                         
+     97698 Run Dept 30                          7698          1     130000 01-JAN-02                                         
+     97782 Run Dept 10                          7782          1     130000 01-JAN-02                                         
+     60498 Lifting Off                          7698          2     420000 01-JAN-05                                         
+
+SCOTT> create table Programs (
+  2  pname		varchar2(30)  primary key,
+  3  qualities		int );
+
+Table created.
+
+SCOTT> 
+SCOTT> 	-- define some SQL*Plus Variables
+SCOTT> 
+SCOTT> define GOOD = 4;
+SCOTT> define CHEAP = 2;
+SCOTT> define FAST = 1;
+SCOTT> 
+SCOTT> insert into Programs values ( 'Mugglesoft Word', &GOOD + &CHEAP );
+
+1 row created.
+
+Commit complete.
+SCOTT> insert into Programs values ( 'FastBug Word', &FAST );
+
+1 row created.
+
+Commit complete.
+SCOTT> insert into Programs values ( 'Megasoft Word', 0 );
+
+1 row created.
+
+Commit complete.
+SCOTT> insert into Programs values ( 'Protosoft Word', &GOOD + &FAST );
+
+1 row created.
+
+Commit complete.
+SCOTT> insert into Programs values ( 'Flubbasoft Word', &CHEAP + &FAST );
+
+1 row created.
+
+Commit complete.
+SCOTT> 
+SCOTT> select * from Programs;
+
+PNAME                           QUALITIES                                                                                    
+------------------------------ ----------                                                                                    
+Mugglesoft Word                         6                                                                                    
+FastBug Word                            1                                                                                    
+Megasoft Word                           0                                                                                    
+Protosoft Word                          5                                                                                    
+Flubbasoft Word                         3                                                                                    
+
+SCOTT> select pname, qualities,
+  2      decode( bitand( qualities, &GOOD ), &GOOD, 'Good' ) as good,
+  3      decode( bitand( qualities, &CHEAP ), &CHEAP, 'Cheap' ) as cheap,
+  4      decode( bitand( qualities, &FAST ), &FAST, 'Fast' ) as fast
+  5  from Programs;
+
+PNAME                           QUALITIES GOOD CHEAP FAST                                                                    
+------------------------------ ---------- ---- ----- ----                                                                    
+Mugglesoft Word                         6 Good Cheap                                                                         
+FastBug Word                            1            Fast                                                                    
+Megasoft Word                           0                                                                                    
+Protosoft Word                          5 Good       Fast                                                                    
+Flubbasoft Word                         3      Cheap Fast                                                                    
+
+SCOTT> 
+SCOTT> spool off
