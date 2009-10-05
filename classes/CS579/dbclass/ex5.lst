@@ -1,0 +1,604 @@
+SQL> @/dbclass/setup
+
+USRVAL                                                                                                                       
+------------------------------                                                                                               
+SCOTT                                                                                                                        
+
+Standard Setup Complete
+SCOTT> -- Show name and department names of all employees, but also include departments with no employees
+SCOTT> 
+SCOTT> select dname, ename
+  2  from Depts NATURAL LEFT JOIN Emps
+  3  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES          ALLEN                                                                                                         
+SALES          BLAKE                                                                                                         
+SALES          JAMES                                                                                                         
+SALES          MARTIN                                                                                                        
+SALES          TURNER                                                                                                        
+SALES          WARD                                                                                                          
+
+15 rows selected.
+
+SCOTT> 
+SCOTT> select dname, ename
+  2  from (Depts d LEFT JOIN Emps  e ON d.deptno = e.deptno)
+  3  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES          ALLEN                                                                                                         
+SALES          BLAKE                                                                                                         
+SALES          JAMES                                                                                                         
+SALES          MARTIN                                                                                                        
+SALES          TURNER                                                                                                        
+SALES          WARD                                                                                                          
+
+15 rows selected.
+
+SCOTT> 
+SCOTT> -- this is non-standard Oracle syntax, for those using 8i
+SCOTT> select dname, ename
+  2  from Depts d, Emps e
+  3  where d.deptno = e.deptno (+)
+  4  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES          ALLEN                                                                                                         
+SALES          BLAKE                                                                                                         
+SALES          JAMES                                                                                                         
+SALES          MARTIN                                                                                                        
+SALES          TURNER                                                                                                        
+SALES          WARD                                                                                                          
+
+15 rows selected.
+
+SCOTT> 
+SCOTT> -- Difference between restriction and join conditions
+SCOTT> 
+SCOTT> -- this excludes department 30 (SALES) from the result
+SCOTT> select dname, ename
+  2  from (Depts NATURAL LEFT JOIN Emps)
+  3  where deptno != 30
+  4  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+
+9 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> -- this does the same thing, but using a join condition instead of a natural join
+SCOTT> select dname, ename
+  2  from (Depts d LEFT JOIN Emps e ON d.deptno = e.deptno)
+  3  where d.deptno != 30
+  4  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+
+9 rows selected.
+
+SCOTT> -- this prevents department 30 from matching any employee, but because it's an
+SCOTT> outer join, department 30 will still show up, but with nulls for the employee fields
+SP2-0734: unknown command beginning "outer join..." - rest of line ignored.
+SCOTT> select dname, ename from
+  2  (Depts d LEFT JOIN Emps e ON (d.deptno = e.deptno) and (d.deptno != 30))
+  3  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES                                                                                                                        
+
+10 rows selected.
+
+SCOTT> -- same effect
+SCOTT> select dname, ename from
+  2  (Depts d LEFT JOIN Emps e ON (d.deptno = e.deptno) and (e.deptno != 30))
+  3  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES                                                                                                                        
+
+10 rows selected.
+
+SCOTT> select dname, ename
+  2  from (Depts d LEFT JOIN Emps e ON d.deptno = e.deptno)
+  3  where e.deptno != 30
+  4  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+
+8 rows selected.
+
+SCOTT> 	-- Define view which is a projected natural join of Emps and Depts
+SCOTT> create view EmpDepts as
+  2  select empno, ename, job, deptno, dname, loc
+  3  from Emps e NATURAL JOIN Depts d;
+create view EmpDepts as
+            *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 	-- Define view which is a projected natural join of Emps and Depts
+SCOTT> create view EmpDepts as
+  2  select empno, ename, job, deptno, dname, loc
+  3  from Emps e NATURAL JOIN Depts d;
+
+View created.
+
+SCOTT> 
+SCOTT> select * from EmpDepts;
+
+     EMPNO ENAME      JOB           DEPTNO DNAME          LOC                                                                
+---------- ---------- --------- ---------- -------------- -------------                                                      
+      7782 CLARK      DEPTMGR           10 ACCOUNTING     NEW YORK                                                           
+      7839 KING       PRESIDENT         10 ACCOUNTING     NEW YORK                                                           
+      7934 MILLER     CLERK             10 ACCOUNTING     NEW YORK                                                           
+      7566 JONES      DEPTMGR           20 RESEARCH       DALLAS                                                             
+      7902 FORD       ANALYST           20 RESEARCH       DALLAS                                                             
+      7876 ADAMS      CLERK             20 RESEARCH       DALLAS                                                             
+      7369 SMITH      CLERK             20 RESEARCH       DALLAS                                                             
+      7788 SCOTT      ANALYST           20 RESEARCH       DALLAS                                                             
+      7521 WARD       SALESMAN          30 SALES          CHICAGO                                                            
+      7844 TURNER     SALESMAN          30 SALES          CHICAGO                                                            
+      7499 ALLEN      SALESMAN          30 SALES          CHICAGO                                                            
+      7900 JAMES      CLERK             30 SALES          CHICAGO                                                            
+      7698 BLAKE      DEPTMGR           30 SALES          CHICAGO                                                            
+      7654 MARTIN     SALESMAN          30 SALES          CHICAGO                                                            
+
+14 rows selected.
+
+SCOTT> drop view EmpDepts;
+
+View dropped.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 	-- For each employee, list their name, job, salary,
+SCOTT> -- and the average salary for their job
+SCOTT> create view JobSals as
+  2  select job, round(avg(sal)) as avgsal, max(sal) as maxsal
+  3  from Emps
+  4  group by job;
+
+View created.
+
+SCOTT> select * from JobSals;
+
+JOB           AVGSAL     MAXSAL                                                                                              
+--------- ---------- ----------                                                                                              
+CLERK           1038       1300                                                                                              
+SALESMAN        1400       1600                                                                                              
+DEPTMGR         2758       2975                                                                                              
+PRESIDENT       5000       5000                                                                                              
+ANALYST         3000       3000                                                                                              
+
+SCOTT> select ename, job, sal, avgsal as "Average Job Salary"
+  2  from Emps NATURAL JOIN JobSals
+  3  order by ename;
+
+ENAME      JOB              SAL Average Job Salary                                                                           
+---------- --------- ---------- ------------------                                                                           
+ADAMS      CLERK           1100               1038                                                                           
+ALLEN      SALESMAN        1600               1400                                                                           
+BLAKE      DEPTMGR         2850               2758                                                                           
+CLARK      DEPTMGR         2450               2758                                                                           
+FORD       ANALYST         3000               3000                                                                           
+JAMES      CLERK            950               1038                                                                           
+JONES      DEPTMGR         2975               2758                                                                           
+KING       PRESIDENT       5000               5000                                                                           
+MARTIN     SALESMAN        1250               1400                                                                           
+MILLER     CLERK           1300               1038                                                                           
+SCOTT      ANALYST         3000               3000                                                                           
+SMITH      CLERK            800               1038                                                                           
+TURNER     SALESMAN        1500               1400                                                                           
+WARD       SALESMAN        1250               1400                                                                           
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 	-- Create a view of employees who makes the maximum salary for their job;
+SCOTT> create view EmpJobMax as
+  2  select ename, job, deptno, sal
+  3  from Emps NATURAL JOIN JobSals
+  4  where sal = maxsal;
+
+View created.
+
+SCOTT> select * from EmpJobMax;
+
+ENAME      JOB           DEPTNO        SAL                                                                                   
+---------- --------- ---------- ----------                                                                                   
+ALLEN      SALESMAN          30       1600                                                                                   
+JONES      DEPTMGR           20       2975                                                                                   
+SCOTT      ANALYST           20       3000                                                                                   
+KING       PRESIDENT         10       5000                                                                                   
+FORD       ANALYST           20       3000                                                                                   
+MILLER     CLERK             10       1300                                                                                   
+
+6 rows selected.
+
+SCOTT> 	-- For each named department,
+SCOTT> -- list the employees who make the maximum salary for their job
+SCOTT> select dname, job, ename, sal
+  2  from Depts  NATURAL JOIN EmpJobMax
+  3  order by dname, job, ename;
+
+DNAME          JOB       ENAME             SAL                                                                               
+-------------- --------- ---------- ----------                                                                               
+ACCOUNTING     CLERK     MILLER           1300                                                                               
+ACCOUNTING     PRESIDENT KING             5000                                                                               
+RESEARCH       ANALYST   FORD             3000                                                                               
+RESEARCH       ANALYST   SCOTT            3000                                                                               
+RESEARCH       DEPTMGR   JONES            2975                                                                               
+SALES          SALESMAN  ALLEN            1600                                                                               
+
+6 rows selected.
+
+SCOTT> 
+SCOTT> drop view JobSals;
+
+View dropped.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 	-- this doesn't work because EmpJobMax uses JobSals, which has been dropped
+SCOTT> select * from EmpJobMax;
+select * from EmpJobMax
+              *
+ERROR at line 1:
+ORA-04063: view "SCOTT.EMPJOBMAX" has errors 
+
+
+SCOTT> 
+SCOTT> drop view EmpJobMax;
+
+View dropped.
+
+SCOTT> 
+SCOTT> select d.dname, m.ename
+  2  from Depts d,
+  3         (select * from Emps where job = 'DEPTMGR') m
+  4  where d.deptno = m.deptno;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select d.dname, m.ename
+  2  from (Depts d JOIN
+  3         (select * from Emps where job = 'DEPTMGR') m
+  4          ON d.deptno = m.deptno);
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select dname, ename
+  2  from (Depts NATURAL JOIN
+  3         (select * from Emps where job = 'DEPTMGR'));
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> with DeptMgrs as (select * from Emps where job = 'DEPTMGR')
+  2  select dname, ename from Depts NATURAL JOIN DeptMgrs;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> with JobSals as (
+  2  select job, round(avg(sal)) as avgsal, max(sal) as maxsal
+  3  from Emps
+  4  group by job),
+  5    EmpJobMax as (
+  6  select ename, job, deptno, sal
+  7  from Emps NATURAL JOIN JobSals
+  8  where sal = maxsal)
+  9  select ename, job from EmpJobMax where deptno = 20;
+
+ENAME      JOB                                                                                                               
+---------- ---------                                                                                                         
+JONES      DEPTMGR                                                                                                           
+FORD       ANALYST                                                                                                           
+SCOTT      ANALYST                                                                                                           
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- drop CopyEmps in case it is still defined from a previous exercise
+SCOTT> drop table CopyEmps;
+drop table CopyEmps
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SCOTT> 
+SCOTT> create table CopyEmps as select * from Emps;
+
+Table created.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- List the manager of each Depts
+SCOTT> select dname, ename
+  2  from Depts NATURAL JOIN CopyEmps
+  3  where job = 'DEPTMGR';
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> create view DeptMgrs as
+  2  select * from CopyEmps where job = 'DEPTMGR';
+
+View created.
+
+SCOTT> 
+SCOTT> select * from DeptMgrs;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7566 JONES      DEPTMGR         7839 02-APR-81       2975                    20                                        
+      7698 BLAKE      DEPTMGR         7839 01-MAY-81       2850                    30                                        
+      7782 CLARK      DEPTMGR         7839 09-JUN-81       2450                    10                                        
+
+SCOTT> 
+SCOTT> select dname, ename
+  2  from Depts NATURAL JOIN DeptMgrs;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+RESEARCH       JONES                                                                                                         
+SALES          BLAKE                                                                                                         
+
+SCOTT> --Updates work on simple  views
+SCOTT> update DeptMgrs
+  2  set sal = 1.27 * sal;
+
+3 rows updated.
+
+Commit complete.
+SCOTT> select * from DeptMgrs;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7566 JONES      DEPTMGR         7839 02-APR-81    3778.25                    20                                        
+      7698 BLAKE      DEPTMGR         7839 01-MAY-81     3619.5                    30                                        
+      7782 CLARK      DEPTMGR         7839 09-JUN-81     3111.5                    10                                        
+
+SCOTT> select * from CopyEmps;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                        
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                        
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                        
+      7566 JONES      DEPTMGR         7839 02-APR-81    3778.25                    20                                        
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                        
+      7698 BLAKE      DEPTMGR         7839 01-MAY-81     3619.5                    30                                        
+      7782 CLARK      DEPTMGR         7839 09-JUN-81     3111.5                    10                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                        
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                        
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                        
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                        
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                        
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                        
+
+14 rows selected.
+
+SCOTT> drop view DeptMgrs;
+
+View dropped.
+
+SCOTT> 
+SCOTT> create view CopyDemps as
+  2  select empno, ename, job, sal, deptno, dname
+  3  from CopyEmps NATURAL JOIN Depts;
+
+View created.
+
+SCOTT> 
+SCOTT> select * from CopyDemps;
+
+     EMPNO ENAME      JOB              SAL     DEPTNO DNAME                                                                  
+---------- ---------- --------- ---------- ---------- --------------                                                         
+      7782 CLARK      DEPTMGR       3111.5         10 ACCOUNTING                                                             
+      7839 KING       PRESIDENT       5000         10 ACCOUNTING                                                             
+      7934 MILLER     CLERK           1300         10 ACCOUNTING                                                             
+      7566 JONES      DEPTMGR      3778.25         20 RESEARCH                                                               
+      7902 FORD       ANALYST         3000         20 RESEARCH                                                               
+      7876 ADAMS      CLERK           1100         20 RESEARCH                                                               
+      7369 SMITH      CLERK            800         20 RESEARCH                                                               
+      7788 SCOTT      ANALYST         3000         20 RESEARCH                                                               
+      7521 WARD       SALESMAN        1250         30 SALES                                                                  
+      7844 TURNER     SALESMAN        1500         30 SALES                                                                  
+      7499 ALLEN      SALESMAN        1600         30 SALES                                                                  
+      7900 JAMES      CLERK            950         30 SALES                                                                  
+      7698 BLAKE      DEPTMGR       3619.5         30 SALES                                                                  
+      7654 MARTIN     SALESMAN        1250         30 SALES                                                                  
+
+14 rows selected.
+
+SCOTT> update CopyDemps
+  2  set sal = sal/1.27 + 10000
+  3  where job = 'DEPTMGR';
+
+3 rows updated.
+
+Commit complete.
+SCOTT> select * from CopyDemps;
+
+     EMPNO ENAME      JOB              SAL     DEPTNO DNAME                                                                  
+---------- ---------- --------- ---------- ---------- --------------                                                         
+      7782 CLARK      DEPTMGR        12450         10 ACCOUNTING                                                             
+      7839 KING       PRESIDENT       5000         10 ACCOUNTING                                                             
+      7934 MILLER     CLERK           1300         10 ACCOUNTING                                                             
+      7566 JONES      DEPTMGR        12975         20 RESEARCH                                                               
+      7902 FORD       ANALYST         3000         20 RESEARCH                                                               
+      7876 ADAMS      CLERK           1100         20 RESEARCH                                                               
+      7369 SMITH      CLERK            800         20 RESEARCH                                                               
+      7788 SCOTT      ANALYST         3000         20 RESEARCH                                                               
+      7521 WARD       SALESMAN        1250         30 SALES                                                                  
+      7844 TURNER     SALESMAN        1500         30 SALES                                                                  
+      7499 ALLEN      SALESMAN        1600         30 SALES                                                                  
+      7900 JAMES      CLERK            950         30 SALES                                                                  
+      7698 BLAKE      DEPTMGR        12850         30 SALES                                                                  
+      7654 MARTIN     SALESMAN        1250         30 SALES                                                                  
+
+14 rows selected.
+
+SCOTT> select * from CopyEmps;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                        
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                        
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                        
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                        
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                        
+      7566 JONES      DEPTMGR         7839 02-APR-81      12975                    20                                        
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                        
+      7698 BLAKE      DEPTMGR         7839 01-MAY-81      12850                    30                                        
+      7782 CLARK      DEPTMGR         7839 09-JUN-81      12450                    10                                        
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20                                        
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                        
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                        
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20                                        
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                        
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                        
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                        
+
+14 rows selected.
+
+SCOTT> update CopyDemps
+  2  set dname = 'PARTY'
+  3  where deptno = 30;
+set dname = 'PARTY'
+    *
+ERROR at line 2:
+ORA-01779: cannot modify a column which maps to a non key-preserved table 
+
+
+SCOTT> drop view CopyDemps;
+
+View dropped.
+
+SCOTT> drop table CopyEmps;
+
+Table dropped.
+
+SCOTT> 
+SCOTT> 
+SCOTT> spool off
