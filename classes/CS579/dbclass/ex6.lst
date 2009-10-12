@@ -1,0 +1,984 @@
+SQL> @/dbclass/setup
+
+USRVAL                                                                                                                       
+------------------------------                                                                                               
+SCOTT                                                                                                                        
+
+Standard Setup Complete
+SCOTT> 
+SCOTT> select DISTINCT ename from (Emps JOIN Projects ON empno = pmgr);
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+JONES                                                                                                                        
+CLARK                                                                                                                        
+BLAKE                                                                                                                        
+
+SCOTT> 
+SCOTT> 
+SCOTT> select pmgr from projects ;
+
+      PMGR                                                                                                                   
+----------                                                                                                                   
+      7698                                                                                                                   
+      7566                                                                                                                   
+      7698                                                                                                                   
+      7782                                                                                                                   
+      7698                                                                                                                   
+
+SCOTT> select distinct pmgr from projects ;
+
+      PMGR                                                                                                                   
+----------                                                                                                                   
+      7782                                                                                                                   
+      7698                                                                                                                   
+      7566                                                                                                                   
+
+SCOTT> select ename from Emps
+  2  minus
+  3  select ename from (Emps JOIN Projects ON empno = pmgr)
+  4  order by ename;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ADAMS                                                                                                                        
+ALLEN                                                                                                                        
+FORD                                                                                                                         
+JAMES                                                                                                                        
+KING                                                                                                                         
+MARTIN                                                                                                                       
+MILLER                                                                                                                       
+SCOTT                                                                                                                        
+SMITH                                                                                                                        
+TURNER                                                                                                                       
+WARD                                                                                                                         
+
+11 rows selected.
+
+SCOTT> -- The following is a cool, but truly horrible hack.  NOTE CASTS!
+SCOTT> 
+SCOTT> select ename, job, sal as salary,
+  2      cast(null as number(6)) as totsal,
+  3      cast(null as number(6)) as avgsal
+  4  from Emps
+  5  union
+  6  select cast(null as varchar2(15)) as ename, job,
+  7      cast(null as number(6)) as salary,
+  8      sum(sal) as totsal,
+  9      round( sum(sal)/count(*) ) as avgsal
+ 10  from Emps
+ 11  group by job
+ 12  order by job, ename;
+
+ENAME           JOB           SALARY     TOTSAL     AVGSAL                                                                   
+--------------- --------- ---------- ---------- ----------                                                                   
+FORD            ANALYST         3000                                                                                         
+SCOTT           ANALYST         3000                                                                                         
+                ANALYST                    6000       3000                                                                   
+ADAMS           CLERK           1100                                                                                         
+JAMES           CLERK            950                                                                                         
+MILLER          CLERK           1300                                                                                         
+SMITH           CLERK            800                                                                                         
+                CLERK                      4150       1038                                                                   
+BLAKE           DEPTMGR         2850                                                                                         
+CLARK           DEPTMGR         2450                                                                                         
+JONES           DEPTMGR         2975                                                                                         
+                DEPTMGR                    8275       2758                                                                   
+KING            PRESIDENT       5000                                                                                         
+                PRESIDENT                  5000       5000                                                                   
+ALLEN           SALESMAN        1600                                                                                         
+MARTIN          SALESMAN        1250                                                                                         
+TURNER          SALESMAN        1500                                                                                         
+WARD            SALESMAN        1250                                                                                         
+                SALESMAN                   5600       1400                                                                   
+
+19 rows selected.
+
+SCOTT> 
+SCOTT> -- Using Unions for Outer Joins
+SCOTT> 
+SCOTT> select deptno, dname from Depts;
+
+    DEPTNO DNAME                                                                                                             
+---------- --------------                                                                                                    
+        10 ACCOUNTING                                                                                                        
+        20 RESEARCH                                                                                                          
+        30 SALES                                                                                                             
+        40 OPERATIONS                                                                                                        
+
+SCOTT> select distinct deptno from Emps;
+
+    DEPTNO                                                                                                                   
+----------                                                                                                                   
+        30                                                                                                                   
+        20                                                                                                                   
+        10                                                                                                                   
+
+SCOTT> 
+SCOTT> select deptno from Depts
+  2  minus
+  3  select deptno from Emps;
+
+    DEPTNO                                                                                                                   
+----------                                                                                                                   
+        40                                                                                                                   
+
+SCOTT> 
+SCOTT> WITH EmptyDepts AS (
+  2  SELECT deptno FROM Depts
+  3  MINUS
+  4  SELECT deptno FROM Emps)
+  5  SELECT dname, ename
+  6  FROM Emps NATURAL JOIN Depts
+  7  UNION
+  8  SELECT dname, NULL
+  9  FROM EmptyDepts NATURAL JOIN Depts
+ 10  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES          ALLEN                                                                                                         
+SALES          BLAKE                                                                                                         
+SALES          JAMES                                                                                                         
+SALES          MARTIN                                                                                                        
+SALES          TURNER                                                                                                        
+SALES          WARD                                                                                                          
+
+15 rows selected.
+
+SCOTT> 
+SCOTT> select dname, ename
+  2  from (Emps NATURAL RIGHT JOIN Depts)
+  3  order by dname, ename;
+
+DNAME          ENAME                                                                                                         
+-------------- ----------                                                                                                    
+ACCOUNTING     CLARK                                                                                                         
+ACCOUNTING     KING                                                                                                          
+ACCOUNTING     MILLER                                                                                                        
+OPERATIONS                                                                                                                   
+RESEARCH       ADAMS                                                                                                         
+RESEARCH       FORD                                                                                                          
+RESEARCH       JONES                                                                                                         
+RESEARCH       SCOTT                                                                                                         
+RESEARCH       SMITH                                                                                                         
+SALES          ALLEN                                                                                                         
+SALES          BLAKE                                                                                                         
+SALES          JAMES                                                                                                         
+SALES          MARTIN                                                                                                        
+SALES          TURNER                                                                                                        
+SALES          WARD                                                                                                          
+
+15 rows selected.
+
+SCOTT> 
+SCOTT> -- What's the average salary?
+SCOTT> select round(avg(sal)) from Emps;
+
+ROUND(AVG(SAL))                                                                                                              
+---------------                                                                                                              
+           2073                                                                                                              
+
+SCOTT> -- For each employee, list their name, job, salary, and the difference between their salary and the average salary
+SCOTT> select ename, job, sal,
+  2      sal - (select round(avg(sal)) from Emps) as diffsal
+  3  from Emps;
+
+ENAME      JOB              SAL    DIFFSAL                                                                                   
+---------- --------- ---------- ----------                                                                                   
+SMITH      CLERK            800      -1273                                                                                   
+ALLEN      SALESMAN        1600       -473                                                                                   
+WARD       SALESMAN        1250       -823                                                                                   
+JONES      DEPTMGR         2975        902                                                                                   
+MARTIN     SALESMAN        1250       -823                                                                                   
+BLAKE      DEPTMGR         2850        777                                                                                   
+CLARK      DEPTMGR         2450        377                                                                                   
+SCOTT      ANALYST         3000        927                                                                                   
+KING       PRESIDENT       5000       2927                                                                                   
+TURNER     SALESMAN        1500       -573                                                                                   
+ADAMS      CLERK           1100       -973                                                                                   
+JAMES      CLERK            950      -1123                                                                                   
+FORD       ANALYST         3000        927                                                                                   
+MILLER     CLERK           1300       -773                                                                                   
+
+14 rows selected.
+
+SCOTT> -- Whose salaries are greater than the average salary?
+SCOTT> select ename, job, sal from Emps
+  2  where sal > (select avg(sal) from Emps);
+
+ENAME      JOB              SAL                                                                                              
+---------- --------- ----------                                                                                              
+JONES      DEPTMGR         2975                                                                                              
+BLAKE      DEPTMGR         2850                                                                                              
+CLARK      DEPTMGR         2450                                                                                              
+SCOTT      ANALYST         3000                                                                                              
+KING       PRESIDENT       5000                                                                                              
+FORD       ANALYST         3000                                                                                              
+
+6 rows selected.
+
+SCOTT> -- List the name, job & salary of all the employees, ordered by how close the salary is to the average salary
+SCOTT> select ename, job, sal from Emps
+  2  order by abs(sal - (select avg(sal) from Emps));
+
+ENAME      JOB              SAL                                                                                              
+---------- --------- ----------                                                                                              
+CLARK      DEPTMGR         2450                                                                                              
+ALLEN      SALESMAN        1600                                                                                              
+TURNER     SALESMAN        1500                                                                                              
+MILLER     CLERK           1300                                                                                              
+BLAKE      DEPTMGR         2850                                                                                              
+WARD       SALESMAN        1250                                                                                              
+MARTIN     SALESMAN        1250                                                                                              
+JONES      DEPTMGR         2975                                                                                              
+SCOTT      ANALYST         3000                                                                                              
+FORD       ANALYST         3000                                                                                              
+ADAMS      CLERK           1100                                                                                              
+JAMES      CLERK            950                                                                                              
+SMITH      CLERK            800                                                                                              
+KING       PRESIDENT       5000                                                                                              
+
+14 rows selected.
+
+SCOTT> -- Lists those jobs whose average salary is larger than the overall average salary
+SCOTT> select job from Emps
+  2  group by job
+  3  having avg(sal) > (select avg(sal) from Emps);
+
+JOB                                                                                                                          
+---------                                                                                                                    
+DEPTMGR                                                                                                                      
+PRESIDENT                                                                                                                    
+ANALYST                                                                                                                      
+
+SCOTT> -- What department does Allen work in?
+SCOTT> select deptno from Emps where ename = 'ALLEN';
+
+    DEPTNO                                                                                                                   
+----------                                                                                                                   
+        30                                                                                                                   
+
+SCOTT> -- Who works in the same department as Allen?
+SCOTT> select ename from Emps
+  2  where deptno = 30;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+BLAKE                                                                                                                        
+TURNER                                                                                                                       
+JAMES                                                                                                                        
+
+6 rows selected.
+
+SCOTT> select ename from Emps
+  2  where deptno = (select deptno from Emps where ename = 'ALLEN');
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+BLAKE                                                                                                                        
+TURNER                                                                                                                       
+JAMES                                                                                                                        
+
+6 rows selected.
+
+SCOTT> 
+SCOTT> -- Who works with Allen in the same department?
+SCOTT> select ename from Emps
+  2  where ename != 'ALLEN'
+  3     and deptno = (select deptno from Emps where ename = 'ALLEN');
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+BLAKE                                                                                                                        
+TURNER                                                                                                                       
+JAMES                                                                                                                        
+
+SCOTT> select e1.ename from Emps e1, Emps e2
+  2  where e1.ename != 'ALLEN'
+  3     and e1.deptno = e2.deptno
+  4     and e2.ename = 'ALLEN';
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+BLAKE                                                                                                                        
+TURNER                                                                                                                       
+JAMES                                                                                                                        
+
+SCOTT> 
+SCOTT> -- List every department which has someone who was hired prior to 1-JUN-81
+SCOTT> -- why is distinct needed?
+SCOTT> select distinct deptno from Emps where hiredate < '1-jun-81';
+
+    DEPTNO                                                                                                                   
+----------                                                                                                                   
+        30                                                                                                                   
+        20                                                                                                                   
+
+SCOTT> -- List the employees of every department which has someone who was hired prior to 1-JUN-81
+SCOTT> 
+SCOTT> -- why isn't distinct needed in the subquery?
+SCOTT> select ename, deptno from Emps
+  2  where deptno in
+  3    (select deptno from Emps where hiredate < '1-jun-81')
+  4  order by deptno, ename;
+
+ENAME          DEPTNO                                                                                                        
+---------- ----------                                                                                                        
+ADAMS              20                                                                                                        
+FORD               20                                                                                                        
+JONES              20                                                                                                        
+SCOTT              20                                                                                                        
+SMITH              20                                                                                                        
+ALLEN              30                                                                                                        
+BLAKE              30                                                                                                        
+JAMES              30                                                                                                        
+MARTIN             30                                                                                                        
+TURNER             30                                                                                                        
+WARD               30                                                                                                        
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> select distinct e1.ename, e1.deptno
+  2  from Emps e1, Emps e2
+  3  where e1.deptno = e2.deptno
+  4     and e2.hiredate < '1-jun-81'
+  5  order by e1.deptno, e1.ename;
+
+ENAME          DEPTNO                                                                                                        
+---------- ----------                                                                                                        
+ADAMS              20                                                                                                        
+FORD               20                                                                                                        
+JONES              20                                                                                                        
+SCOTT              20                                                                                                        
+SMITH              20                                                                                                        
+ALLEN              30                                                                                                        
+BLAKE              30                                                                                                        
+JAMES              30                                                                                                        
+MARTIN             30                                                                                                        
+TURNER             30                                                                                                        
+WARD               30                                                                                                        
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> -- List the jobs whose average salary is greater than $1500
+SCOTT> select job from Emps
+  2  group by job
+  3  having avg(sal) > 1500;
+
+JOB                                                                                                                          
+---------                                                                                                                    
+DEPTMGR                                                                                                                      
+PRESIDENT                                                                                                                    
+ANALYST                                                                                                                      
+
+SCOTT> -- List employees who have jobs where the average salary is greater than $1500
+SCOTT> select ename, job, sal from Emps
+  2  where job in
+  3    (select job from Emps
+  4     group by job
+  5     having avg(sal) > 1500);
+
+ENAME      JOB              SAL                                                                                              
+---------- --------- ----------                                                                                              
+CLARK      DEPTMGR         2450                                                                                              
+BLAKE      DEPTMGR         2850                                                                                              
+JONES      DEPTMGR         2975                                                                                              
+KING       PRESIDENT       5000                                                                                              
+FORD       ANALYST         3000                                                                                              
+SCOTT      ANALYST         3000                                                                                              
+
+6 rows selected.
+
+SCOTT> -- List name of each employee with name of their department
+SCOTT> select ename, dname
+  2  from Emps e, Depts d
+  3  where e.deptno = d.deptno
+  4  order by ename;
+
+ENAME      DNAME                                                                                                             
+---------- --------------                                                                                                    
+ADAMS      RESEARCH                                                                                                          
+ALLEN      SALES                                                                                                             
+BLAKE      SALES                                                                                                             
+CLARK      ACCOUNTING                                                                                                        
+FORD       RESEARCH                                                                                                          
+JAMES      SALES                                                                                                             
+JONES      RESEARCH                                                                                                          
+KING       ACCOUNTING                                                                                                        
+MARTIN     SALES                                                                                                             
+MILLER     ACCOUNTING                                                                                                        
+SCOTT      RESEARCH                                                                                                          
+SMITH      RESEARCH                                                                                                          
+TURNER     SALES                                                                                                             
+WARD       SALES                                                                                                             
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> select ename,
+  2      (select dname from Depts where deptno = e.deptno) as dname
+  3  from Emps e
+  4  order by ename;
+
+ENAME      DNAME                                                                                                             
+---------- --------------                                                                                                    
+ADAMS      RESEARCH                                                                                                          
+ALLEN      SALES                                                                                                             
+BLAKE      SALES                                                                                                             
+CLARK      ACCOUNTING                                                                                                        
+FORD       RESEARCH                                                                                                          
+JAMES      SALES                                                                                                             
+JONES      RESEARCH                                                                                                          
+KING       ACCOUNTING                                                                                                        
+MARTIN     SALES                                                                                                             
+MILLER     ACCOUNTING                                                                                                        
+SCOTT      RESEARCH                                                                                                          
+SMITH      RESEARCH                                                                                                          
+TURNER     SALES                                                                                                             
+WARD       SALES                                                                                                             
+
+14 rows selected.
+
+SCOTT> -- but this doesn't work; why not?
+SCOTT> select ename,
+  2      (select dname from Depts d where d.deptno = deptno) as dname
+  3  from Emps e
+  4  order by ename;
+    (select dname from Depts d where d.deptno = deptno) as dname
+     *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SCOTT> select dname from Depts d where d.deptno = deptno ;
+
+DNAME                                                                                                                        
+--------------                                                                                                               
+ACCOUNTING                                                                                                                   
+RESEARCH                                                                                                                     
+SALES                                                                                                                        
+OPERATIONS                                                                                                                   
+
+SCOTT> 	-- Joins with views can have same effect as subqueries: for each employee, list their name, job, salary, and the average salary for their job
+SCOTT> select ename, job, sal,
+  2      (select round(avg(sal))
+  3          from Emps
+  4          where job = e.job) as "Average Job Salary"
+  5  from Emps e
+  6  order by ename;
+
+ENAME      JOB              SAL Average Job Salary                                                                           
+---------- --------- ---------- ------------------                                                                           
+ADAMS      CLERK           1100               1038                                                                           
+ALLEN      SALESMAN        1600               1400                                                                           
+BLAKE      DEPTMGR         2850               2758                                                                           
+CLARK      DEPTMGR         2450               2758                                                                           
+FORD       ANALYST         3000               3000                                                                           
+JAMES      CLERK            950               1038                                                                           
+JONES      DEPTMGR         2975               2758                                                                           
+KING       PRESIDENT       5000               5000                                                                           
+MARTIN     SALESMAN        1250               1400                                                                           
+MILLER     CLERK           1300               1038                                                                           
+SCOTT      ANALYST         3000               3000                                                                           
+SMITH      CLERK            800               1038                                                                           
+TURNER     SALESMAN        1500               1400                                                                           
+WARD       SALESMAN        1250               1400                                                                           
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> with jobsal as (
+  2  select job, round(avg(sal)) as avgsal
+  3  from Emps
+  4  group by job)
+  5  select ename, Emps.job, sal, avgsal as "Average Job Salary"
+  6  from Emps, jobsal
+  7  where Emps.job = jobsal.job
+  8  order by ename;
+
+ENAME      JOB              SAL Average Job Salary                                                                           
+---------- --------- ---------- ------------------                                                                           
+ADAMS      CLERK           1100               1038                                                                           
+ALLEN      SALESMAN        1600               1400                                                                           
+BLAKE      DEPTMGR         2850               2758                                                                           
+CLARK      DEPTMGR         2450               2758                                                                           
+FORD       ANALYST         3000               3000                                                                           
+JAMES      CLERK            950               1038                                                                           
+JONES      DEPTMGR         2975               2758                                                                           
+KING       PRESIDENT       5000               5000                                                                           
+MARTIN     SALESMAN        1250               1400                                                                           
+MILLER     CLERK           1300               1038                                                                           
+SCOTT      ANALYST         3000               3000                                                                           
+SMITH      CLERK            800               1038                                                                           
+TURNER     SALESMAN        1500               1400                                                                           
+WARD       SALESMAN        1250               1400                                                                           
+
+14 rows selected.
+
+SCOTT> -- List employees whose salary exceeds their department's average
+SCOTT> select ename, deptno, sal
+  2  from Emps e1
+  3  where sal > (select avg(sal) from Emps e2 where e1.deptno = e2.deptno)
+  4  order by ename;
+
+ENAME          DEPTNO        SAL                                                                                             
+---------- ---------- ----------                                                                                             
+ALLEN              30       1600                                                                                             
+BLAKE              30       2850                                                                                             
+FORD               20       3000                                                                                             
+JONES              20       2975                                                                                             
+KING               10       5000                                                                                             
+SCOTT              20       3000                                                                                             
+
+6 rows selected.
+
+SCOTT> -- List employees in order of the percentage by which their salary exceeds the average for their job
+SCOTT> select ename, job, sal
+  2  from Emps e1
+  3  order by sal / (select avg(sal) from Emps e2 where e1.job = e2.job) desc;
+
+ENAME      JOB              SAL                                                                                              
+---------- --------- ----------                                                                                              
+MILLER     CLERK           1300                                                                                              
+ALLEN      SALESMAN        1600                                                                                              
+JONES      DEPTMGR         2975                                                                                              
+TURNER     SALESMAN        1500                                                                                              
+ADAMS      CLERK           1100                                                                                              
+BLAKE      DEPTMGR         2850                                                                                              
+SCOTT      ANALYST         3000                                                                                              
+KING       PRESIDENT       5000                                                                                              
+FORD       ANALYST         3000                                                                                              
+JAMES      CLERK            950                                                                                              
+MARTIN     SALESMAN        1250                                                                                              
+WARD       SALESMAN        1250                                                                                              
+CLARK      DEPTMGR         2450                                                                                              
+SMITH      CLERK            800                                                                                              
+
+14 rows selected.
+
+SCOTT> select ename, job, sal,
+  2      (select round(avg(sal)) from Emps e2 where e1.job = e2.job) as jobsal
+  3  from Emps e1
+  4  order by sal / jobsal desc;
+
+ENAME      JOB              SAL     JOBSAL                                                                                   
+---------- --------- ---------- ----------                                                                                   
+MILLER     CLERK           1300       1038                                                                                   
+ALLEN      SALESMAN        1600       1400                                                                                   
+JONES      DEPTMGR         2975       2758                                                                                   
+TURNER     SALESMAN        1500       1400                                                                                   
+ADAMS      CLERK           1100       1038                                                                                   
+BLAKE      DEPTMGR         2850       2758                                                                                   
+SCOTT      ANALYST         3000       3000                                                                                   
+KING       PRESIDENT       5000       5000                                                                                   
+FORD       ANALYST         3000       3000                                                                                   
+JAMES      CLERK            950       1038                                                                                   
+MARTIN     SALESMAN        1250       1400                                                                                   
+WARD       SALESMAN        1250       1400                                                                                   
+CLARK      DEPTMGR         2450       2758                                                                                   
+SMITH      CLERK            800       1038                                                                                   
+
+14 rows selected.
+
+SCOTT> -- unfortunately, this doesn't work
+SCOTT> select ename, job, sal,
+  2      (select round(avg(sal)) from Emps e2 where e1.job = e2.job) as jobsal,
+  3      sal / jobsal as ratio
+  4  from Emps e1
+  5  order by ratio desc;
+    sal / jobsal as ratio
+          *
+ERROR at line 3:
+ORA-00904: "JOBSAL": invalid identifier 
+
+
+SCOTT> -- List the number of employees from each department who make the highest salary in their department
+SCOTT> select deptno, count(*)
+  2  from Emps e
+  3  where sal = (select max(sal) from Emps where deptno = e.deptno)
+  4  group by deptno;
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          1                                                                                                        
+        20          2                                                                                                        
+        10          1                                                                                                        
+
+SCOTT> -- For each job, list the highest salary for that job, and the number of employees with that job who make that salary
+SCOTT> select job, sal, count(*) as knt
+  2  from Emps e
+  3  group by job, sal
+  4  having sal = (select max(sal) from Emps where job = e.job);
+
+JOB              SAL        KNT                                                                                              
+--------- ---------- ----------                                                                                              
+DEPTMGR         2975          1                                                                                              
+CLERK           1300          1                                                                                              
+SALESMAN        1600          1                                                                                              
+PRESIDENT       5000          1                                                                                              
+ANALYST         3000          2                                                                                              
+
+SCOTT> -- List the average salary by department (without using GROUP BY)
+SCOTT> select deptno, avg(sal) from Emps
+  2  group by deptno;
+
+    DEPTNO   AVG(SAL)                                                                                                        
+---------- ----------                                                                                                        
+        30 1566.66667                                                                                                        
+        20       2175                                                                                                        
+        10 2916.66667                                                                                                        
+
+SCOTT> select distinct deptno, (select avg(sal) from Emps where deptno = e.deptno) as avsal
+  2  from Emps e;
+
+    DEPTNO      AVSAL                                                                                                        
+---------- ----------                                                                                                        
+        30 1566.66667                                                                                                        
+        20       2175                                                                                                        
+        10 2916.66667                                                                                                        
+
+SCOTT> -- List the jobs that more than 2 people have in Emps (with and without using GROUP BY and HAVING)
+SCOTT> select job from Emps
+  2  group by job
+  3  having count(*) > 2;
+
+JOB                                                                                                                          
+---------                                                                                                                    
+CLERK                                                                                                                        
+SALESMAN                                                                                                                     
+DEPTMGR                                                                                                                      
+
+SCOTT> 
+SCOTT> select distinct job from Emps e
+  2  where (select count(*) from Emps where job = e.job) > 2;
+
+JOB                                                                                                                          
+---------                                                                                                                    
+CLERK                                                                                                                        
+SALESMAN                                                                                                                     
+DEPTMGR                                                                                                                      
+
+SCOTT> -- List the name of one employee from each department who makes the highest salary in their department
+SCOTT> select distinct deptno,
+  2  (select max(ename) from Emps where deptno = e.deptno and sal =
+  3  	(select max(sal) from Emps where deptno = e.deptno))
+  4  from Emps e;
+
+    DEPTNO (SELECTMAX                                                                                                        
+---------- ----------                                                                                                        
+        20 SCOTT                                                                                                             
+        10 KING                                                                                                              
+        30 BLAKE                                                                                                             
+
+SCOTT> 
+SCOTT> select deptno, ename from emps e where sal = ( select max(sal) from emps where deptno = e.deptno) ;
+
+    DEPTNO ENAME                                                                                                             
+---------- ----------                                                                                                        
+        30 BLAKE                                                                                                             
+        20 SCOTT                                                                                                             
+        10 KING                                                                                                              
+        20 FORD                                                                                                              
+
+SCOTT> -- List the names of employees who are project managers
+SCOTT> select ename as manager from Emps
+  2  where
+  3     (select count(*) from Projects
+  4      where empno = pmgr)  >  0;
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+JONES                                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+
+SCOTT> select ename as manager from Emps
+  2  where exists (select * from Projects where empno = pmgr);
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+JONES                                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+
+SCOTT> 
+SCOTT> select ename as manager from Emps
+  2  where empno in (select pmgr from Projects);
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+JONES                                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+
+SCOTT> 
+SCOTT> select ename as manager from Emps
+  2  where empno = any (select pmgr from Projects);
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+JONES                                                                                                                        
+BLAKE                                                                                                                        
+CLARK                                                                                                                        
+
+SCOTT> 
+SCOTT> select distinct ename as manager
+  2  from Emps, Projects
+  3  where empno = pmgr;
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+JONES                                                                                                                        
+CLARK                                                                                                                        
+BLAKE                                                                                                                        
+
+SCOTT> -- List employees who are NOT project managers
+SCOTT> select ename from Emps
+  2  where
+  3     (select count(*) from Projects
+  4      where empno = pmgr)  =  0;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SMITH                                                                                                                        
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> select ename from Emps
+  2  where not exists
+  3  (select * from Projects where empno = pmgr);
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SMITH                                                                                                                        
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> select ename from Emps
+  2  where empno not in (select pmgr from Projects);
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SMITH                                                                                                                        
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> select ename from Emps
+  2  where empno <> all (select pmgr from Projects);
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SMITH                                                                                                                        
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> select ename
+  2  FROM (Emps LEFT JOIN Projects
+  3                  ON empno = pmgr)
+  4  WHERE pno IS NULL;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+SMITH                                                                                                                        
+ALLEN                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+KING                                                                                                                         
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+JAMES                                                                                                                        
+FORD                                                                                                                         
+MILLER                                                                                                                       
+
+11 rows selected.
+
+SCOTT> SELECT ename FROM Emps
+  2  MINUS
+  3  SELECT DISTINCT ename FROM Emps, Projects
+  4  WHERE empno = pmgr;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ADAMS                                                                                                                        
+ALLEN                                                                                                                        
+FORD                                                                                                                         
+JAMES                                                                                                                        
+KING                                                                                                                         
+MARTIN                                                                                                                       
+MILLER                                                                                                                       
+SCOTT                                                                                                                        
+SMITH                                                                                                                        
+TURNER                                                                                                                       
+WARD                                                                                                                         
+
+11 rows selected.
+
+SCOTT> 
+SCOTT> -- Oops, this doesn't just list the employees who are not project managers.
+SCOTT> -- Why not?  Will any simple join work?
+SCOTT> select distinct ename as manager
+  2  from Emps, Projects
+  3  where empno <> pmgr;
+
+MANAGER                                                                                                                      
+----------                                                                                                                   
+ALLEN                                                                                                                        
+JONES                                                                                                                        
+FORD                                                                                                                         
+CLARK                                                                                                                        
+MILLER                                                                                                                       
+SMITH                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+KING                                                                                                                         
+JAMES                                                                                                                        
+BLAKE                                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> select distinct ename from emps, projects where empno <> pmgr ;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+JONES                                                                                                                        
+FORD                                                                                                                         
+CLARK                                                                                                                        
+MILLER                                                                                                                       
+SMITH                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+KING                                                                                                                         
+JAMES                                                                                                                        
+BLAKE                                                                                                                        
+
+14 rows selected.
+
+SCOTT> select distinct ename from emps left join projects where empno <> pmgr ;
+select distinct ename from emps left join projects where empno <> pmgr 
+                                                   *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SCOTT> select distinct ename from emps, projects where empno <> pmgr ;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+JONES                                                                                                                        
+FORD                                                                                                                         
+CLARK                                                                                                                        
+MILLER                                                                                                                       
+SMITH                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+KING                                                                                                                         
+JAMES                                                                                                                        
+BLAKE                                                                                                                        
+
+14 rows selected.
+
+SCOTT> select distinct ename from emps, projects where empno <> pmgr ;
+
+ENAME                                                                                                                        
+----------                                                                                                                   
+ALLEN                                                                                                                        
+JONES                                                                                                                        
+FORD                                                                                                                         
+CLARK                                                                                                                        
+MILLER                                                                                                                       
+SMITH                                                                                                                        
+WARD                                                                                                                         
+MARTIN                                                                                                                       
+SCOTT                                                                                                                        
+TURNER                                                                                                                       
+ADAMS                                                                                                                        
+KING                                                                                                                         
+JAMES                                                                                                                        
+BLAKE                                                                                                                        
+
+14 rows selected.
+
+SCOTT> 
+SCOTT> spool off
