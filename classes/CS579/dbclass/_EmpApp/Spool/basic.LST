@@ -1,0 +1,871 @@
+
+Team: Data Junkies
+Basic Operation Tests for Employee Database Application
+Tests all operations, role by role
+These tests are designed to work even if all constraints are enforced
+
+First, test a logged out user,
+then logs in a typical user having each CONCRETE role
+In each case, tests all operations that user can do:
+(all operations associated just with their role
+as well as all operations associated with all of their super-roles)
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+*** Basic User Test
+
+Make sure user is not logged in
+Then test operations that a user who is not logged in can do
+
+Hit Return to start the Basic User Test
+
+
+==> Logout if necessary (may fail)
+Logged Out                                                                                                                   
+
+=====================================================
+
+This tests operations assigned to the User role
+Queries: ShowAllDepts
+
+Hit Return to test User role operations
+
+
+==> Show #, name and location of all departments
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+*** Completed Basic User Test
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+*** Basic Employee Test
+
+Login as an ordinary employee:
+Employee #7876, ADAMS, CLERK in dept 20
+Then test operations that any Employee can do
+This includes
+-- operations assigned to the User role
+-- operations assigned to the Employee role
+
+Hit Return to start the Basic Employee Test
+
+
+==> First Logout
+Logged Out                                                                                                                   
+
+==> Note that we conveniently use a user's name as their initial password
+
+==> Login as 7876:ADAMS
+Logged In As 7876 with role of Employee                                                                                      
+
+=====================================================
+
+This tests operations assigned to the User role
+Queries: ShowAllDepts
+
+Hit Return to test User role operations
+
+
+==> Show #, name and location of all departments
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Employee Role
+but not assigned to any of its super-roles
+Queries: ShowMyInfo, ShowDeptEmps, ShowDeptLoc, ShowAddr
+Actions: ChangeAddr
+
+Hit Return to test Employee role operations
+
+
+==> ShowMyInfo
+7876  ADAMS                                                                                                                  
+Department 20:RESEARCH, CLERK                                                                                                
+Address: , ,                                                                                                                 
+
+==> ShowDeptEmps shows names and jobs of employees in my dept
+
+ENAME                          JOB                                                                                           
+------------------------------ ------------                                                                                  
+ADAMS                          CLERK                                                                                         
+FORD                           ANALYST                                                                                       
+JONES                          DEPTMGR                                                                                       
+SCOTT                          ANALYST                                                                                       
+SMITH                          CLERK                                                                                         
+
+5 rows selected.
+
+
+==> Use ShowDeptLoc to show dept and loc of MARTIN
+Department 30, CHICAGO                                                                                                       
+
+==> Show my address; none provided
+No employee info to be shown                                                                                                 
+
+==> Set my address to be visible at 100 ADAMS Way
+Address Changed                                                                                                              
+
+==> Now show my address again
+100 ADAMS Way                                                                                                                
+Boston, MA 01234                                                                                                             
+
+==> Show address of MARTIN
+==> Might not show anything unless MARTIN has provided a visible address
+No employee info to be shown                                                                                                 
+
+*** Completed Basic Employee Role Test
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+*** Basic Manager Test
+
+Login as a manager (but not a dept mgr)
+Employee #7902, FORD, ANALYST in dept 20
+Then test operations that a Manager can do
+This includes
+-- operations assigned to the User role
+-- operations assigned to the Employee role
+-- operations assigned to the Manager role
+
+Hit Return to start the Basic Manager Test
+
+
+==> First Logout
+Logged Out                                                                                                                   
+
+==> Note that we conveniently use a user's name as their initial password
+
+==> Login as 7902:FORD
+Logged In As 7902 with role of Manager                                                                                       
+
+=====================================================
+
+This tests operations assigned to the User role
+Queries: ShowAllDepts
+
+Hit Return to test User role operations
+
+
+==> Show #, name and location of all departments
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Employee Role
+but not assigned to any of its super-roles
+Queries: ShowMyInfo, ShowDeptEmps, ShowDeptLoc, ShowAddr
+Actions: ChangeAddr
+
+Hit Return to test Employee role operations
+
+
+==> ShowMyInfo
+7902  FORD                                                                                                                   
+Department 20:RESEARCH, ANALYST                                                                                              
+Address: , ,                                                                                                                 
+
+==> ShowDeptEmps shows names and jobs of employees in my dept
+
+ENAME                          JOB                                                                                           
+------------------------------ ------------                                                                                  
+ADAMS                          CLERK                                                                                         
+FORD                           ANALYST                                                                                       
+JONES                          DEPTMGR                                                                                       
+SCOTT                          ANALYST                                                                                       
+SMITH                          CLERK                                                                                         
+
+5 rows selected.
+
+
+==> Use ShowDeptLoc to show dept and loc of ADAMS
+Department 20, DALLAS                                                                                                        
+
+==> Show my address; none provided
+No employee info to be shown                                                                                                 
+
+==> Set my address to be visible at 100 FORD Way
+Address Changed                                                                                                              
+
+==> Now show my address again
+100 FORD Way                                                                                                                 
+Boston, MA 01234                                                                                                             
+
+==> Show address of ADAMS
+==> Might not show anything unless ADAMS has provided a visible address
+100 ADAMS Way                                                                                                                
+Boston, MA 01234                                                                                                             
+
+=====================================================
+
+This tests operations assigned to the Manager Role
+but not assigned to any of its super-roles
+Queries: ShowDirect, ShowBelow
+
+Hit Return to test Manager role operations
+
+
+==> Show info of employees who report directly to me
+
+     EMPNO ENAME                          JOB          DNAME                                                                 
+---------- ------------------------------ ------------ --------------------                                                  
+      7369 SMITH                          CLERK        RESEARCH                                                              
+
+1 row selected.
+
+
+==> Show info of employees who are below me in the management hierarchy
+
+ENAME                                 ENO EDNAM                EJOB         MNAME                                            
+------------------------------ ---------- -------------------- ------------ ------------------------------                   
+SMITH                                7369 RESEARCH             CLERK        FORD                                             
+
+1 row selected.
+
+
+*** Completed Basic Manager Test
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+*** Basic Dept Manager Test
+
+Login as a dept mgr
+Employee #7566, JONES, DEPTMGR in dept 20
+Then test operations that a Dept Manager can do
+This includes
+-- operations assigned to the User role
+-- operations assigned to the Employee role
+-- operations assigned to the Manager role
+-- operations assigned to the Executive role
+
+Hit Return to start the Basic Dept Manager Test
+
+
+==> First Logout
+Logged Out                                                                                                                   
+
+==> Note that we conveniently use a user's name as their initial password
+
+==> Login as 7566:JONES
+Logged In As 7566 with role of DeptMgr                                                                                       
+
+=====================================================
+
+This tests operations assigned to the User role
+Queries: ShowAllDepts
+
+Hit Return to test User role operations
+
+
+==> Show #, name and location of all departments
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Employee Role
+but not assigned to any of its super-roles
+Queries: ShowMyInfo, ShowDeptEmps, ShowDeptLoc, ShowAddr
+Actions: ChangeAddr
+
+Hit Return to test Employee role operations
+
+
+==> ShowMyInfo
+7566  JONES                                                                                                                  
+Department 20:RESEARCH, DEPTMGR                                                                                              
+Address: , ,                                                                                                                 
+
+==> ShowDeptEmps shows names and jobs of employees in my dept
+
+ENAME                          JOB                                                                                           
+------------------------------ ------------                                                                                  
+ADAMS                          CLERK                                                                                         
+FORD                           ANALYST                                                                                       
+JONES                          DEPTMGR                                                                                       
+SCOTT                          ANALYST                                                                                       
+SMITH                          CLERK                                                                                         
+
+5 rows selected.
+
+
+==> Use ShowDeptLoc to show dept and loc of ADAMS
+Department 20, DALLAS                                                                                                        
+
+==> Show my address; none provided
+No employee info to be shown                                                                                                 
+
+==> Set my address to be visible at 100 JONES Way
+Address Changed                                                                                                              
+
+==> Now show my address again
+100 JONES Way                                                                                                                
+Boston, MA 01234                                                                                                             
+
+==> Show address of ADAMS
+==> Might not show anything unless ADAMS has provided a visible address
+100 ADAMS Way                                                                                                                
+Boston, MA 01234                                                                                                             
+
+=====================================================
+
+This tests operations assigned to the Manager Role
+but not assigned to any of its super-roles
+Queries: ShowDirect, ShowBelow
+
+Hit Return to test Manager role operations
+
+
+==> Show info of employees who report directly to me
+
+     EMPNO ENAME                          JOB          DNAME                                                                 
+---------- ------------------------------ ------------ --------------------                                                  
+      7902 FORD                           ANALYST      RESEARCH                                                              
+      7788 SCOTT                          ANALYST      RESEARCH                                                              
+
+2 rows selected.
+
+
+==> Show info of employees who are below me in the management hierarchy
+
+ENAME                                 ENO EDNAM                EJOB         MNAME                                            
+------------------------------ ---------- -------------------- ------------ ------------------------------                   
+ADAMS                                7876 RESEARCH             CLERK        SCOTT                                            
+FORD                                 7902 RESEARCH             ANALYST      JONES                                            
+SCOTT                                7788 RESEARCH             ANALYST      JONES                                            
+SMITH                                7369 RESEARCH             CLERK        FORD                                             
+
+4 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Executive Role
+but not assigned to any of its super-roles
+Queries: ShowCtrlEmps
+Actions: AddEmp, ChangeJob, ChangeMgr, ChangePosition, ChangeSal, TerminateEmp
+
+Hit Return to test Executive role operations
+
+
+==> Show info of employees who I control
+-- all other users if I'm the president
+-- all other users in my dept if I'm a deptmgr
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+4 rows selected.
+
+
+==> Add BOZO the CLOWN as an employee to dept 20, mgr 7902
+Employee Added                                                                                                               
+
+==> Show that BOZO has been added
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 CLOWN              3333 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+5 rows selected.
+
+
+==> Change BOZO's salary to 2222
+Salary Changed                                                                                                               
+
+==> Show that BOZO's sal is now 2222
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 CLOWN              2222 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+5 rows selected.
+
+
+==> Change BOZO's job to JESTER
+Job Changed                                                                                                                  
+
+==> Show that BOZO's job is now JESTER
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 JESTER             2222 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+5 rows selected.
+
+
+==> Change BOZO's mgr to be me
+Manager Changed                                                                                                              
+
+==> Show that BOZO's mgr is now me
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 JESTER             2222 JONES                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+5 rows selected.
+
+
+==> Change back BOZO's job and mgr, and make sure BOZO is in my dept
+Position Changed                                                                                                             
+
+==> Show that BOZO's job, mgr and deptno are correct
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 CLOWN              2222 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+5 rows selected.
+
+
+==> Terminate BOZO
+Employee Terminated                                                                                                          
+
+==> Show that BOZO is now gone
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+
+4 rows selected.
+
+
+*** Completed Basic Dept Manager Test
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+*** Basic President Test
+
+Login as the president
+Employee #7839, KING, PRESIDENT in dept 10
+Then test operations that the President can do
+This includes
+-- operations assigned to the User role
+-- operations assigned to the Employee role
+-- operations assigned to the Manager role
+-- operations assigned to the Executive role
+-- operations assigned to the President role
+
+Hit Return to start the Basic President Test
+
+
+==> First Logout
+Logged Out                                                                                                                   
+
+==> Note that we conveniently use a user's name as their initial password
+
+==> Login as 7839:KING
+Logged In As 7839 with role of President                                                                                     
+
+=====================================================
+
+This tests operations assigned to the User role
+Queries: ShowAllDepts
+
+Hit Return to test User role operations
+
+
+==> Show #, name and location of all departments
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Employee Role
+but not assigned to any of its super-roles
+Queries: ShowMyInfo, ShowDeptEmps, ShowDeptLoc, ShowAddr
+Actions: ChangeAddr
+
+Hit Return to test Employee role operations
+
+
+==> ShowMyInfo
+7839  KING                                                                                                                   
+Department 10:ACCOUNTING, PRESIDENT                                                                                          
+Address: , ,                                                                                                                 
+
+==> ShowDeptEmps shows names and jobs of employees in my dept
+
+ENAME                          JOB                                                                                           
+------------------------------ ------------                                                                                  
+CLARK                          DEPTMGR                                                                                       
+KING                           PRESIDENT                                                                                     
+MILLER                         CLERK                                                                                         
+
+3 rows selected.
+
+
+==> Use ShowDeptLoc to show dept and loc of ADAMS
+Department 20, DALLAS                                                                                                        
+
+==> Show my address; none provided
+No employee info to be shown                                                                                                 
+
+==> Set my address to be visible at 100 KING Way
+Address Changed                                                                                                              
+
+==> Now show my address again
+100 KING Way                                                                                                                 
+Boston, MA 01234                                                                                                             
+
+==> Show address of ADAMS
+==> Might not show anything unless ADAMS has provided a visible address
+100 ADAMS Way                                                                                                                
+Boston, MA 01234                                                                                                             
+
+=====================================================
+
+This tests operations assigned to the Manager Role
+but not assigned to any of its super-roles
+Queries: ShowDirect, ShowBelow
+
+Hit Return to test Manager role operations
+
+
+==> Show info of employees who report directly to me
+
+     EMPNO ENAME                          JOB          DNAME                                                                 
+---------- ------------------------------ ------------ --------------------                                                  
+      7782 CLARK                          DEPTMGR      ACCOUNTING                                                            
+      7566 JONES                          DEPTMGR      RESEARCH                                                              
+      7698 BLAKE                          DEPTMGR      SALES                                                                 
+
+3 rows selected.
+
+
+==> Show info of employees who are below me in the management hierarchy
+
+ENAME                                 ENO EDNAM                EJOB         MNAME                                            
+------------------------------ ---------- -------------------- ------------ ------------------------------                   
+ADAMS                                7876 RESEARCH             CLERK        SCOTT                                            
+ALLEN                                7499 SALES                SALESMAN     BLAKE                                            
+BLAKE                                7698 SALES                DEPTMGR      KING                                             
+CLARK                                7782 ACCOUNTING           DEPTMGR      KING                                             
+FORD                                 7902 RESEARCH             ANALYST      JONES                                            
+JAMES                                7900 SALES                CLERK        BLAKE                                            
+JONES                                7566 RESEARCH             DEPTMGR      KING                                             
+MARTIN                               7654 SALES                SALESMAN     BLAKE                                            
+MILLER                               7934 ACCOUNTING           CLERK        CLARK                                            
+SCOTT                                7788 RESEARCH             ANALYST      JONES                                            
+SMITH                                7369 RESEARCH             CLERK        FORD                                             
+TURNER                               7844 SALES                SALESMAN     BLAKE                                            
+WARD                                 7521 SALES                SALESMAN     BLAKE                                            
+
+13 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the Executive Role
+but not assigned to any of its super-roles
+Queries: ShowCtrlEmps
+Actions: AddEmp, ChangeJob, ChangeMgr, ChangePosition, ChangeSal, TerminateEmp
+
+Hit Return to test Executive role operations
+
+
+==> Show info of employees who I control
+-- all other users if I'm the president
+-- all other users in my dept if I'm a deptmgr
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+13 rows selected.
+
+
+==> Add BOZO the CLOWN as an employee to dept 20, mgr 7902
+Employee Added                                                                                                               
+
+==> Show that BOZO has been added
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 CLOWN              3333 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+14 rows selected.
+
+
+==> Change BOZO's salary to 2222
+Salary Changed                                                                                                               
+
+==> Show that BOZO's sal is now 2222
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 CLOWN              2222 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+14 rows selected.
+
+
+==> Change BOZO's job to JESTER
+Job Changed                                                                                                                  
+
+==> Show that BOZO's job is now JESTER
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 JESTER             2222 FORD                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+14 rows selected.
+
+
+==> Change BOZO's mgr to be me
+Manager Changed                                                                                                              
+
+==> Show that BOZO's mgr is now me
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             BOZO                                 9090 JESTER             2222 KING                                  
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+14 rows selected.
+
+
+==> Change back BOZO's job and mgr, and make sure BOZO is in my dept
+Position Changed                                                                                                             
+
+==> Show that BOZO's job, mgr and deptno are correct
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           BOZO                                 9090 CLOWN              2222 FORD                                  
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+14 rows selected.
+
+
+==> Terminate BOZO
+Employee Terminated                                                                                                          
+
+==> Show that BOZO is now gone
+
+EDNAM                ENAME                                 ENO EJOB               ESAL MNAME                                 
+-------------------- ------------------------------ ---------- ------------ ---------- ------------------------------        
+ACCOUNTING           CLARK                                7782 DEPTMGR            2450 KING                                  
+ACCOUNTING           MILLER                               7934 CLERK              1300 CLARK                                 
+RESEARCH             ADAMS                                7876 CLERK              1100 SCOTT                                 
+RESEARCH             FORD                                 7902 ANALYST            3000 JONES                                 
+RESEARCH             JONES                                7566 DEPTMGR            2975 KING                                  
+RESEARCH             SCOTT                                7788 ANALYST            3000 JONES                                 
+RESEARCH             SMITH                                7369 CLERK               800 FORD                                  
+SALES                ALLEN                                7499 SALESMAN           1600 BLAKE                                 
+SALES                BLAKE                                7698 DEPTMGR            2850 KING                                  
+SALES                JAMES                                7900 CLERK               950 BLAKE                                 
+SALES                MARTIN                               7654 SALESMAN           1250 BLAKE                                 
+SALES                TURNER                               7844 SALESMAN           1500 BLAKE                                 
+SALES                WARD                                 7521 SALESMAN           1250 BLAKE                                 
+
+13 rows selected.
+
+
+=====================================================
+
+This tests operations assigned to the President Role
+but not assigned to any of its super-roles
+Actions: CreateDept, MoveDept, DestroyDept
+
+Hit Return to test President role operations
+
+
+==> Create dept 77, the party dept
+--> ERROR: unique constraint (EMPDB.SYS_C0010100) violated                                                                   
+
+==> Show that dept 77 has been created
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+==> Move dept 77 to PARIS
+Department Moved                                                                                                             
+
+==> Show that dept 77 has been moved to PARIS
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+==> Destroy dept 77
+Department Destroyed                                                                                                         
+
+==> Show that dept 77 has been destroyed
+
+    DEPTNO DNAME                LOC                                                                                          
+---------- -------------------- ---------------                                                                              
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+
+*** Completed Basic President Test

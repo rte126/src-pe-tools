@@ -1,0 +1,137 @@
+
+Team: Data Junkies
+Populate Test for Employee Database Application
+****** TABLES
+
+Emps Table
+
+     EMPNO ENAME                                 SAL JOB          STREET                                                     
+---------- ------------------------------ ---------- ------------ ----------------------------------------                   
+CITY                 ST ZIP       DEPTNO        MGR I                                                                        
+-------------------- -- ----- ---------- ---------- -                                                                        
+      7369 SMITH                                 800 CLERK                                                                   
+                                      20       7902 F                                                                        
+                                                                                                                             
+      7499 ALLEN                                1600 SALESMAN                                                                
+                                      30       7698 F                                                                        
+                                                                                                                             
+      7521 WARD                                 1250 SALESMAN                                                                
+                                      30       7698 F                                                                        
+                                                                                                                             
+      7566 JONES                                2975 DEPTMGR                                                                 
+                                      20       7839 F                                                                        
+                                                                                                                             
+      7654 MARTIN                               1250 SALESMAN                                                                
+                                      30       7698 F                                                                        
+                                                                                                                             
+      7698 BLAKE                                2850 DEPTMGR                                                                 
+                                      30       7839 F                                                                        
+                                                                                                                             
+      7782 CLARK                                2450 DEPTMGR                                                                 
+                                      10       7839 F                                                                        
+                                                                                                                             
+      7788 SCOTT                                3000 ANALYST                                                                 
+                                      20       7566 F                                                                        
+                                                                                                                             
+      7839 KING                                 5000 PRESIDENT                                                               
+                                      10            F                                                                        
+                                                                                                                             
+      7844 TURNER                               1500 SALESMAN                                                                
+                                      30       7698 F                                                                        
+                                                                                                                             
+      7876 ADAMS                                1100 CLERK                                                                   
+                                      20       7788 F                                                                        
+                                                                                                                             
+      7900 JAMES                                 950 CLERK                                                                   
+                                      30       7698 F                                                                        
+                                                                                                                             
+      7902 FORD                                 3000 ANALYST                                                                 
+                                      20       7566 F                                                                        
+                                                                                                                             
+      7934 MILLER                               1300 CLERK                                                                   
+                                      10       7782 F                                                                        
+                                                                                                                             
+
+14 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Depts Table
+
+    DEPTNO DNAME                LOC                 ACTMGR                                                                   
+---------- -------------------- --------------- ----------                                                                   
+        10 ACCOUNTING           NEW YORK                                                                                     
+        20 RESEARCH             DALLAS                                                                                       
+        30 SALES                CHICAGO                                                                                      
+        40 OPERATIONS           BOSTON                                                                                       
+        66 PARTY                PHILLY                                                                                       
+
+5 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+****** MANIFEST VIEWS
+
+DeptMgrsView
+
+    DEPTNO       EKNT       AKNT       MKNT                                                                                  
+---------- ---------- ---------- ----------                                                                                  
+        10          3          0          1                                                                                  
+        20          5          0          1                                                                                  
+        30          6          0          1                                                                                  
+        40          0          0          0                                                                                  
+        66          0          0          0                                                                                  
+
+5 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+DeptMgrClerksView
+
+    DEPTNO       CKNT       MKNT                                                                                             
+---------- ---------- ----------                                                                                             
+        10          1          1                                                                                             
+        20          2          1                                                                                             
+        30          1          1                                                                                             
+        40          0          0                                                                                             
+        66          0          0                                                                                             
+
+5 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ManageLocView
+
+     EMPNO EJOB               EDNO ELOC                   MGR MJOB               MDNO MLOC                                   
+---------- ------------ ---------- --------------- ---------- ------------ ---------- ---------------                        
+      7902 ANALYST              20 DALLAS                7566 DEPTMGR              20 DALLAS                                 
+      7788 ANALYST              20 DALLAS                7566 DEPTMGR              20 DALLAS                                 
+      7900 CLERK                30 CHICAGO               7698 DEPTMGR              30 CHICAGO                                
+      7844 SALESMAN             30 CHICAGO               7698 DEPTMGR              30 CHICAGO                                
+      7654 SALESMAN             30 CHICAGO               7698 DEPTMGR              30 CHICAGO                                
+      7521 SALESMAN             30 CHICAGO               7698 DEPTMGR              30 CHICAGO                                
+      7499 SALESMAN             30 CHICAGO               7698 DEPTMGR              30 CHICAGO                                
+      7934 CLERK                10 NEW YORK              7782 DEPTMGR              10 NEW YORK                               
+      7876 CLERK                20 DALLAS                7788 ANALYST              20 DALLAS                                 
+      7782 DEPTMGR              10 NEW YORK              7839 PRESIDENT            10 NEW YORK                               
+      7698 DEPTMGR              30 CHICAGO               7839 PRESIDENT            10 NEW YORK                               
+      7566 DEPTMGR              20 DALLAS                7839 PRESIDENT            10 NEW YORK                               
+      7369 CLERK                20 DALLAS                7902 ANALYST              20 DALLAS                                 
+
+13 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+DeptActMgrView
+
+    DEPTNO     ACTMGR  CURACTMGR       MKNT   EHIGHSAL                                                                       
+---------- ---------- ---------- ---------- ----------                                                                       
+        10                                1       7839                                                                       
+        20                                1       7902                                                                       
+        30                                1       7698                                                                       
+        40                                0                                                                                  
+        66                                0                                                                                  
+
+5 rows selected.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
