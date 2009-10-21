@@ -1,5 +1,6 @@
--- Team: Data Junkies
--- Project: Employee Database Application
+-- Team: Smiling Solo
+-- Project: Patch Request Application
+
 
 prompt *** Building Employee Database System
 
