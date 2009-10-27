@@ -1,0 +1,1729 @@
+SQL> @/dbclass/setup
+
+USRVAL                                                                                                                       
+------------------------------                                                                                               
+SCOTT                                                                                                                        
+
+Standard Setup Complete
+SCOTT> select deptno, empno, rownum from Emps;
+
+    DEPTNO      EMPNO     ROWNUM                                                                                             
+---------- ---------- ----------                                                                                             
+        20       7369          1                                                                                             
+        30       7499          2                                                                                             
+        30       7521          3                                                                                             
+        20       7566          4                                                                                             
+        30       7654          5                                                                                             
+        30       7698          6                                                                                             
+        10       7782          7                                                                                             
+        20       7788          8                                                                                             
+        10       7839          9                                                                                             
+        30       7844         10                                                                                             
+        20       7876         11                                                                                             
+        30       7900         12                                                                                             
+        20       7902         13                                                                                             
+        10       7934         14                                                                                             
+
+14 rows selected.
+
+SCOTT> -- Use rownum to restrict the number of rows
+SCOTT> select deptno, empno, rownum from Emps
+  2  where rownum <= 5;
+
+    DEPTNO      EMPNO     ROWNUM                                                                                             
+---------- ---------- ----------                                                                                             
+        20       7369          1                                                                                             
+        30       7499          2                                                                                             
+        30       7521          3                                                                                             
+        20       7566          4                                                                                             
+        30       7654          5                                                                                             
+
+SCOTT> 
+SCOTT> select deptno, empno, rownum from Emps
+  2  where deptno <> 20
+  3     and rownum <= 5;
+
+    DEPTNO      EMPNO     ROWNUM                                                                                             
+---------- ---------- ----------                                                                                             
+        30       7499          1                                                                                             
+        30       7521          2                                                                                             
+        30       7654          3                                                                                             
+        30       7698          4                                                                                             
+        10       7782          5                                                                                             
+
+SCOTT> 
+SCOTT> start c:\dbclass\ex7-test1
+
+Counting Employees who make more than 2900
+
+    DEPTNO Employee Count                                                                                                    
+---------- --------------                                                                                                    
+        20              3                                                                                                    
+        10              1                                                                                                    
+
+SCOTT> start c:/dbclass/ex7-test1
+
+Counting Employees who make more than 2900
+
+    DEPTNO Employee Count                                                                                                    
+---------- --------------                                                                                                    
+        20              3                                                                                                    
+        10              1                                                                                                    
+
+SCOTT> @c:/dbclass/test1
+SP2-0310: unable to open file "c:/dbclass/test1.sql"
+SCOTT> @c:/dbclass/ex7-test1
+
+Counting Employees who make more than 2900
+
+    DEPTNO Employee Count                                                                                                    
+---------- --------------                                                                                                    
+        20              3                                                                                                    
+        10              1                                                                                                    
+
+SCOTT> 
+SCOTT> @/dbclass/ex7-test2 job 2000
+
+Group by job
+
+JOB         COUNT(*)                                                                                                         
+--------- ----------                                                                                                         
+CLERK              4                                                                                                         
+SALESMAN           4                                                                                                         
+PRESIDENT          1                                                                                                         
+MANAGER            3                                                                                                         
+ANALYST            2                                                                                                         
+
+Group by job, with salary > 2000
+
+JOB         COUNT(*)                                                                                                         
+--------- ----------                                                                                                         
+PRESIDENT          1                                                                                                         
+MANAGER            3                                                                                                         
+ANALYST            2                                                                                                         
+
+SCOTT> @/dbclass/ex7-test2 job 2900
+
+Group by job
+
+JOB         COUNT(*)                                                                                                         
+--------- ----------                                                                                                         
+CLERK              4                                                                                                         
+SALESMAN           4                                                                                                         
+PRESIDENT          1                                                                                                         
+MANAGER            3                                                                                                         
+ANALYST            2                                                                                                         
+
+Group by job, with salary > 2900
+
+JOB         COUNT(*)                                                                                                         
+--------- ----------                                                                                                         
+PRESIDENT          1                                                                                                         
+MANAGER            1                                                                                                         
+ANALYST            2                                                                                                         
+
+SCOTT> @/dbclass/ex7-test2 deptno 2900
+
+Group by deptno
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          6                                                                                                        
+        20          5                                                                                                        
+        10          3                                                                                                        
+
+Group by deptno, with salary > 2900
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        20          3                                                                                                        
+        10          1                                                                                                        
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> @/dbclass/ex7-main
+
+Counting Employees who make more than 2900
+
+    DEPTNO Employee Count                                                                                                    
+---------- --------------                                                                                                    
+        20              3                                                                                                    
+        10              1                                                                                                    
+
+Type RETURN to see the next grouping
+
+
+Group by deptno
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          6                                                                                                        
+        20          5                                                                                                        
+        10          3                                                                                                        
+
+Group by deptno, with salary > 2000
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          1                                                                                                        
+        20          3                                                                                                        
+        10          2                                                                                                        
+
+SCOTT> 
+SCOTT> 
+SCOTT> @/dbclass/ex7-main
+
+Counting Employees who make more than 2900
+
+    DEPTNO Employee Count                                                                                                    
+---------- --------------                                                                                                    
+        20              3                                                                                                    
+        10              1                                                                                                    
+
+Type RETURN to see the next grouping
+
+
+Group by deptno
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          6                                                                                                        
+        20          5                                                                                                        
+        10          3                                                                                                        
+
+Group by deptno, with salary > 2000
+
+    DEPTNO   COUNT(*)                                                                                                        
+---------- ----------                                                                                                        
+        30          1                                                                                                        
+        20          3                                                                                                        
+        10          2                                                                                                        
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> describe DICTIONARY
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ TABLE_NAME                                                                    VARCHAR2(30)
+ COMMENTS                                                                      VARCHAR2(4000)
+
+SCOTT> 
+SCOTT> select table_name from DICTIONARY order by table_name;
+
+TABLE_NAME                                                                                                                   
+------------------------------                                                                                               
+ALL_ALL_TABLES                                                                                                               
+ALL_APPLY                                                                                                                    
+ALL_APPLY_CONFLICT_COLUMNS                                                                                                   
+ALL_APPLY_DML_HANDLERS                                                                                                       
+ALL_APPLY_ENQUEUE                                                                                                            
+ALL_APPLY_ERROR                                                                                                              
+ALL_APPLY_EXECUTE                                                                                                            
+ALL_APPLY_KEY_COLUMNS                                                                                                        
+ALL_APPLY_PARAMETERS                                                                                                         
+ALL_APPLY_PROGRESS                                                                                                           
+ALL_APPLY_TABLE_COLUMNS                                                                                                      
+ALL_ARGUMENTS                                                                                                                
+ALL_ASSEMBLIES                                                                                                               
+ALL_ASSOCIATIONS                                                                                                             
+ALL_AUDIT_POLICIES                                                                                                           
+ALL_AUDIT_POLICY_COLUMNS                                                                                                     
+ALL_AWS                                                                                                                      
+ALL_AW_AC                                                                                                                    
+ALL_AW_AC_10G                                                                                                                
+ALL_AW_OBJ                                                                                                                   
+ALL_AW_PROP                                                                                                                  
+ALL_AW_PROP_NAME                                                                                                             
+ALL_AW_PS                                                                                                                    
+ALL_BASE_TABLE_MVIEWS                                                                                                        
+ALL_CAPTURE                                                                                                                  
+ALL_CAPTURE_EXTRA_ATTRIBUTES                                                                                                 
+ALL_CAPTURE_PARAMETERS                                                                                                       
+ALL_CAPTURE_PREPARED_DATABASE                                                                                                
+ALL_CAPTURE_PREPARED_SCHEMAS                                                                                                 
+ALL_CAPTURE_PREPARED_TABLES                                                                                                  
+ALL_CATALOG                                                                                                                  
+ALL_CHANGE_PROPAGATIONS                                                                                                      
+ALL_CHANGE_PROPAGATION_SETS                                                                                                  
+ALL_CHANGE_SETS                                                                                                              
+ALL_CHANGE_SOURCES                                                                                                           
+ALL_CHANGE_TABLES                                                                                                            
+ALL_CLUSTERS                                                                                                                 
+ALL_CLUSTER_HASH_EXPRESSIONS                                                                                                 
+ALL_COLL_TYPES                                                                                                               
+ALL_COL_COMMENTS                                                                                                             
+ALL_COL_PENDING_STATS                                                                                                        
+ALL_COL_PRIVS                                                                                                                
+ALL_COL_PRIVS_MADE                                                                                                           
+ALL_COL_PRIVS_RECD                                                                                                           
+ALL_CONSTRAINTS                                                                                                              
+ALL_CONS_COLUMNS                                                                                                             
+ALL_CONS_OBJ_COLUMNS                                                                                                         
+ALL_CONTEXT                                                                                                                  
+ALL_CUBES                                                                                                                    
+ALL_CUBE_ATTRIBUTES                                                                                                          
+ALL_CUBE_ATTR_VISIBILITY                                                                                                     
+ALL_CUBE_BUILD_PROCESSES                                                                                                     
+ALL_CUBE_CALCULATED_MEMBERS                                                                                                  
+ALL_CUBE_DIMENSIONALITY                                                                                                      
+ALL_CUBE_DIMENSIONS                                                                                                          
+ALL_CUBE_DIM_LEVELS                                                                                                          
+ALL_CUBE_DIM_MODELS                                                                                                          
+ALL_CUBE_DIM_VIEWS                                                                                                           
+ALL_CUBE_DIM_VIEW_COLUMNS                                                                                                    
+ALL_CUBE_HIERARCHIES                                                                                                         
+ALL_CUBE_HIER_LEVELS                                                                                                         
+ALL_CUBE_HIER_VIEWS                                                                                                          
+ALL_CUBE_HIER_VIEW_COLUMNS                                                                                                   
+ALL_CUBE_MEASURES                                                                                                            
+ALL_CUBE_VIEWS                                                                                                               
+ALL_CUBE_VIEW_COLUMNS                                                                                                        
+ALL_DB_LINKS                                                                                                                 
+ALL_DEF_AUDIT_OPTS                                                                                                           
+ALL_DEPENDENCIES                                                                                                             
+ALL_DEQUEUE_QUEUES                                                                                                           
+ALL_DIMENSIONS                                                                                                               
+ALL_DIM_ATTRIBUTES                                                                                                           
+ALL_DIM_CHILD_OF                                                                                                             
+ALL_DIM_HIERARCHIES                                                                                                          
+ALL_DIM_JOIN_KEY                                                                                                             
+ALL_DIM_LEVELS                                                                                                               
+ALL_DIM_LEVEL_KEY                                                                                                            
+ALL_DIRECTORIES                                                                                                              
+ALL_EDITIONING_VIEWS                                                                                                         
+ALL_EDITIONING_VIEWS_AE                                                                                                      
+ALL_EDITIONING_VIEW_COLS                                                                                                     
+ALL_EDITIONING_VIEW_COLS_AE                                                                                                  
+ALL_EDITIONS                                                                                                                 
+ALL_EDITION_COMMENTS                                                                                                         
+ALL_ENCRYPTED_COLUMNS                                                                                                        
+ALL_ERRORS                                                                                                                   
+ALL_ERRORS_AE                                                                                                                
+ALL_EVALUATION_CONTEXTS                                                                                                      
+ALL_EVALUATION_CONTEXT_TABLES                                                                                                
+ALL_EVALUATION_CONTEXT_VARS                                                                                                  
+ALL_EXTERNAL_LOCATIONS                                                                                                       
+ALL_EXTERNAL_TABLES                                                                                                          
+ALL_FILE_GROUPS                                                                                                              
+ALL_FILE_GROUP_EXPORT_INFO                                                                                                   
+ALL_FILE_GROUP_FILES                                                                                                         
+ALL_FILE_GROUP_TABLES                                                                                                        
+ALL_FILE_GROUP_TABLESPACES                                                                                                   
+ALL_FILE_GROUP_VERSIONS                                                                                                      
+ALL_HISTOGRAMS                                                                                                               
+ALL_IDENTIFIERS                                                                                                              
+ALL_INDEXES                                                                                                                  
+ALL_INDEXTYPES                                                                                                               
+ALL_INDEXTYPE_ARRAYTYPES                                                                                                     
+ALL_INDEXTYPE_COMMENTS                                                                                                       
+ALL_INDEXTYPE_OPERATORS                                                                                                      
+ALL_IND_COLUMNS                                                                                                              
+ALL_IND_EXPRESSIONS                                                                                                          
+ALL_IND_PARTITIONS                                                                                                           
+ALL_IND_PENDING_STATS                                                                                                        
+ALL_IND_STATISTICS                                                                                                           
+ALL_IND_SUBPARTITIONS                                                                                                        
+ALL_INTERNAL_TRIGGERS                                                                                                        
+ALL_JAVA_ARGUMENTS                                                                                                           
+ALL_JAVA_CLASSES                                                                                                             
+ALL_JAVA_COMPILER_OPTIONS                                                                                                    
+ALL_JAVA_DERIVATIONS                                                                                                         
+ALL_JAVA_FIELDS                                                                                                              
+ALL_JAVA_IMPLEMENTS                                                                                                          
+ALL_JAVA_INNERS                                                                                                              
+ALL_JAVA_LAYOUTS                                                                                                             
+ALL_JAVA_METHODS                                                                                                             
+ALL_JAVA_NCOMPS                                                                                                              
+ALL_JAVA_RESOLVERS                                                                                                           
+ALL_JAVA_THROWS                                                                                                              
+ALL_JOBS                                                                                                                     
+ALL_JOIN_IND_COLUMNS                                                                                                         
+ALL_LIBRARIES                                                                                                                
+ALL_LOBS                                                                                                                     
+ALL_LOB_PARTITIONS                                                                                                           
+ALL_LOB_SUBPARTITIONS                                                                                                        
+ALL_LOB_TEMPLATES                                                                                                            
+ALL_LOG_GROUPS                                                                                                               
+ALL_LOG_GROUP_COLUMNS                                                                                                        
+ALL_MEASURE_FOLDERS                                                                                                          
+ALL_MEASURE_FOLDER_CONTENTS                                                                                                  
+ALL_METHOD_PARAMS                                                                                                            
+ALL_METHOD_RESULTS                                                                                                           
+ALL_MINING_MODELS                                                                                                            
+ALL_MINING_MODEL_ATTRIBUTES                                                                                                  
+ALL_MINING_MODEL_SETTINGS                                                                                                    
+ALL_MVIEWS                                                                                                                   
+ALL_MVIEW_AGGREGATES                                                                                                         
+ALL_MVIEW_ANALYSIS                                                                                                           
+ALL_MVIEW_COMMENTS                                                                                                           
+ALL_MVIEW_DETAIL_PARTITION                                                                                                   
+ALL_MVIEW_DETAIL_RELATIONS                                                                                                   
+ALL_MVIEW_DETAIL_SUBPARTITION                                                                                                
+ALL_MVIEW_JOINS                                                                                                              
+ALL_MVIEW_KEYS                                                                                                               
+ALL_MVIEW_LOGS                                                                                                               
+ALL_MVIEW_REFRESH_TIMES                                                                                                      
+ALL_NESTED_TABLES                                                                                                            
+ALL_NESTED_TABLE_COLS                                                                                                        
+ALL_OBJECTS                                                                                                                  
+ALL_OBJECTS_AE                                                                                                               
+ALL_OBJECT_TABLES                                                                                                            
+ALL_OBJ_COLATTRS                                                                                                             
+ALL_OPANCILLARY                                                                                                              
+ALL_OPARGUMENTS                                                                                                              
+ALL_OPBINDINGS                                                                                                               
+ALL_OPERATORS                                                                                                                
+ALL_OPERATOR_COMMENTS                                                                                                        
+ALL_OUTLINES                                                                                                                 
+ALL_OUTLINE_HINTS                                                                                                            
+ALL_PARTIAL_DROP_TABS                                                                                                        
+ALL_PART_COL_STATISTICS                                                                                                      
+ALL_PART_HISTOGRAMS                                                                                                          
+ALL_PART_INDEXES                                                                                                             
+ALL_PART_KEY_COLUMNS                                                                                                         
+ALL_PART_LOBS                                                                                                                
+ALL_PART_TABLES                                                                                                              
+ALL_PENDING_CONV_TABLES                                                                                                      
+ALL_PLSQL_OBJECT_SETTINGS                                                                                                    
+ALL_POLICIES                                                                                                                 
+ALL_POLICY_CONTEXTS                                                                                                          
+ALL_POLICY_GROUPS                                                                                                            
+ALL_PROBE_OBJECTS                                                                                                            
+ALL_PROCEDURES                                                                                                               
+ALL_PROPAGATION                                                                                                              
+ALL_PUBLISHED_COLUMNS                                                                                                        
+ALL_QUEUES                                                                                                                   
+ALL_QUEUE_PUBLISHERS                                                                                                         
+ALL_QUEUE_SUBSCRIBERS                                                                                                        
+ALL_QUEUE_TABLES                                                                                                             
+ALL_REFRESH                                                                                                                  
+ALL_REFRESH_CHILDREN                                                                                                         
+ALL_REFRESH_DEPENDENCIES                                                                                                     
+ALL_REFS                                                                                                                     
+ALL_REGISTERED_MVIEWS                                                                                                        
+ALL_REGISTERED_SNAPSHOTS                                                                                                     
+ALL_REGISTRY_BANNERS                                                                                                         
+ALL_REPAUDIT_ATTRIBUTE                                                                                                       
+ALL_REPAUDIT_COLUMN                                                                                                          
+ALL_REPCAT                                                                                                                   
+ALL_REPCATLOG                                                                                                                
+ALL_REPCOLUMN                                                                                                                
+ALL_REPCOLUMN_GROUP                                                                                                          
+ALL_REPCONFLICT                                                                                                              
+ALL_REPDDL                                                                                                                   
+ALL_REPFLAVORS                                                                                                               
+ALL_REPFLAVOR_COLUMNS                                                                                                        
+ALL_REPFLAVOR_OBJECTS                                                                                                        
+ALL_REPGENERATED                                                                                                             
+ALL_REPGENOBJECTS                                                                                                            
+ALL_REPGROUP                                                                                                                 
+ALL_REPGROUPED_COLUMN                                                                                                        
+ALL_REPGROUP_PRIVILEGES                                                                                                      
+ALL_REPKEY_COLUMNS                                                                                                           
+ALL_REPOBJECT                                                                                                                
+ALL_REPPARAMETER_COLUMN                                                                                                      
+ALL_REPPRIORITY                                                                                                              
+ALL_REPPRIORITY_GROUP                                                                                                        
+ALL_REPPROP                                                                                                                  
+ALL_REPRESOLUTION                                                                                                            
+ALL_REPRESOLUTION_METHOD                                                                                                     
+ALL_REPRESOLUTION_STATISTICS                                                                                                 
+ALL_REPRESOL_STATS_CONTROL                                                                                                   
+ALL_REPSCHEMA                                                                                                                
+ALL_REPSITES                                                                                                                 
+ALL_REWRITE_EQUIVALENCES                                                                                                     
+ALL_RULES                                                                                                                    
+ALL_RULESETS                                                                                                                 
+ALL_RULE_SETS                                                                                                                
+ALL_RULE_SET_RULES                                                                                                           
+ALL_SCHEDULER_CHAINS                                                                                                         
+ALL_SCHEDULER_CHAIN_RULES                                                                                                    
+ALL_SCHEDULER_CHAIN_STEPS                                                                                                    
+ALL_SCHEDULER_CREDENTIALS                                                                                                    
+ALL_SCHEDULER_GLOBAL_ATTRIBUTE                                                                                               
+ALL_SCHEDULER_JOBS                                                                                                           
+ALL_SCHEDULER_JOB_ARGS                                                                                                       
+ALL_SCHEDULER_JOB_CLASSES                                                                                                    
+ALL_SCHEDULER_JOB_LOG                                                                                                        
+ALL_SCHEDULER_JOB_RUN_DETAILS                                                                                                
+ALL_SCHEDULER_PROGRAMS                                                                                                       
+ALL_SCHEDULER_PROGRAM_ARGS                                                                                                   
+ALL_SCHEDULER_REMOTE_DATABASES                                                                                               
+ALL_SCHEDULER_REMOTE_JOBSTATE                                                                                                
+ALL_SCHEDULER_RUNNING_CHAINS                                                                                                 
+ALL_SCHEDULER_SCHEDULES                                                                                                      
+ALL_SCHEDULER_WINDOWS                                                                                                        
+ALL_SCHEDULER_WINDOW_DETAILS                                                                                                 
+ALL_SCHEDULER_WINDOW_GROUPS                                                                                                  
+ALL_SCHEDULER_WINDOW_LOG                                                                                                     
+ALL_SCHEDULER_WINGROUP_MEMBERS                                                                                               
+ALL_SECONDARY_OBJECTS                                                                                                        
+ALL_SEC_RELEVANT_COLS                                                                                                        
+ALL_SEQUENCES                                                                                                                
+ALL_SERVICES                                                                                                                 
+ALL_SNAPSHOTS                                                                                                                
+ALL_SNAPSHOT_LOGS                                                                                                            
+ALL_SNAPSHOT_REFRESH_TIMES                                                                                                   
+ALL_SOURCE                                                                                                                   
+ALL_SOURCE_AE                                                                                                                
+ALL_SOURCE_TABLES                                                                                                            
+ALL_SQLJ_TYPES                                                                                                               
+ALL_SQLJ_TYPE_ATTRS                                                                                                          
+ALL_SQLJ_TYPE_METHODS                                                                                                        
+ALL_SQLSET                                                                                                                   
+ALL_SQLSET_BINDS                                                                                                             
+ALL_SQLSET_PLANS                                                                                                             
+ALL_SQLSET_REFERENCES                                                                                                        
+ALL_SQLSET_STATEMENTS                                                                                                        
+ALL_STAT_EXTENSIONS                                                                                                          
+ALL_STORED_SETTINGS                                                                                                          
+ALL_STREAMS_COLUMNS                                                                                                          
+ALL_STREAMS_GLOBAL_RULES                                                                                                     
+ALL_STREAMS_MESSAGE_CONSUMERS                                                                                                
+ALL_STREAMS_MESSAGE_RULES                                                                                                    
+ALL_STREAMS_NEWLY_SUPPORTED                                                                                                  
+ALL_STREAMS_RULES                                                                                                            
+ALL_STREAMS_SCHEMA_RULES                                                                                                     
+ALL_STREAMS_TABLE_RULES                                                                                                      
+ALL_STREAMS_TRANSFORM_FUNCTION                                                                                               
+ALL_STREAMS_UNSUPPORTED                                                                                                      
+ALL_SUBPARTITION_TEMPLATES                                                                                                   
+ALL_SUBPART_COL_STATISTICS                                                                                                   
+ALL_SUBPART_HISTOGRAMS                                                                                                       
+ALL_SUBPART_KEY_COLUMNS                                                                                                      
+ALL_SUBSCRIBED_COLUMNS                                                                                                       
+ALL_SUBSCRIBED_TABLES                                                                                                        
+ALL_SUBSCRIPTIONS                                                                                                            
+ALL_SUMDELTA                                                                                                                 
+ALL_SUMMARIES                                                                                                                
+ALL_SYNC_CAPTURE                                                                                                             
+ALL_SYNC_CAPTURE_PREPARED_TABS                                                                                               
+ALL_SYNC_CAPTURE_TABLES                                                                                                      
+ALL_SYNONYMS                                                                                                                 
+ALL_TABLES                                                                                                                   
+ALL_TAB_COLS                                                                                                                 
+ALL_TAB_COLUMNS                                                                                                              
+ALL_TAB_COL_STATISTICS                                                                                                       
+ALL_TAB_COMMENTS                                                                                                             
+ALL_TAB_HISTGRM_PENDING_STATS                                                                                                
+ALL_TAB_HISTOGRAMS                                                                                                           
+ALL_TAB_MODIFICATIONS                                                                                                        
+ALL_TAB_PARTITIONS                                                                                                           
+ALL_TAB_PENDING_STATS                                                                                                        
+ALL_TAB_PRIVS                                                                                                                
+ALL_TAB_PRIVS_MADE                                                                                                           
+ALL_TAB_PRIVS_RECD                                                                                                           
+ALL_TAB_STATISTICS                                                                                                           
+ALL_TAB_STATS_HISTORY                                                                                                        
+ALL_TAB_STAT_PREFS                                                                                                           
+ALL_TAB_SUBPARTITIONS                                                                                                        
+ALL_TRIGGERS                                                                                                                 
+ALL_TRIGGER_COLS                                                                                                             
+ALL_TRIGGER_ORDERING                                                                                                         
+ALL_TYPES                                                                                                                    
+ALL_TYPE_ATTRS                                                                                                               
+ALL_TYPE_METHODS                                                                                                             
+ALL_TYPE_VERSIONS                                                                                                            
+ALL_UNUSED_COL_TABS                                                                                                          
+ALL_UPDATABLE_COLUMNS                                                                                                        
+ALL_USERS                                                                                                                    
+ALL_USTATS                                                                                                                   
+ALL_VARRAYS                                                                                                                  
+ALL_VIEWS                                                                                                                    
+ALL_VIEWS_AE                                                                                                                 
+ALL_WARNING_SETTINGS                                                                                                         
+ALL_XDS_ATTRIBUTE_SECS                                                                                                       
+ALL_XDS_INSTANCE_SETS                                                                                                        
+ALL_XDS_OBJECTS                                                                                                              
+ALL_XML_INDEXES                                                                                                              
+ALL_XML_SCHEMAS                                                                                                              
+ALL_XML_SCHEMAS2                                                                                                             
+ALL_XML_TABLES                                                                                                               
+ALL_XML_TAB_COLS                                                                                                             
+ALL_XML_VIEWS                                                                                                                
+ALL_XML_VIEW_COLS                                                                                                            
+ALL_XSC_AGGREGATE_PRIVILEGE                                                                                                  
+ALL_XSC_PRIVILEGE                                                                                                            
+ALL_XSC_SECURITY_CLASS                                                                                                       
+ALL_XSC_SECURITY_CLASS_DEP                                                                                                   
+AUDIT_ACTIONS                                                                                                                
+CAT                                                                                                                          
+CLU                                                                                                                          
+COLS                                                                                                                         
+COLUMN_PRIVILEGES                                                                                                            
+DATABASE_COMPATIBLE_LEVEL                                                                                                    
+DBMS_ALERT_INFO                                                                                                              
+DBMS_LOCK_ALLOCATED                                                                                                          
+DICT                                                                                                                         
+DICTIONARY                                                                                                                   
+DICT_COLUMNS                                                                                                                 
+DUAL                                                                                                                         
+GLOBAL_NAME                                                                                                                  
+GV$ACTIVE_INSTANCES                                                                                                          
+GV$ACTIVE_SESS_POOL_MTH                                                                                                      
+GV$BH                                                                                                                        
+GV$BLOCKING_QUIESCE                                                                                                          
+GV$DIAG_INFO                                                                                                                 
+GV$ENCRYPTED_TABLESPACES                                                                                                     
+GV$LOADISTAT                                                                                                                 
+GV$LOADPSTAT                                                                                                                 
+GV$LOCK_ACTIVITY                                                                                                             
+GV$MAX_ACTIVE_SESS_TARGET_MTH                                                                                                
+GV$NLS_PARAMETERS                                                                                                            
+GV$NLS_VALID_VALUES                                                                                                          
+GV$OPTION                                                                                                                    
+GV$PARALLEL_DEGREE_LIMIT_MTH                                                                                                 
+GV$PQ_SESSTAT                                                                                                                
+GV$PQ_TQSTAT                                                                                                                 
+GV$QUEUEING_MTH                                                                                                              
+GV$RESTORE_POINT                                                                                                             
+GV$RSRC_CONSUMER_GROUP                                                                                                       
+GV$RSRC_CONSUMER_GROUP_CPU_MTH                                                                                               
+GV$RSRC_CONS_GROUP_HISTORY                                                                                                   
+GV$RSRC_PLAN                                                                                                                 
+GV$RSRC_PLAN_CPU_MTH                                                                                                         
+GV$RSRC_PLAN_HISTORY                                                                                                         
+GV$RSRC_SESSION_INFO                                                                                                         
+GV$SESSION_LONGOPS                                                                                                           
+GV$SQLFN_ARG_METADATA                                                                                                        
+GV$SQLFN_METADATA                                                                                                            
+GV$TEMPORARY_LOBS                                                                                                            
+GV$TIMEZONE_FILE                                                                                                             
+GV$TIMEZONE_NAMES                                                                                                            
+GV$VERSION                                                                                                                   
+IND                                                                                                                          
+INDEX_HISTOGRAM                                                                                                              
+INDEX_STATS                                                                                                                  
+NLS_DATABASE_PARAMETERS                                                                                                      
+NLS_INSTANCE_PARAMETERS                                                                                                      
+NLS_SESSION_PARAMETERS                                                                                                       
+OBJ                                                                                                                          
+RECYCLEBIN                                                                                                                   
+RESOURCE_COST                                                                                                                
+ROLE_ROLE_PRIVS                                                                                                              
+ROLE_SYS_PRIVS                                                                                                               
+ROLE_TAB_PRIVS                                                                                                               
+SEQ                                                                                                                          
+SESSION_PRIVS                                                                                                                
+SESSION_ROLES                                                                                                                
+SM$VERSION                                                                                                                   
+SYN                                                                                                                          
+TABLE_PRIVILEGES                                                                                                             
+TABS                                                                                                                         
+USER_ADDM_FDG_BREAKDOWN                                                                                                      
+USER_ADDM_FINDINGS                                                                                                           
+USER_ADDM_INSTANCES                                                                                                          
+USER_ADDM_TASKS                                                                                                              
+USER_ADDM_TASK_DIRECTIVES                                                                                                    
+USER_ADVISOR_ACTIONS                                                                                                         
+USER_ADVISOR_DIR_TASK_INST                                                                                                   
+USER_ADVISOR_EXECUTIONS                                                                                                      
+USER_ADVISOR_EXEC_PARAMETERS                                                                                                 
+USER_ADVISOR_FDG_BREAKDOWN                                                                                                   
+USER_ADVISOR_FINDINGS                                                                                                        
+USER_ADVISOR_JOURNAL                                                                                                         
+USER_ADVISOR_LOG                                                                                                             
+USER_ADVISOR_OBJECTS                                                                                                         
+USER_ADVISOR_PARAMETERS                                                                                                      
+USER_ADVISOR_RATIONALE                                                                                                       
+USER_ADVISOR_RECOMMENDATIONS                                                                                                 
+USER_ADVISOR_SQLA_COLVOL                                                                                                     
+USER_ADVISOR_SQLA_REC_SUM                                                                                                    
+USER_ADVISOR_SQLA_TABLES                                                                                                     
+USER_ADVISOR_SQLA_TABVOL                                                                                                     
+USER_ADVISOR_SQLA_WK_MAP                                                                                                     
+USER_ADVISOR_SQLA_WK_STMTS                                                                                                   
+USER_ADVISOR_SQLA_WK_SUM                                                                                                     
+USER_ADVISOR_SQLPLANS                                                                                                        
+USER_ADVISOR_SQLSTATS                                                                                                        
+USER_ADVISOR_SQLW_COLVOL                                                                                                     
+USER_ADVISOR_SQLW_JOURNAL                                                                                                    
+USER_ADVISOR_SQLW_PARAMETERS                                                                                                 
+USER_ADVISOR_SQLW_STMTS                                                                                                      
+USER_ADVISOR_SQLW_SUM                                                                                                        
+USER_ADVISOR_SQLW_TABLES                                                                                                     
+USER_ADVISOR_SQLW_TABVOL                                                                                                     
+USER_ADVISOR_SQLW_TEMPLATES                                                                                                  
+USER_ADVISOR_TASKS                                                                                                           
+USER_ADVISOR_TEMPLATES                                                                                                       
+USER_ALL_TABLES                                                                                                              
+USER_AQ_AGENT_PRIVS                                                                                                          
+USER_ARGUMENTS                                                                                                               
+USER_ASSEMBLIES                                                                                                              
+USER_ASSOCIATIONS                                                                                                            
+USER_ATTRIBUTE_TRANSFORMATIONS                                                                                               
+USER_AUDIT_OBJECT                                                                                                            
+USER_AUDIT_POLICIES                                                                                                          
+USER_AUDIT_POLICY_COLUMNS                                                                                                    
+USER_AUDIT_SESSION                                                                                                           
+USER_AUDIT_STATEMENT                                                                                                         
+USER_AUDIT_TRAIL                                                                                                             
+USER_AWS                                                                                                                     
+USER_AW_OBJ                                                                                                                  
+USER_AW_PROP                                                                                                                 
+USER_AW_PS                                                                                                                   
+USER_BASE_TABLE_MVIEWS                                                                                                       
+USER_CATALOG                                                                                                                 
+USER_CHANGE_NOTIFICATION_REGS                                                                                                
+USER_CLUSTERS                                                                                                                
+USER_CLUSTER_HASH_EXPRESSIONS                                                                                                
+USER_CLU_COLUMNS                                                                                                             
+USER_COLL_TYPES                                                                                                              
+USER_COL_COMMENTS                                                                                                            
+USER_COL_PENDING_STATS                                                                                                       
+USER_COL_PRIVS                                                                                                               
+USER_COL_PRIVS_MADE                                                                                                          
+USER_COL_PRIVS_RECD                                                                                                          
+USER_COMPARISON                                                                                                              
+USER_COMPARISON_COLUMNS                                                                                                      
+USER_COMPARISON_ROW_DIF                                                                                                      
+USER_COMPARISON_SCAN                                                                                                         
+USER_COMPARISON_SCAN_SUMMARY                                                                                                 
+USER_COMPARISON_SCAN_VALUES                                                                                                  
+USER_CONSTRAINTS                                                                                                             
+USER_CONS_COLUMNS                                                                                                            
+USER_CONS_OBJ_COLUMNS                                                                                                        
+USER_CQ_NOTIFICATION_QUERIES                                                                                                 
+USER_CUBES                                                                                                                   
+USER_CUBE_ATTRIBUTES                                                                                                         
+USER_CUBE_ATTR_VISIBILITY                                                                                                    
+USER_CUBE_BUILD_PROCESSES                                                                                                    
+USER_CUBE_CALCULATED_MEMBERS                                                                                                 
+USER_CUBE_DIMENSIONALITY                                                                                                     
+USER_CUBE_DIMENSIONS                                                                                                         
+USER_CUBE_DIM_LEVELS                                                                                                         
+USER_CUBE_DIM_MODELS                                                                                                         
+USER_CUBE_DIM_VIEWS                                                                                                          
+USER_CUBE_DIM_VIEW_COLUMNS                                                                                                   
+USER_CUBE_HIERARCHIES                                                                                                        
+USER_CUBE_HIER_LEVELS                                                                                                        
+USER_CUBE_HIER_VIEWS                                                                                                         
+USER_CUBE_HIER_VIEW_COLUMNS                                                                                                  
+USER_CUBE_MEASURES                                                                                                           
+USER_CUBE_VIEWS                                                                                                              
+USER_CUBE_VIEW_COLUMNS                                                                                                       
+USER_DATAPUMP_JOBS                                                                                                           
+USER_DB_LINKS                                                                                                                
+USER_DEPENDENCIES                                                                                                            
+USER_DIMENSIONS                                                                                                              
+USER_DIM_ATTRIBUTES                                                                                                          
+USER_DIM_CHILD_OF                                                                                                            
+USER_DIM_HIERARCHIES                                                                                                         
+USER_DIM_JOIN_KEY                                                                                                            
+USER_DIM_LEVELS                                                                                                              
+USER_DIM_LEVEL_KEY                                                                                                           
+USER_EDITIONING_VIEWS                                                                                                        
+USER_EDITIONING_VIEWS_AE                                                                                                     
+USER_EDITIONING_VIEW_COLS                                                                                                    
+USER_EDITIONING_VIEW_COLS_AE                                                                                                 
+USER_ENCRYPTED_COLUMNS                                                                                                       
+USER_EPG_DAD_AUTHORIZATION                                                                                                   
+USER_ERRORS                                                                                                                  
+USER_ERRORS_AE                                                                                                               
+USER_EVALUATION_CONTEXTS                                                                                                     
+USER_EVALUATION_CONTEXT_TABLES                                                                                               
+USER_EVALUATION_CONTEXT_VARS                                                                                                 
+USER_EXTENTS                                                                                                                 
+USER_EXTERNAL_LOCATIONS                                                                                                      
+USER_EXTERNAL_TABLES                                                                                                         
+USER_FILE_GROUPS                                                                                                             
+USER_FILE_GROUP_EXPORT_INFO                                                                                                  
+USER_FILE_GROUP_FILES                                                                                                        
+USER_FILE_GROUP_TABLES                                                                                                       
+USER_FILE_GROUP_TABLESPACES                                                                                                  
+USER_FILE_GROUP_VERSIONS                                                                                                     
+USER_FLASHBACK_ARCHIVE                                                                                                       
+USER_FLASHBACK_ARCHIVE_TABLES                                                                                                
+USER_FLASHBACK_TXN_REPORT                                                                                                    
+USER_FLASHBACK_TXN_STATE                                                                                                     
+USER_FREE_SPACE                                                                                                              
+USER_HISTOGRAMS                                                                                                              
+USER_IDENTIFIERS                                                                                                             
+USER_INDEXES                                                                                                                 
+USER_INDEXTYPES                                                                                                              
+USER_INDEXTYPE_ARRAYTYPES                                                                                                    
+USER_INDEXTYPE_COMMENTS                                                                                                      
+USER_INDEXTYPE_OPERATORS                                                                                                     
+USER_IND_COLUMNS                                                                                                             
+USER_IND_EXPRESSIONS                                                                                                         
+USER_IND_PARTITIONS                                                                                                          
+USER_IND_PENDING_STATS                                                                                                       
+USER_IND_STATISTICS                                                                                                          
+USER_IND_SUBPARTITIONS                                                                                                       
+USER_INTERNAL_TRIGGERS                                                                                                       
+USER_JAVA_ARGUMENTS                                                                                                          
+USER_JAVA_CLASSES                                                                                                            
+USER_JAVA_COMPILER_OPTIONS                                                                                                   
+USER_JAVA_DERIVATIONS                                                                                                        
+USER_JAVA_FIELDS                                                                                                             
+USER_JAVA_IMPLEMENTS                                                                                                         
+USER_JAVA_INNERS                                                                                                             
+USER_JAVA_LAYOUTS                                                                                                            
+USER_JAVA_METHODS                                                                                                            
+USER_JAVA_NCOMPS                                                                                                             
+USER_JAVA_POLICY                                                                                                             
+USER_JAVA_RESOLVERS                                                                                                          
+USER_JAVA_THROWS                                                                                                             
+USER_JOBS                                                                                                                    
+USER_JOIN_IND_COLUMNS                                                                                                        
+USER_LIBRARIES                                                                                                               
+USER_LOBS                                                                                                                    
+USER_LOB_PARTITIONS                                                                                                          
+USER_LOB_SUBPARTITIONS                                                                                                       
+USER_LOB_TEMPLATES                                                                                                           
+USER_LOG_GROUPS                                                                                                              
+USER_LOG_GROUP_COLUMNS                                                                                                       
+USER_MEASURE_FOLDERS                                                                                                         
+USER_MEASURE_FOLDER_CONTENTS                                                                                                 
+USER_METHOD_PARAMS                                                                                                           
+USER_METHOD_RESULTS                                                                                                          
+USER_MINING_MODELS                                                                                                           
+USER_MINING_MODEL_ATTRIBUTES                                                                                                 
+USER_MINING_MODEL_SETTINGS                                                                                                   
+USER_MVIEWS                                                                                                                  
+USER_MVIEW_AGGREGATES                                                                                                        
+USER_MVIEW_ANALYSIS                                                                                                          
+USER_MVIEW_COMMENTS                                                                                                          
+USER_MVIEW_DETAIL_PARTITION                                                                                                  
+USER_MVIEW_DETAIL_RELATIONS                                                                                                  
+USER_MVIEW_DETAIL_SUBPARTITION                                                                                               
+USER_MVIEW_JOINS                                                                                                             
+USER_MVIEW_KEYS                                                                                                              
+USER_MVIEW_LOGS                                                                                                              
+USER_MVIEW_REFRESH_TIMES                                                                                                     
+USER_NESTED_TABLES                                                                                                           
+USER_NESTED_TABLE_COLS                                                                                                       
+USER_NETWORK_ACL_PRIVILEGES                                                                                                  
+USER_OBJECTS                                                                                                                 
+USER_OBJECTS_AE                                                                                                              
+USER_OBJECT_SIZE                                                                                                             
+USER_OBJECT_TABLES                                                                                                           
+USER_OBJ_AUDIT_OPTS                                                                                                          
+USER_OBJ_COLATTRS                                                                                                            
+USER_OLDIMAGE_COLUMNS                                                                                                        
+USER_OPANCILLARY                                                                                                             
+USER_OPARGUMENTS                                                                                                             
+USER_OPBINDINGS                                                                                                              
+USER_OPERATORS                                                                                                               
+USER_OPERATOR_COMMENTS                                                                                                       
+USER_OUTLINES                                                                                                                
+USER_OUTLINE_HINTS                                                                                                           
+USER_PARTIAL_DROP_TABS                                                                                                       
+USER_PART_COL_STATISTICS                                                                                                     
+USER_PART_HISTOGRAMS                                                                                                         
+USER_PART_INDEXES                                                                                                            
+USER_PART_KEY_COLUMNS                                                                                                        
+USER_PART_LOBS                                                                                                               
+USER_PART_TABLES                                                                                                             
+USER_PASSWORD_LIMITS                                                                                                         
+USER_PENDING_CONV_TABLES                                                                                                     
+USER_PLSQL_OBJECT_SETTINGS                                                                                                   
+USER_POLICIES                                                                                                                
+USER_POLICY_CONTEXTS                                                                                                         
+USER_POLICY_GROUPS                                                                                                           
+USER_PROCEDURES                                                                                                              
+USER_PROXIES                                                                                                                 
+USER_PUBLISHED_COLUMNS                                                                                                       
+USER_QUEUES                                                                                                                  
+USER_QUEUE_PUBLISHERS                                                                                                        
+USER_QUEUE_SCHEDULES                                                                                                         
+USER_QUEUE_SUBSCRIBERS                                                                                                       
+USER_QUEUE_TABLES                                                                                                            
+USER_RECYCLEBIN                                                                                                              
+USER_REFRESH                                                                                                                 
+USER_REFRESH_CHILDREN                                                                                                        
+USER_REFS                                                                                                                    
+USER_REGISTERED_MVIEWS                                                                                                       
+USER_REGISTERED_SNAPSHOTS                                                                                                    
+USER_REGISTRY                                                                                                                
+USER_REPAUDIT_ATTRIBUTE                                                                                                      
+USER_REPAUDIT_COLUMN                                                                                                         
+USER_REPCAT                                                                                                                  
+USER_REPCATLOG                                                                                                               
+USER_REPCOLUMN                                                                                                               
+USER_REPCOLUMN_GROUP                                                                                                         
+USER_REPCONFLICT                                                                                                             
+USER_REPDDL                                                                                                                  
+USER_REPFLAVORS                                                                                                              
+USER_REPFLAVOR_COLUMNS                                                                                                       
+USER_REPFLAVOR_OBJECTS                                                                                                       
+USER_REPGENERATED                                                                                                            
+USER_REPGENOBJECTS                                                                                                           
+USER_REPGROUP                                                                                                                
+USER_REPGROUPED_COLUMN                                                                                                       
+USER_REPGROUP_PRIVILEGES                                                                                                     
+USER_REPKEY_COLUMNS                                                                                                          
+USER_REPOBJECT                                                                                                               
+USER_REPPARAMETER_COLUMN                                                                                                     
+USER_REPPRIORITY                                                                                                             
+USER_REPPRIORITY_GROUP                                                                                                       
+USER_REPPROP                                                                                                                 
+USER_REPRESOLUTION                                                                                                           
+USER_REPRESOLUTION_METHOD                                                                                                    
+USER_REPRESOLUTION_STATISTICS                                                                                                
+USER_REPRESOL_STATS_CONTROL                                                                                                  
+USER_REPSCHEMA                                                                                                               
+USER_REPSITES                                                                                                                
+USER_RESOURCE_LIMITS                                                                                                         
+USER_RESUMABLE                                                                                                               
+USER_REWRITE_EQUIVALENCES                                                                                                    
+USER_ROLE_PRIVS                                                                                                              
+USER_RSRC_CONSUMER_GROUP_PRIVS                                                                                               
+USER_RSRC_MANAGER_SYSTEM_PRIVS                                                                                               
+USER_RULES                                                                                                                   
+USER_RULESETS                                                                                                                
+USER_RULE_SETS                                                                                                               
+USER_RULE_SET_RULES                                                                                                          
+USER_SCHEDULER_CHAINS                                                                                                        
+USER_SCHEDULER_CHAIN_RULES                                                                                                   
+USER_SCHEDULER_CHAIN_STEPS                                                                                                   
+USER_SCHEDULER_CREDENTIALS                                                                                                   
+USER_SCHEDULER_JOBS                                                                                                          
+USER_SCHEDULER_JOB_ARGS                                                                                                      
+USER_SCHEDULER_JOB_LOG                                                                                                       
+USER_SCHEDULER_JOB_RUN_DETAILS                                                                                               
+USER_SCHEDULER_PROGRAMS                                                                                                      
+USER_SCHEDULER_PROGRAM_ARGS                                                                                                  
+USER_SCHEDULER_REMOTE_JOBSTATE                                                                                               
+USER_SCHEDULER_RUNNING_CHAINS                                                                                                
+USER_SCHEDULER_SCHEDULES                                                                                                     
+USER_SECONDARY_OBJECTS                                                                                                       
+USER_SEC_RELEVANT_COLS                                                                                                       
+USER_SEGMENTS                                                                                                                
+USER_SEQUENCES                                                                                                               
+USER_SNAPSHOTS                                                                                                               
+USER_SNAPSHOT_LOGS                                                                                                           
+USER_SNAPSHOT_REFRESH_TIMES                                                                                                  
+USER_SOURCE                                                                                                                  
+USER_SOURCE_AE                                                                                                               
+USER_SOURCE_TABLES                                                                                                           
+USER_SQLJ_TYPES                                                                                                              
+USER_SQLJ_TYPE_ATTRS                                                                                                         
+USER_SQLJ_TYPE_METHODS                                                                                                       
+USER_SQLSET                                                                                                                  
+USER_SQLSET_BINDS                                                                                                            
+USER_SQLSET_DEFINITIONS                                                                                                      
+USER_SQLSET_PLANS                                                                                                            
+USER_SQLSET_REFERENCES                                                                                                       
+USER_SQLSET_STATEMENTS                                                                                                       
+USER_SQLTUNE_BINDS                                                                                                           
+USER_SQLTUNE_PLANS                                                                                                           
+USER_SQLTUNE_RATIONALE_PLAN                                                                                                  
+USER_SQLTUNE_STATISTICS                                                                                                      
+USER_STAT_EXTENSIONS                                                                                                         
+USER_STORED_SETTINGS                                                                                                         
+USER_SUBPARTITION_TEMPLATES                                                                                                  
+USER_SUBPART_COL_STATISTICS                                                                                                  
+USER_SUBPART_HISTOGRAMS                                                                                                      
+USER_SUBPART_KEY_COLUMNS                                                                                                     
+USER_SUBSCRIBED_COLUMNS                                                                                                      
+USER_SUBSCRIBED_TABLES                                                                                                       
+USER_SUBSCRIPTIONS                                                                                                           
+USER_SUBSCR_REGISTRATIONS                                                                                                    
+USER_SUMMARIES                                                                                                               
+USER_SYNONYMS                                                                                                                
+USER_SYS_PRIVS                                                                                                               
+USER_TABLES                                                                                                                  
+USER_TABLESPACES                                                                                                             
+USER_TAB_COLS                                                                                                                
+USER_TAB_COLUMNS                                                                                                             
+USER_TAB_COL_STATISTICS                                                                                                      
+USER_TAB_COMMENTS                                                                                                            
+USER_TAB_HISTGRM_PENDING_STATS                                                                                               
+USER_TAB_HISTOGRAMS                                                                                                          
+USER_TAB_MODIFICATIONS                                                                                                       
+USER_TAB_PARTITIONS                                                                                                          
+USER_TAB_PENDING_STATS                                                                                                       
+USER_TAB_PRIVS                                                                                                               
+USER_TAB_PRIVS_MADE                                                                                                          
+USER_TAB_PRIVS_RECD                                                                                                          
+USER_TAB_STATISTICS                                                                                                          
+USER_TAB_STATS_HISTORY                                                                                                       
+USER_TAB_STAT_PREFS                                                                                                          
+USER_TAB_SUBPARTITIONS                                                                                                       
+USER_TRANSFORMATIONS                                                                                                         
+USER_TRIGGERS                                                                                                                
+USER_TRIGGER_COLS                                                                                                            
+USER_TS                                                                                                                      
+USER_TS_QUOTAS                                                                                                               
+USER_TUNE_MVIEW                                                                                                              
+USER_TYPES                                                                                                                   
+USER_TYPE_ATTRS                                                                                                              
+USER_TYPE_METHODS                                                                                                            
+USER_TYPE_VERSIONS                                                                                                           
+USER_UNUSED_COL_TABS                                                                                                         
+USER_UPDATABLE_COLUMNS                                                                                                       
+USER_USERS                                                                                                                   
+USER_USTATS                                                                                                                  
+USER_VARRAYS                                                                                                                 
+USER_VIEWS                                                                                                                   
+USER_VIEWS_AE                                                                                                                
+USER_WARNING_SETTINGS                                                                                                        
+USER_XDS_ATTRIBUTE_SECS                                                                                                      
+USER_XDS_INSTANCE_SETS                                                                                                       
+USER_XDS_OBJECTS                                                                                                             
+USER_XML_COLUMN_NAMES                                                                                                        
+USER_XML_INDEXES                                                                                                             
+USER_XML_SCHEMAS                                                                                                             
+USER_XML_TABLES                                                                                                              
+USER_XML_TAB_COLS                                                                                                            
+USER_XML_VIEWS                                                                                                               
+USER_XML_VIEW_COLS                                                                                                           
+V$ACTIVE_INSTANCES                                                                                                           
+V$ACTIVE_SESS_POOL_MTH                                                                                                       
+V$ADVISOR_PROGRESS                                                                                                           
+V$BH                                                                                                                         
+V$BLOCKING_QUIESCE                                                                                                           
+V$DIAG_INFO                                                                                                                  
+V$ENCRYPTED_TABLESPACES                                                                                                      
+V$FLASHBACK_TXN_GRAPH                                                                                                        
+V$FLASHBACK_TXN_MODS                                                                                                         
+V$LOADISTAT                                                                                                                  
+V$LOADPSTAT                                                                                                                  
+V$LOCK_ACTIVITY                                                                                                              
+V$MAX_ACTIVE_SESS_TARGET_MTH                                                                                                 
+V$NLS_PARAMETERS                                                                                                             
+V$NLS_VALID_VALUES                                                                                                           
+V$OPTION                                                                                                                     
+V$PARALLEL_DEGREE_LIMIT_MTH                                                                                                  
+V$PQ_SESSTAT                                                                                                                 
+V$PQ_TQSTAT                                                                                                                  
+V$QUEUEING_MTH                                                                                                               
+V$RESTORE_POINT                                                                                                              
+V$RSRC_CONSUMER_GROUP                                                                                                        
+V$RSRC_CONSUMER_GROUP_CPU_MTH                                                                                                
+V$RSRC_CONS_GROUP_HISTORY                                                                                                    
+V$RSRC_PLAN                                                                                                                  
+V$RSRC_PLAN_CPU_MTH                                                                                                          
+V$RSRC_PLAN_HISTORY                                                                                                          
+V$RSRC_SESSION_INFO                                                                                                          
+V$SESSION_CONNECT_INFO                                                                                                       
+V$SESSION_LONGOPS                                                                                                            
+V$SQLFN_ARG_METADATA                                                                                                         
+V$SQLFN_METADATA                                                                                                             
+V$TEMPORARY_LOBS                                                                                                             
+V$TIMEZONE_FILE                                                                                                              
+V$TIMEZONE_NAMES                                                                                                             
+V$VERSION                                                                                                                    
+
+793 rows selected.
+
+SCOTT> 
+SCOTT> describe dictionary
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ TABLE_NAME                                                                    VARCHAR2(30)
+ COMMENTS                                                                      VARCHAR2(4000)
+
+SCOTT> 
+SCOTT> select * from DICTIONARY
+  2  where table_name like 'DICT%'
+  3       or table_name like 'USER_TAB%'
+  4  order by table_name;
+
+TABLE_NAME                                                                                                                   
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+DICT                                                                                                                         
+Synonym for DICTIONARY                                                                                                       
+                                                                                                                             
+DICTIONARY                                                                                                                   
+Description of data dictionary tables and views                                                                              
+                                                                                                                             
+DICT_COLUMNS                                                                                                                 
+Description of columns in data dictionary tables and views                                                                   
+                                                                                                                             
+USER_TABLES                                                                                                                  
+Description of the user's own relational tables                                                                              
+                                                                                                                             
+USER_TABLESPACES                                                                                                             
+Description of accessible tablespaces                                                                                        
+                                                                                                                             
+USER_TAB_COLS                                                                                                                
+Columns of user's tables, views and clusters                                                                                 
+                                                                                                                             
+USER_TAB_COLUMNS                                                                                                             
+Columns of user's tables, views and clusters                                                                                 
+                                                                                                                             
+USER_TAB_COL_STATISTICS                                                                                                      
+Columns of user's tables, views and clusters                                                                                 
+                                                                                                                             
+USER_TAB_COMMENTS                                                                                                            
+Comments on the tables and views owned by the user                                                                           
+                                                                                                                             
+USER_TAB_HISTGRM_PENDING_STATS                                                                                               
+Pending statistics of tables, partitions, and subpartitions                                                                  
+                                                                                                                             
+USER_TAB_HISTOGRAMS                                                                                                          
+Histograms on columns of user's tables                                                                                       
+                                                                                                                             
+USER_TAB_MODIFICATIONS                                                                                                       
+Information regarding modifications to tables                                                                                
+                                                                                                                             
+USER_TAB_PARTITIONS                                                                                                          
+                                                                                                                             
+                                                                                                                             
+USER_TAB_PENDING_STATS                                                                                                       
+History of table statistics modifications                                                                                    
+                                                                                                                             
+USER_TAB_PRIVS                                                                                                               
+Grants on objects for which the user is the owner, grantor or grantee                                                        
+                                                                                                                             
+USER_TAB_PRIVS_MADE                                                                                                          
+All grants on objects owned by the user                                                                                      
+                                                                                                                             
+USER_TAB_PRIVS_RECD                                                                                                          
+Grants on objects for which the user is the grantee                                                                          
+                                                                                                                             
+USER_TAB_STATISTICS                                                                                                          
+Optimizer statistics of the user's own tables                                                                                
+                                                                                                                             
+USER_TAB_STATS_HISTORY                                                                                                       
+History of table statistics modifications                                                                                    
+                                                                                                                             
+USER_TAB_STAT_PREFS                                                                                                          
+Statistics preferences for tables                                                                                            
+                                                                                                                             
+USER_TAB_SUBPARTITIONS                                                                                                       
+                                                                                                                             
+                                                                                                                             
+
+21 rows selected.
+
+SCOTT> describe user_tables ;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ TABLE_NAME                                                           NOT NULL VARCHAR2(30)
+ TABLESPACE_NAME                                                               VARCHAR2(30)
+ CLUSTER_NAME                                                                  VARCHAR2(30)
+ IOT_NAME                                                                      VARCHAR2(30)
+ STATUS                                                                        VARCHAR2(8)
+ PCT_FREE                                                                      NUMBER
+ PCT_USED                                                                      NUMBER
+ INI_TRANS                                                                     NUMBER
+ MAX_TRANS                                                                     NUMBER
+ INITIAL_EXTENT                                                                NUMBER
+ NEXT_EXTENT                                                                   NUMBER
+ MIN_EXTENTS                                                                   NUMBER
+ MAX_EXTENTS                                                                   NUMBER
+ PCT_INCREASE                                                                  NUMBER
+ FREELISTS                                                                     NUMBER
+ FREELIST_GROUPS                                                               NUMBER
+ LOGGING                                                                       VARCHAR2(3)
+ BACKED_UP                                                                     VARCHAR2(1)
+ NUM_ROWS                                                                      NUMBER
+ BLOCKS                                                                        NUMBER
+ EMPTY_BLOCKS                                                                  NUMBER
+ AVG_SPACE                                                                     NUMBER
+ CHAIN_CNT                                                                     NUMBER
+ AVG_ROW_LEN                                                                   NUMBER
+ AVG_SPACE_FREELIST_BLOCKS                                                     NUMBER
+ NUM_FREELIST_BLOCKS                                                           NUMBER
+ DEGREE                                                                        VARCHAR2(10)
+ INSTANCES                                                                     VARCHAR2(10)
+ CACHE                                                                         VARCHAR2(5)
+ TABLE_LOCK                                                                    VARCHAR2(8)
+ SAMPLE_SIZE                                                                   NUMBER
+ LAST_ANALYZED                                                                 DATE
+ PARTITIONED                                                                   VARCHAR2(3)
+ IOT_TYPE                                                                      VARCHAR2(12)
+ TEMPORARY                                                                     VARCHAR2(1)
+ SECONDARY                                                                     VARCHAR2(1)
+ NESTED                                                                        VARCHAR2(3)
+ BUFFER_POOL                                                                   VARCHAR2(7)
+ ROW_MOVEMENT                                                                  VARCHAR2(8)
+ GLOBAL_STATS                                                                  VARCHAR2(3)
+ USER_STATS                                                                    VARCHAR2(3)
+ DURATION                                                                      VARCHAR2(15)
+ SKIP_CORRUPT                                                                  VARCHAR2(8)
+ MONITORING                                                                    VARCHAR2(3)
+ CLUSTER_OWNER                                                                 VARCHAR2(30)
+ DEPENDENCIES                                                                  VARCHAR2(8)
+ COMPRESSION                                                                   VARCHAR2(8)
+ COMPRESS_FOR                                                                  VARCHAR2(18)
+ DROPPED                                                                       VARCHAR2(3)
+ READ_ONLY                                                                     VARCHAR2(3)
+
+SCOTT> 
+SCOTT> 
+SCOTT> 
+SCOTT> select table_name from USER_TABLES;
+
+TABLE_NAME                                                                                                                   
+------------------------------                                                                                               
+DEPT                                                                                                                         
+EMP                                                                                                                          
+BONUS                                                                                                                        
+SALGRADE                                                                                                                     
+DEPTS                                                                                                                        
+EMPS                                                                                                                         
+PROJECTS                                                                                                                     
+PROGRAMS                                                                                                                     
+
+8 rows selected.
+
+SCOTT> 
+SCOTT> 
+SCOTT> describe ALL_COL_COMMENTS;
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ OWNER                                                                NOT NULL VARCHAR2(30)
+ TABLE_NAME                                                           NOT NULL VARCHAR2(30)
+ COLUMN_NAME                                                          NOT NULL VARCHAR2(30)
+ COMMENTS                                                                      VARCHAR2(4000)
+
+SCOTT> 
+SCOTT> select column_name, comments from ALL_COL_COMMENTS
+  2    where table_name = 'DICTIONARY';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+TABLE_NAME                                                                                                                   
+Name of the object                                                                                                           
+                                                                                                                             
+COMMENTS                                                                                                                     
+Text comment on the object                                                                                                   
+                                                                                                                             
+
+SCOTT> 
+SCOTT> select column_name, comments from ALL_COL_COMMENTS
+  2    where table_name = 'USER_TABLES';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+TABLE_NAME                                                                                                                   
+Name of the table                                                                                                            
+                                                                                                                             
+TABLESPACE_NAME                                                                                                              
+Name of the tablespace containing the table                                                                                  
+                                                                                                                             
+CLUSTER_NAME                                                                                                                 
+Name of the cluster, if any, to which the table belongs                                                                      
+                                                                                                                             
+IOT_NAME                                                                                                                     
+Name of the index-only table, if any, to which the overflow or mapping table entry belongs                                   
+                                                                                                                             
+STATUS                                                                                                                       
+Status of the table will be UNUSABLE if a previous DROP TABLE operation failed,                                              
+VALID otherwise                                                                                                              
+                                                                                                                             
+PCT_FREE                                                                                                                     
+Minimum percentage of free space in a block                                                                                  
+                                                                                                                             
+PCT_USED                                                                                                                     
+Minimum percentage of used space in a block                                                                                  
+                                                                                                                             
+INI_TRANS                                                                                                                    
+Initial number of transactions                                                                                               
+                                                                                                                             
+MAX_TRANS                                                                                                                    
+Maximum number of transactions                                                                                               
+                                                                                                                             
+INITIAL_EXTENT                                                                                                               
+Size of the initial extent in bytes                                                                                          
+                                                                                                                             
+NEXT_EXTENT                                                                                                                  
+Size of secondary extents in bytes                                                                                           
+                                                                                                                             
+MIN_EXTENTS                                                                                                                  
+Minimum number of extents allowed in the segment                                                                             
+                                                                                                                             
+MAX_EXTENTS                                                                                                                  
+Maximum number of extents allowed in the segment                                                                             
+                                                                                                                             
+PCT_INCREASE                                                                                                                 
+Percentage increase in extent size                                                                                           
+                                                                                                                             
+FREELISTS                                                                                                                    
+Number of process freelists allocated in this segment                                                                        
+                                                                                                                             
+FREELIST_GROUPS                                                                                                              
+Number of freelist groups allocated in this segment                                                                          
+                                                                                                                             
+LOGGING                                                                                                                      
+Logging attribute                                                                                                            
+                                                                                                                             
+BACKED_UP                                                                                                                    
+Has table been backed up since last modification?                                                                            
+                                                                                                                             
+NUM_ROWS                                                                                                                     
+The number of rows in the table                                                                                              
+                                                                                                                             
+BLOCKS                                                                                                                       
+The number of used blocks in the table                                                                                       
+                                                                                                                             
+EMPTY_BLOCKS                                                                                                                 
+The number of empty (never used) blocks in the table                                                                         
+                                                                                                                             
+AVG_SPACE                                                                                                                    
+The average available free space in the table                                                                                
+                                                                                                                             
+CHAIN_CNT                                                                                                                    
+The number of chained rows in the table                                                                                      
+                                                                                                                             
+AVG_ROW_LEN                                                                                                                  
+The average row length, including row overhead                                                                               
+                                                                                                                             
+AVG_SPACE_FREELIST_BLOCKS                                                                                                    
+The average freespace of all blocks on a freelist                                                                            
+                                                                                                                             
+NUM_FREELIST_BLOCKS                                                                                                          
+The number of blocks on the freelist                                                                                         
+                                                                                                                             
+DEGREE                                                                                                                       
+The number of threads per instance for scanning the table                                                                    
+                                                                                                                             
+INSTANCES                                                                                                                    
+The number of instances across which the table is to be scanned                                                              
+                                                                                                                             
+CACHE                                                                                                                        
+Whether the table is to be cached in the buffer cache                                                                        
+                                                                                                                             
+TABLE_LOCK                                                                                                                   
+Whether table locking is enabled or disabled                                                                                 
+                                                                                                                             
+SAMPLE_SIZE                                                                                                                  
+The sample size used in analyzing this table                                                                                 
+                                                                                                                             
+LAST_ANALYZED                                                                                                                
+The date of the most recent time this table was analyzed                                                                     
+                                                                                                                             
+PARTITIONED                                                                                                                  
+Is this table partitioned? YES or NO                                                                                         
+                                                                                                                             
+IOT_TYPE                                                                                                                     
+If index-only table, then IOT_TYPE is IOT or IOT_OVERFLOW or IOT_MAPPING else NULL                                           
+                                                                                                                             
+TEMPORARY                                                                                                                    
+Can the current session only see data that it place in this object itself?                                                   
+                                                                                                                             
+SECONDARY                                                                                                                    
+Is this table object created as part of icreate for domain indexes?                                                          
+                                                                                                                             
+NESTED                                                                                                                       
+Is the table a nested table?                                                                                                 
+                                                                                                                             
+BUFFER_POOL                                                                                                                  
+The default buffer pool to be used for table blocks                                                                          
+                                                                                                                             
+ROW_MOVEMENT                                                                                                                 
+Whether partitioned row movement is enabled or disabled                                                                      
+                                                                                                                             
+GLOBAL_STATS                                                                                                                 
+Are the statistics calculated without merging underlying partitions?                                                         
+                                                                                                                             
+USER_STATS                                                                                                                   
+Were the statistics entered directly by the user?                                                                            
+                                                                                                                             
+DURATION                                                                                                                     
+If temporary table, then duration is sys$session or sys$transaction else NULL                                                
+                                                                                                                             
+SKIP_CORRUPT                                                                                                                 
+Whether skip corrupt blocks is enabled or disabled                                                                           
+                                                                                                                             
+MONITORING                                                                                                                   
+Should we keep track of the amount of modification?                                                                          
+                                                                                                                             
+CLUSTER_OWNER                                                                                                                
+Owner of the cluster, if any, to which the table belongs                                                                     
+                                                                                                                             
+DEPENDENCIES                                                                                                                 
+Should we keep track of row level dependencies?                                                                              
+                                                                                                                             
+COMPRESSION                                                                                                                  
+Whether table compression is enabled or not                                                                                  
+                                                                                                                             
+COMPRESS_FOR                                                                                                                 
+Compress what kind of operations                                                                                             
+                                                                                                                             
+DROPPED                                                                                                                      
+Whether table is dropped and is in Recycle Bin                                                                               
+                                                                                                                             
+READ_ONLY                                                                                                                    
+Whether table is read only or not                                                                                            
+                                                                                                                             
+
+50 rows selected.
+
+SCOTT> 
+SCOTT> select column_name, comments from ALL_COL_COMMENTS
+  2    where table_name = 'ALL_COL_COMMENTS';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+OWNER                                                                                                                        
+Owner of the object                                                                                                          
+                                                                                                                             
+TABLE_NAME                                                                                                                   
+Name of the object                                                                                                           
+                                                                                                                             
+COLUMN_NAME                                                                                                                  
+Name of the column                                                                                                           
+                                                                                                                             
+COMMENTS                                                                                                                     
+Comment on the column                                                                                                        
+                                                                                                                             
+
+SCOTT> 
+SCOTT> describe USER_TAB_COLUMNS
+ Name                                                                 Null?    Type
+ -------------------------------------------------------------------- -------- ----------------------------------------------
+ TABLE_NAME                                                           NOT NULL VARCHAR2(30)
+ COLUMN_NAME                                                          NOT NULL VARCHAR2(30)
+ DATA_TYPE                                                                     VARCHAR2(106)
+ DATA_TYPE_MOD                                                                 VARCHAR2(3)
+ DATA_TYPE_OWNER                                                               VARCHAR2(30)
+ DATA_LENGTH                                                          NOT NULL NUMBER
+ DATA_PRECISION                                                                NUMBER
+ DATA_SCALE                                                                    NUMBER
+ NULLABLE                                                                      VARCHAR2(1)
+ COLUMN_ID                                                                     NUMBER
+ DEFAULT_LENGTH                                                                NUMBER
+ DATA_DEFAULT                                                                  LONG
+ NUM_DISTINCT                                                                  NUMBER
+ LOW_VALUE                                                                     RAW(32)
+ HIGH_VALUE                                                                    RAW(32)
+ DENSITY                                                                       NUMBER
+ NUM_NULLS                                                                     NUMBER
+ NUM_BUCKETS                                                                   NUMBER
+ LAST_ANALYZED                                                                 DATE
+ SAMPLE_SIZE                                                                   NUMBER
+ CHARACTER_SET_NAME                                                            VARCHAR2(44)
+ CHAR_COL_DECL_LENGTH                                                          NUMBER
+ GLOBAL_STATS                                                                  VARCHAR2(3)
+ USER_STATS                                                                    VARCHAR2(3)
+ AVG_COL_LEN                                                                   NUMBER
+ CHAR_LENGTH                                                                   NUMBER
+ CHAR_USED                                                                     VARCHAR2(1)
+ V80_FMT_IMAGE                                                                 VARCHAR2(3)
+ DATA_UPGRADED                                                                 VARCHAR2(3)
+ HISTOGRAM                                                                     VARCHAR2(15)
+
+SCOTT> 
+SCOTT> select column_name, comments from ALL_COL_COMMENTS
+  2  where table_name = 'USER_TAB_COLUMNS';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+TABLE_NAME                                                                                                                   
+Table, view or cluster name                                                                                                  
+                                                                                                                             
+COLUMN_NAME                                                                                                                  
+Column name                                                                                                                  
+                                                                                                                             
+DATA_TYPE                                                                                                                    
+Datatype of the column                                                                                                       
+                                                                                                                             
+DATA_TYPE_MOD                                                                                                                
+Datatype modifier of the column                                                                                              
+                                                                                                                             
+DATA_TYPE_OWNER                                                                                                              
+Owner of the datatype of the column                                                                                          
+                                                                                                                             
+DATA_LENGTH                                                                                                                  
+Length of the column in bytes                                                                                                
+                                                                                                                             
+DATA_PRECISION                                                                                                               
+Length: decimal digits (NUMBER) or binary digits (FLOAT)                                                                     
+                                                                                                                             
+DATA_SCALE                                                                                                                   
+Digits to right of decimal point in a number                                                                                 
+                                                                                                                             
+NULLABLE                                                                                                                     
+Does column allow NULL values?                                                                                               
+                                                                                                                             
+COLUMN_ID                                                                                                                    
+Sequence number of the column as created                                                                                     
+                                                                                                                             
+DEFAULT_LENGTH                                                                                                               
+Length of default value for the column                                                                                       
+                                                                                                                             
+DATA_DEFAULT                                                                                                                 
+Default value for the column                                                                                                 
+                                                                                                                             
+NUM_DISTINCT                                                                                                                 
+The number of distinct values in the column                                                                                  
+                                                                                                                             
+LOW_VALUE                                                                                                                    
+The low value in the column                                                                                                  
+                                                                                                                             
+HIGH_VALUE                                                                                                                   
+The high value in the column                                                                                                 
+                                                                                                                             
+DENSITY                                                                                                                      
+The density of the column                                                                                                    
+                                                                                                                             
+NUM_NULLS                                                                                                                    
+The number of nulls in the column                                                                                            
+                                                                                                                             
+NUM_BUCKETS                                                                                                                  
+The number of buckets in histogram for the column                                                                            
+                                                                                                                             
+LAST_ANALYZED                                                                                                                
+The date of the most recent time this column was analyzed                                                                    
+                                                                                                                             
+SAMPLE_SIZE                                                                                                                  
+The sample size used in analyzing this column                                                                                
+                                                                                                                             
+CHARACTER_SET_NAME                                                                                                           
+Character set name                                                                                                           
+                                                                                                                             
+CHAR_COL_DECL_LENGTH                                                                                                         
+Declaration length of character type column                                                                                  
+                                                                                                                             
+GLOBAL_STATS                                                                                                                 
+Are the statistics calculated without merging underlying partitions?                                                         
+                                                                                                                             
+USER_STATS                                                                                                                   
+Were the statistics entered directly by the user?                                                                            
+                                                                                                                             
+AVG_COL_LEN                                                                                                                  
+The average length of the column in bytes                                                                                    
+                                                                                                                             
+CHAR_LENGTH                                                                                                                  
+The maximum length of the column in characters                                                                               
+                                                                                                                             
+CHAR_USED                                                                                                                    
+C is maximum length given in characters, B if in bytes                                                                       
+                                                                                                                             
+V80_FMT_IMAGE                                                                                                                
+Is column data in 8.0 image format?                                                                                          
+                                                                                                                             
+DATA_UPGRADED                                                                                                                
+Has column data been upgraded to the latest type version format?                                                             
+                                                                                                                             
+HISTOGRAM                                                                                                                    
+                                                                                                                             
+                                                                                                                             
+
+30 rows selected.
+
+SCOTT> 
+SCOTT> select table_name, column_name from USER_TAB_COLUMNS
+  2  order by table_name, column_name;
+
+TABLE_NAME                     COLUMN_NAME                                                                                   
+------------------------------ ------------------------------                                                                
+BONUS                          COMM                                                                                          
+BONUS                          ENAME                                                                                         
+BONUS                          JOB                                                                                           
+BONUS                          SAL                                                                                           
+DEPT                           DEPTNO                                                                                        
+DEPT                           DNAME                                                                                         
+DEPT                           LOC                                                                                           
+DEPTS                          DEPTNO                                                                                        
+DEPTS                          DNAME                                                                                         
+DEPTS                          LOC                                                                                           
+EMP                            COMM                                                                                          
+EMP                            DEPTNO                                                                                        
+EMP                            EMPNO                                                                                         
+EMP                            ENAME                                                                                         
+EMP                            HIREDATE                                                                                      
+EMP                            JOB                                                                                           
+EMP                            MGR                                                                                           
+EMP                            SAL                                                                                           
+EMPS                           COMM                                                                                          
+EMPS                           DEPTNO                                                                                        
+EMPS                           EMPNO                                                                                         
+EMPS                           ENAME                                                                                         
+EMPS                           HIREDATE                                                                                      
+EMPS                           JOB                                                                                           
+EMPS                           MGR                                                                                           
+EMPS                           SAL                                                                                           
+PRJJOB                         JOB                                                                                           
+PRJJOB                         PMGR                                                                                          
+PROGRAMS                       PNAME                                                                                         
+PROGRAMS                       QUALITIES                                                                                     
+PROJECTS                       BUDGET                                                                                        
+PROJECTS                       PEND                                                                                          
+PROJECTS                       PERSONS                                                                                       
+PROJECTS                       PMGR                                                                                          
+PROJECTS                       PNAME                                                                                         
+PROJECTS                       PNO                                                                                           
+PROJECTS                       PSTART                                                                                        
+SALGRADE                       GRADE                                                                                         
+SALGRADE                       HISAL                                                                                         
+SALGRADE                       LOSAL                                                                                         
+
+40 rows selected.
+
+SCOTT> 
+SCOTT> select rpad(table_name, 20 ) as tablename,
+  2      rpad( column_name, 10 ) as colname,
+  3      rpad( case when (data_type = 'NUMBER')
+  4               then 'NUMBER(' || data_precision || ',' || data_scale || ')'
+  5               else data_type end, 13 ) as datatype,
+  6      nullable, num_nulls, num_distinct
+  7  from USER_TAB_COLUMNS
+  8  where table_name in ( 'EMPS', 'DEPTS', 'PROJECTS' )
+  9  order by table_name, column_name;
+
+TABLENAME            COLNAME    DATATYPE      N  NUM_NULLS NUM_DISTINCT                                                      
+-------------------- ---------- ------------- - ---------- ------------                                                      
+DEPTS                DEPTNO     NUMBER(3,0)   N          0            3                                                      
+DEPTS                DNAME      VARCHAR2      Y          0            3                                                      
+DEPTS                LOC        VARCHAR2      Y          0            3                                                      
+EMPS                 COMM       NUMBER(7,2)   Y         10            4                                                      
+EMPS                 DEPTNO     NUMBER(2,0)   Y          0            3                                                      
+EMPS                 EMPNO      NUMBER(4,0)   N          0           14                                                      
+EMPS                 ENAME      VARCHAR2      Y          0           14                                                      
+EMPS                 HIREDATE   DATE          Y          0           13                                                      
+EMPS                 JOB        VARCHAR2      Y          0            5                                                      
+EMPS                 MGR        NUMBER(4,0)   Y          1            6                                                      
+EMPS                 SAL        NUMBER(7,2)   Y          0           12                                                      
+PROJECTS             BUDGET     NUMBER(10,2)  Y          1            2                                                      
+PROJECTS             PEND       DATE          Y          5            0                                                      
+PROJECTS             PERSONS    NUMBER(3,0)   N          0            2                                                      
+PROJECTS             PMGR       NUMBER(4,0)   N          0            3                                                      
+PROJECTS             PNAME      VARCHAR2      N          0            5                                                      
+PROJECTS             PNO        NUMBER(5,0)   N          0            5                                                      
+PROJECTS             PSTART     DATE          Y          1            2                                                      
+
+18 rows selected.
+
+SCOTT> select column_name, comments from all_col_comments
+  2    where table_name = 'USER_CONSTRAINTS';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+OWNER                                                                                                                        
+Owner of the table                                                                                                           
+                                                                                                                             
+CONSTRAINT_NAME                                                                                                              
+Name associated with constraint definition                                                                                   
+                                                                                                                             
+CONSTRAINT_TYPE                                                                                                              
+Type of constraint definition                                                                                                
+                                                                                                                             
+TABLE_NAME                                                                                                                   
+Name associated with table with constraint definition                                                                        
+                                                                                                                             
+SEARCH_CONDITION                                                                                                             
+Text of search condition for table check                                                                                     
+                                                                                                                             
+R_OWNER                                                                                                                      
+Owner of table used in referential constraint                                                                                
+                                                                                                                             
+R_CONSTRAINT_NAME                                                                                                            
+Name of unique constraint definition for referenced table                                                                    
+                                                                                                                             
+DELETE_RULE                                                                                                                  
+The delete rule for a referential constraint                                                                                 
+                                                                                                                             
+STATUS                                                                                                                       
+Enforcement status of constraint -  ENABLED or DISABLED                                                                      
+                                                                                                                             
+DEFERRABLE                                                                                                                   
+Is the constraint deferrable - DEFERRABLE or NOT DEFERRABLE                                                                  
+                                                                                                                             
+DEFERRED                                                                                                                     
+Is the constraint deferred by default -  DEFERRED or IMMEDIATE                                                               
+                                                                                                                             
+VALIDATED                                                                                                                    
+Was this constraint system validated? -  VALIDATED or NOT VALIDATED                                                          
+                                                                                                                             
+GENERATED                                                                                                                    
+Was the constraint name system generated? -  GENERATED NAME or USER NAME                                                     
+                                                                                                                             
+BAD                                                                                                                          
+Creating this constraint should give ORA-02436.  Rewrite it before 2000 AD.                                                  
+                                                                                                                             
+RELY                                                                                                                         
+If set, this flag will be used in optimizer                                                                                  
+                                                                                                                             
+LAST_CHANGE                                                                                                                  
+The date when this column was last enabled or disabled                                                                       
+                                                                                                                             
+INDEX_OWNER                                                                                                                  
+The owner of the index used by the constraint                                                                                
+                                                                                                                             
+INDEX_NAME                                                                                                                   
+The index used by the constraint                                                                                             
+                                                                                                                             
+INVALID                                                                                                                      
+                                                                                                                             
+                                                                                                                             
+VIEW_RELATED                                                                                                                 
+                                                                                                                             
+                                                                                                                             
+
+20 rows selected.
+
+SCOTT> select column_name, comments from all_col_comments
+  2    where table_name = 'USER_CONS_COLUMNS';
+
+COLUMN_NAME                                                                                                                  
+------------------------------                                                                                               
+COMMENTS                                                                                                                     
+-----------------------------------------------------------------------------------------------------------------------------
+OWNER                                                                                                                        
+Owner of the constraint definition                                                                                           
+                                                                                                                             
+CONSTRAINT_NAME                                                                                                              
+Name associated with the constraint definition                                                                               
+                                                                                                                             
+TABLE_NAME                                                                                                                   
+Name associated with table with constraint definition                                                                        
+                                                                                                                             
+COLUMN_NAME                                                                                                                  
+Name associated with column or attribute of object column specified in the constraint definition                             
+                                                                                                                             
+POSITION                                                                                                                     
+Original position of column or attribute in definition                                                                       
+                                                                                                                             
+
+SCOTT> select rpad( table_name, 20) as tablename,
+  2      rpad( column_name, 15 ) as colname,
+  3      rpad( constraint_name, 12 ) as constraint,
+  4      rpad( r_constraint_name, 12 ) as referencing,
+  5      constraint_type
+  6  from user_constraints NATURAL JOIN user_cons_columns
+  7  where  constraint_type <> 'C'
+  8  order by table_name;
+
+TABLENAME            COLNAME         CONSTRAINT   REFERENCING  C                                                             
+-------------------- --------------- ------------ ------------ -                                                             
+DEPT                 DEPTNO          PK_DEPT                   P                                                             
+DEPTS                DEPTNO          SYS_C009648               P                                                             
+EMP                  DEPTNO          FK_DEPTNO    PK_DEPT      R                                                             
+EMP                  EMPNO           PK_EMP                    P                                                             
+EMPS                 DEPTNO          SYS_C009650  SYS_C009648  R                                                             
+EMPS                 EMPNO           SYS_C009649               P                                                             
+PROGRAMS             PNAME           SYS_C009656               P                                                             
+PROJECTS             PNAME           SYS_C009655               U                                                             
+PROJECTS             PNO             SYS_C009654               P                                                             
+
+9 rows selected.
+
+SCOTT> 
+SCOTT> -- List Check Constraints
+SCOTT> select rpad( table_name, 10) as tablename,
+  2      rpad( column_name, 10 ) as colname,
+  3      rpad( constraint_name, 12 ) as constraint,
+  4      search_condition
+  5  from user_constraints NATURAL JOIN user_cons_columns
+  6  where  constraint_type = 'C'
+  7  order by table_name;
+
+TABLENAME  COLNAME    CONSTRAINT   SEARCH_CONDITION                                                                          
+---------- ---------- ------------ --------------------------------------------------------------------------------          
+PROJECTS   PNAME      SYS_C009651  "PNAME" IS NOT NULL                                                                       
+PROJECTS   PERSONS    SYS_C009653  "PERSONS" IS NOT NULL                                                                     
+PROJECTS   PMGR       SYS_C009652  "PMGR" IS NOT NULL                                                                        
+
+SCOTT> 
+SCOTT> spool off
