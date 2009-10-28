@@ -9,6 +9,8 @@ prompt *** Building Patch Request System
 EXECUTE DropTable( 'PatchRequests' )
 EXECUTE DropTable( 'Customers' )
 EXECUTE DropTable( 'Engineers' )
+EXECUTE DropTable( 'TacSupports' )
+EXECUTE DropTable( 'Developers' )
 EXECUTE DropTable( 'Patches' )
 EXECUTE DropTable( 'Branches' )
 
@@ -42,8 +44,19 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE Engineers (
-   eid    number(4)  PRIMARY KEY CHECK( eid > 1 ),
-   ename  varchar(30) NOT NULL
+   engid    number(4)  PRIMARY KEY CHECK( engid > 1 ),
+   ename  varchar(30) NOT NULL,
+   erole  char(1)    CHECK( erole in ( 'T', 'D' ) )
+);
+
+CREATE TABLE Developers (
+   engid    number(4)  PRIMARY KEY CONSTRAINT Developers_EngineersRef REFERENCES Engineers,
+   specialty  varchar(30) NOT NULL
+);
+
+CREATE TABLE TacSupports (
+   engid    number(4)  PRIMARY KEY CONSTRAINT TacSupports_EngineersRef REFERENCES Engineers,
+   region  varchar(30) NOT NULL
 );
 
 
@@ -55,8 +68,8 @@ CREATE TABLE PatchRequests (
    tdate   date,
    edate   date,
    cid     number(4) CONSTRAINT PatchReq_CustomersRef REFERENCES Customers,
-   pengid  number(4) CONSTRAINT PatchReq_EngineersPRef REFERENCES Engineers(eid),
-   dengid  number(4) CONSTRAINT PatchReq_EngineersDRef REFERENCES Engineers(eid),
+   pengid  number(4) CONSTRAINT PatchReq_TacSupportsRef REFERENCES TacSupports(engid),
+   dengid  number(4) CONSTRAINT PatchReq_DevelopersRef REFERENCES Developers(engid),
    bid  number(4),
    pid  number(4),
    CONSTRAINT PatchReq_PatchesRef FOREIGN KEY(bid,pid) REFERENCES Patches(bid,pid)
