@@ -10,7 +10,7 @@
 	</bean>
 	
 	<bean id="gc" class="wftac.ckim.src.srctool.Gc">
-		<!-- property name="ads"><ref local="aimDS"/></property -->
+		<!-- property name="sae"><ref local="aimDS"/></property -->
 	</bean>
 	
 
