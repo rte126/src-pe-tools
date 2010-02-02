@@ -85,7 +85,7 @@ public class Main {
 	private Options setOptions() {
 		Options options = new Options();
 		options.addOption( "help", false, "print this message" );
-		options.addOption( "gc", false, "issue full GC on SAE" );
+		options.addOption( "gc", true, "issue full GC on <SAE>" );
 		options.addOption( "devicegrouplist", false, "list device groups" );
 		options.addOption( "deviceremove", true, "remove device" );
 		options.addOption( "devicegroupremove", true, "remove device group" );

@@ -53,5 +53,12 @@
   		<artifactId>log4j</artifactId>
   		<version>1.2.14</version>
   	</dependency>
+  	<dependency>
+  		<groupId>net.juniper.smgt</groupId>
+  		<artifactId>sae</artifactId>
+  		<version>3.2.0</version>
+  		<scope>system</scope>
+  		<systemPath>${basedir}/sae.jar</systemPath>
+  	</dependency>
   </dependencies>
 </project>
