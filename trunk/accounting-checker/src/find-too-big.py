@@ -54,7 +54,18 @@ class AccountingSession:
     elif (msg.isStatus("stop")):
       logger.debug(  "adding stop message..." )
       self.data["stop"] = msg
+      # CHECKER
+      # ERROR if stop is less than last interim
+      lastInterim = self.data["interim1"] or self.data["interim0"]
+      if(lastInterim and self.data["stop"].isSmallerThan(lastInterim) ):
+        logger.error( "stop: %s at %s: smaller accounting (%s) than interim (%s)" % (self.id,self.data["stop"].getTimestamp(),self.data["stop"].getInOutOctets(), lastInterim.getInOutOctets()))
     elif (msg.isStatus("interim")):
+      # CHECKER
+      # the first interim shouldn't be too big
+      if( msg.getSessionTime() < 4000 ):
+        logger.debug("interim: ts=%d, in/out=%s" % ( msg.getSessionTime(), msg.getInOutOctets()))
+        if( ( msg.getInputOctets() > 450000000 ) or ( msg.getOutputOctets() > 450000000 )):
+          logger.error("first-interim: %s at %s: too big first interim %s" % (self.id,msg.getSessionTime(),msg.getInOutOctets()))
       if( self.data["interim0"] ):
         logger.debug( "adding interim1..." )
         self.data["interim1"] = msg
@@ -80,7 +91,7 @@ class AccountingSession:
   def listall():
     global logger
     for i in AccountingSession.sessions:
-      logger.debug( i )
+      logger.info( i )
   listall = Callable(listall)
 
 class CallingStation:
@@ -112,7 +123,13 @@ class AccountingMessage:
   A line of accounting log
   """
   def __init__(self,data):
+    # TODO: EOF process
     self.data = data.split(",");
+    # convert to integer
+    if(self.getStatus() in ["stop", "interim"]):
+      self.setInputOctets( int(self.getInputOctets()) )
+      self.setOutputOctets( int(self.getOutputOctets()) )
+      self.setSessionTime( int(self.getSessionTime()))
   def associateSession(self):
     session = AccountingSession.find(self)
     session.addMessage(self)
@@ -131,12 +148,31 @@ class AccountingMessage:
     return self.data[3]
   def getInputOctets(self):
     return self.data[8]
+  def setInputOctets(self,data):
+    self.data[8] = data
   def getOutputOctets(self):
     return self.data[10]
+  def setOutputOctets(self,data):
+    self.data[10] = data
   def getSessionTime(self):
     return self.data[12]
+  def setSessionTime(self,data):
+    self.data[12] = data
+  def isSmallerThan(self,another):
+    if(self.getOutputOctets() < another.getOutputOctets() ):
+      return True
+    if(self.getInputOctets() < another.getInputOctets() ):
+      return True
+    return False
+  def getInOutOctets(self):
+    return "%s/%s" % ( self.getInputOctets(), self.getOutputOctets())
   def __str__(self):
-    return "AccountingMessage: status=%s, time=%s" % ( self.getStatus(), self.getTimestamp() )
+    try:
+      return "AccountingMessage: status=%s, time=%s" % ( self.getStatus(), self.getTimestamp() )
+    except IndexError, e:
+      logger.error("data = %s" % self.data)
+      logger.exception(e)
+      
   def print1(self):
     if self.isStatus("start") :
         return "started at %s" % self.getTimestamp()
@@ -150,12 +186,15 @@ class AccountingMessage:
   def readline(fd):
     global logger
     # TODO: header to variable conversion
-    aMessage = AccountingMessage( fd.readline() )
+    aline = fd.readline()
+    # EOF check
+    if( aline == "" ):
+      return False
+    aMessage = AccountingMessage( aline )
     logger.debug( "message read: %s" % aMessage )
     aMessage.associateSession()
+    return True
   readline = Callable(readline)
-
-
 
 def main():
   import sys
@@ -177,9 +216,12 @@ def main():
     for afile in sys.argv[1:]:
       logger.info("reading file : %s", afile)
       fd = open(afile,"r")
-      for i in range(0,10):
-        AccountingMessage.readline(fd)
-  AccountingSession.listall()
+      #for i in range(0,10):
+      while True:
+        if( AccountingMessage.readline(fd) == False ):
+          break
+  logger.info("all the data read")
+  #AccountingSession.listall()
 
 
 if __name__ == "__main__":
