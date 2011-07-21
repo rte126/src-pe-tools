@@ -40,32 +40,29 @@ class AccountingSession:
   """
   sessions = {}
   def __init__(self,msg):
-    self.id = msg.data[1]
-    self.data = {}
-    self.data["start"] = None
-    self.data["stop"] = None
-    self.data["interim0"] = None
-    self.data["interim1"] = None
+    self.id = msg.sessionId
+    self.data = { "start":None, "stop":None, "interim0":None, "interim1":None }
   def addMessage(self,msg):
-    logger.debug( "status = " + msg.getStatus() )
+    logger.debug( "status = " + msg.status )
     if(msg.isStatus("start")):
       logger.debug( "adding start message..." )
       self.data["start"] = msg
     elif (msg.isStatus("stop")):
       logger.debug(  "adding stop message..." )
       self.data["stop"] = msg
-      # CHECKER
-      # ERROR if stop is less than last interim
-      lastInterim = self.data["interim1"] or self.data["interim0"]
-      if(lastInterim and self.data["stop"].isSmallerThan(lastInterim) ):
-        logger.error( "stop: %s at %s: smaller accounting (%s) than interim (%s)" % (self.id,self.data["stop"].getTimestamp(),self.data["stop"].getInOutOctets(), lastInterim.getInOutOctets()))
+      # CHECKER: ERROR if stop is less than last interim
+      # lastInterim = self.data["interim1"] or self.data["interim0"]
+      # if(lastInterim and self.data["stop"].isSmallerThan(lastInterim) ):
+      #  logger.error( "stop: %s at %s: smaller accounting (%s) than interim (%s)" % (self.id,self.data["stop"].timestamp,self.data["stop"].getInOutOctets(), lastInterim.getInOutOctets()))
+      # CHECKER : ERROR if stop has all zero
+      if( ( msg.inOctets == 0 ) and ( msg.outOctets == 0 ) ):
+        logger.error( "stop has all zero: NAS_IP=%s, sessionId=%s at %s" % (msg.nasIp, msg.sessionId,msg.timestamp) )
     elif (msg.isStatus("interim")):
-      # CHECKER
-      # the first interim shouldn't be too big
-      if( msg.getSessionTime() < 4000 ):
-        logger.debug("interim: ts=%d, in/out=%s" % ( msg.getSessionTime(), msg.getInOutOctets()))
-        if( ( msg.getInputOctets() > 450000000 ) or ( msg.getOutputOctets() > 450000000 )):
-          logger.error("first-interim: %s at %s: too big first interim %s" % (self.id,msg.getSessionTime(),msg.getInOutOctets()))
+      # CHECKER: ERROR if the first interim is too big
+      # if( msg.sessionTime < 4000 ):
+      #  logger.debug("interim: ts=%d, in/out=%s" % ( msg.sessionTime, msg.getInOutOctets()))
+      #  if( ( msg.inOctets > 450000000 ) or ( msg.outOctets > 450000000 )):
+      #    logger.error("first-interim: %s at %s: too big first interim %s" % (self.id,msg.sessionTime,msg.getInOutOctets()))
       if( self.data["interim0"] ):
         logger.debug( "adding interim1..." )
         self.data["interim1"] = msg
@@ -81,12 +78,12 @@ class AccountingSession:
     return returnstr
   def find(msg):
     # AccountingMessage
-    id = msg.getSessionId()
+    id = msg.sessionId
     if( AccountingSession.sessions.has_key(id) ):
       return AccountingSession.sessions[id]
-    sess = AccountingSession(msg)
-    AccountingSession.sessions[id] = sess
-    return sess
+    session = AccountingSession(msg)
+    AccountingSession.sessions[id] = session
+    return session
   find = Callable(find)
   def listall():
     global logger
@@ -101,7 +98,7 @@ class CallingStation:
   """
   stations = {}
   def __init__(self,msg):
-    self.id = msg.getStationId()
+    self.id = msg.stationId
     self.sessions = []
   def addSession(self,session):
     self.sessions.append( session )
@@ -109,7 +106,7 @@ class CallingStation:
     return "(" + self.id + ")"
   def find(msg):
     # AccountingMessage
-    id = msg.getStationId()
+    id = msg.stationId
     if( CallingStation.stations.has_key(id) ):
       return CallingStation.stations[id]
     myStation = CallingStation(msg)
@@ -121,72 +118,55 @@ class CallingStation:
 class AccountingMessage:
   """
   A line of accounting log
+  Accounting Status,SessionId,Calling Station ID,Timestamp,User IP Address,NAS IP,NAS port,User ID,Input Octets,Input Packets,Output Octets,Output Packets,Session Time,Terminate Cause
+  status,sesionId,stationId,timestamp,inOctets,outOctets,sessionTime
+  STATUS,SESSIONID,STATIONID,TIMESTAMP,INOCTETS,OUTOCTETS,SESSIONTIME
   """
+  
   def __init__(self,data):
     # TODO: EOF process
-    self.data = data.split(",");
-    # convert to integer
-    if(self.getStatus() in ["stop", "interim"]):
-      self.setInputOctets( int(self.getInputOctets()) )
-      self.setOutputOctets( int(self.getOutputOctets()) )
-      self.setSessionTime( int(self.getSessionTime()))
+    items = data.split(",");
+    logger.debug("AccountingMessage.__init__():items %s" % items)
+    self.status = items[AccountingMessage.STATUS]
+    self.sessionId = items[AccountingMessage.SESSIONID]
+    self.stationId = items[AccountingMessage.CALLINGSTATIONID]
+    self.nasIp = items[AccountingMessage.NASIP]
+    self.timestamp = items[AccountingMessage.TIMESTAMP]
+    if(self.status != "start"):
+      self.sessionTime = int(items[AccountingMessage.SESSIONTIME])
+    if(self.status in ["stop", "interim"]):
+      self.inOctets = int(items[AccountingMessage.INPUTOCTETS])
+      self.outOctets = int(items[AccountingMessage.OUTPUTOCTETS])
+    
   def associateSession(self):
     session = AccountingSession.find(self)
     session.addMessage(self)
     # INFO print session
     station = CallingStation.find(self)
     station.addSession(session)
-  def getStatus(self):
-    return self.data[0]
   def isStatus(self,givenStr):
-    return self.data[0] == givenStr
-  def getSessionId(self):
-    return self.data[1]
-  def getStationId(self):
-    return self.data[2]
-  def getTimestamp(self):
-    return self.data[3]
-  def getInputOctets(self):
-    return self.data[8]
-  def setInputOctets(self,data):
-    self.data[8] = data
-  def getOutputOctets(self):
-    return self.data[10]
-  def setOutputOctets(self,data):
-    self.data[10] = data
-  def getSessionTime(self):
-    return self.data[12]
-  def setSessionTime(self,data):
-    self.data[12] = data
+    return self.status == givenStr
   def isSmallerThan(self,another):
-    if(self.getOutputOctets() < another.getOutputOctets() ):
+    if(self.outOctets < another.outOctets ):
       return True
-    if(self.getInputOctets() < another.getInputOctets() ):
+    if(self.inOctets < another.inOctets ):
       return True
     return False
   def getInOutOctets(self):
-    return "%s/%s" % ( self.getInputOctets(), self.getOutputOctets())
+    return "%d/%d" % ( self.inOctets, self.outOctets)
   def __str__(self):
-    try:
-      return "AccountingMessage: status=%s, time=%s" % ( self.getStatus(), self.getTimestamp() )
-    except IndexError, e:
-      logger.error("data = %s" % self.data)
-      logger.exception(e)
-      
+    return "AccountingMessage: status=%s, time=%s" % ( self.status, self.timestamp )
   def print1(self):
     if self.isStatus("start") :
-        return "started at %s" % self.getTimestamp()
+        return "started at %s" % self.timestamp
     if self.isStatus("interim"):
-        return "interim at %s with in/out %s/%s" % ( self.getSessionTime(), self.getInputOctets(), self.getOutputOctets() )
+        return "interim at %s with in/out %d/%d" % ( self.sessionTime, self.inOctets, self.outOctets )
     if self.isStatus("stop"):
-        return "stopped at %s with in/out %s/%s" % ( self.getSessionTime(), self.getInputOctets(), self.getOutputOctets() )
-    if self.isStatus("Accounting Status"):
-        return "header"
-    return "WARNING - unknown status (%s)" % self.getStatus()
+        return "stopped at %s with in/out %d/%d" % ( self.sessionTime, self.inOctets, self.outOctets )
+    return "WARNING - unknown status (%s)" % self.status()
   def readline(fd):
     global logger
-    # TODO: header to variable conversion
-    aline = fd.readline()
+    aline = fd.readline().rstrip()
     # EOF check
     if( aline == "" ):
       return False
@@ -195,6 +175,36 @@ class AccountingMessage:
     aMessage.associateSession()
     return True
   readline = Callable(readline)
+  def read_header(fd):
+    global logger
+    # header to variable conversion
+    aline = fd.readline().rstrip()
+    # EOF check
+    if( aline == "" ):
+      return False
+    data = aline.split(",");
+    for i in range(len(data)):
+      logger.debug( "header[%d]='%s'" % (i,data[i]) )
+      if(data[i] == "Accounting Status"):
+          AccountingMessage.STATUS = i
+      elif(data[i] == "SessionId"):
+          AccountingMessage.SESSIONID = i
+      elif(data[i] == "Calling Station ID" ):
+          AccountingMessage.CALLINGSTATIONID = i
+      elif(data[i] == "Timestamp" ):
+          AccountingMessage.TIMESTAMP = i
+      elif(data[i] == "NAS IP" ):
+          AccountingMessage.NASIP = i
+      elif(data[i] == "Input Octets" ):
+          AccountingMessage.INPUTOCTETS = i
+      elif(data[i] == "Output Octets" ):
+          AccountingMessage.OUTPUTOCTETS = i
+      elif(data[i] == "Session Time" ):
+          AccountingMessage.SESSIONTIME = i
+      elif(data[i] == "Terminate Cause" ):
+          AccountingMessage.TERMINATECAUSE = i
+    return True
+  read_header = Callable(read_header)
 
 def main():
   import sys
@@ -204,12 +214,14 @@ def main():
   logger.setLevel(logging.INFO)
   ch = logging.StreamHandler()
   ch.setLevel(logging.DEBUG)
-  formatter = logging.Formatter('%(asctime)s [%(name)s] [%(levelname)s] %(message)s')
+  #formatter = logging.Formatter('%(asctime)s [%(name)s] [%(levelname)s] %(message)s')
+  formatter = logging.Formatter('[%(levelname)s] %(message)s')
   ch.setFormatter(formatter)
   logger.addHandler(ch)
   fd = None
   if(len(sys.argv) == 1 ):
     logger.info( "use stdin")
+    AccountingMessage.read_header(sys.stdin)
     while 1:
       AccountingMessage.readline(sys.stdin)
   else:
@@ -217,6 +229,7 @@ def main():
       logger.info("reading file : %s", afile)
       fd = open(afile,"r")
       #for i in range(0,10):
+      AccountingMessage.read_header(fd)
       while True:
         if( AccountingMessage.readline(fd) == False ):
           break
