@@ -2,6 +2,7 @@
 
 """
 2011/7/16 ckim - started working
+2011/7/19 ckim - header adaption added
 
 Accounging columns;
 Accounting Status,SessionId,Calling Station ID,Timestamp,User IP Address,NAS IP,NAS port,User ID,Input Octets,Input Packets,Output Octets,Output Packets,Session Time,Terminate Cause
