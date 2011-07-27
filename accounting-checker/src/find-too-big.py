@@ -60,7 +60,7 @@ class AccountingSession:
       logger.debug( "adding start message..." )
       self.data["start"] = msg
       # session time stamp is the time stamp of the start message
-      self.timestamp = msg.getSessionTimestamp()
+      self.timestamp = msg.getTimestamp()
     else:
       if( not self.timestamp ):
         self.timestamp = msg.getSessionTimestamp()
@@ -80,12 +80,10 @@ class AccountingSession:
           #  logger.debug("interim: ts=%d, in/out=%s" % ( msg.sessionTime, msg.getInOutOctets()))
           #  if( ( msg.inOctets > 450000000 ) or ( msg.outOctets > 450000000 )):
           #    logger.error("first-interim: %s at %s: too big first interim %s" % (self.id,msg.sessionTime,msg.getInOutOctets()))
-          if( self.data["interim0"] ):
-              logger.debug( "adding interim1..." )
-              self.data["interim1"] = msg
-          else:
-              logger.debug( "adding interim0..." )
-              self.data["interim0"] = msg
+          # put older msg in interim0
+          self.data["interim0"], temp_interim  = msg.getSessionTimeOlder(self.data["interim0"])
+          if( temp_interim ):
+              self.data["interim1"] = temp_interim.getSessionTimeNewer(self.data["interim1"])
     logger.debug(  "added " + self.__str__() )
   def getLastInterim(self):
       # there could be stop only session
@@ -137,7 +135,7 @@ class CallingStation:
   find = Callable(find)
   def list_all():
     global logger
-    from operator import itemgetter
+    #from operator import itemgetter
     for k,v in CallingStation.stations.iteritems():
       n = len(v.sessions)
       logger.debug("station: %s has %d sessions:" % (k,n ))
@@ -145,13 +143,17 @@ class CallingStation:
       session_0 = newlist[0]
       for s in newlist[1:]:
           lastinterim = session_0.getLastInterim()
+          laststop = session_0.data["stop"]
+          # stop is missing
+          #if( not laststop):
+          #    logger.info("WARNING: Last-Stop missing %s" % session_0 )
+          if( lastinterim and laststop and laststop.isSmallerThan(lastinterim)):
+              logger.info("WARNING: Stop Smaller than interim %s > %s\n%s\n%s" % (lastinterim.getInOutOctets(),laststop.getInOutOctets(),lastinterim.dump(),laststop.dump()))
           firstinterim = s.data["interim0"]
           if( lastinterim and firstinterim and lastinterim.isSmallerNonzeroThan( firstinterim ) ):
-              logger.info("WARNING: bigger first-interim %s than last-interim %s" % (firstinterim.getInOutOctets(),lastinterim.getInOutOctets()))
-          session_0 = s    
-          
-      #for s in v.sessions:
-      #  logger.debug("    %s" % s)
+              logger.info("WARNING: First-interim Bigger than Last-interim %s > %s\n%s\n%s" % (firstinterim.getInOutOctets(),lastinterim.getInOutOctets(),lastinterim.dump(),firstinterim.dump()))
+              #logger.info("%s\n%s" % (lastinterim.dump(),firstinterim.dump()) )
+          session_0 = s
     logger.info("total %d stations, %d sessions" % (len(CallingStation.stations),len(AccountingSession.sessions)))
   list_all = Callable(list_all)
 
@@ -160,13 +162,13 @@ class AccountingMessage:
   """
   A line of accounting log
   Accounting Status,SessionId,Calling Station ID,Timestamp,User IP Address,NAS IP,NAS port,User ID,Input Octets,Input Packets,Output Octets,Output Packets,Session Time,Terminate Cause
-  status,sesionId,stationId,timestamp,inOctets,outOctets,sessionTime
-  STATUS,SESSIONID,STATIONID,TIMESTAMP,INOCTETS,OUTOCTETS,SESSIONTIME
   """
   
   def __init__(self,data):
     # TODO: EOF process
+    self.txt = data
     items = data.split(",");
+    #self.d = data.split(",")
     logger.debug("AccountingMessage.__init__():items %s" % items)
     self.d = {}
     for i in range(len(items)):
@@ -190,8 +192,6 @@ class AccountingMessage:
   def getSessionTime(self):
       return int(self.d["Session Time"])
   def getSessionTimestamp(self):
-      if(self.getStatus() == "start"):
-          return self.getTimestamp()
       return ( self.getTimestamp() - self.getSessionTime() ) 
   def getInOctets(self):
       return int(self.d["Input Octets"])
@@ -203,16 +203,32 @@ class AccountingMessage:
     if(self.getInOctets() <= another.getInOctets() ):
       return True
     return False
+  def getSessionTimeOlder(self,other):
+      if( (not other) or ( self.getSessionTime() < other.getSessionTime()) ):
+          return [ self, other ]
+      return [ other, self ]
+  def getSessionTimeNewer(self,other):
+      if( (not other) or ( self.getSessionTime() > other.getSessionTime()) ):
+          return self
+      return other
   def isSmallerNonzeroThan(self,another):
     if( ( self.getOutOctets() != 0 ) and ( self.getOutOctets() <= another.getOutOctets() ) ):
       return True
     if( ( self.getInOctets() != 0 ) and ( self.getInOctets() <= another.getInOctets() ) ):
       return True
     return False
+  def isSmallerThan(self,another):
+    if( self.getOutOctets() < another.getOutOctets() ):
+      return True
+    if( self.getInOctets() < another.getInOctets() ):
+      return True
+    return False
   def getInOutOctets(self):
     return "%d/%d" % ( self.getInOctets(), self.getOutOctets())
   def __str__(self):
     return "AccountingMessage: status=%s, time=%s" % ( self.getStatus(), self.getTimestamp() )
+  def dump(self):
+      return self.txt
   def print1(self):
     if self.isStatus("start") :
         return "started at %s" % self.getTimestamp()
